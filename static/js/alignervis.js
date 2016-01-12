@@ -1,7 +1,7 @@
 //Notes: seems appropriate to move Multivis.sequences to Backbone
 
 function MultiVis(targetNode){
-    const SEQUENCEHEIGHT = 50;
+    const SEQUENCEHEIGHT = 200;
 
     this.container = d3.select(targetNode);
     this.backbone = new Backbone();
@@ -83,7 +83,7 @@ function MultiVis(targetNode){
         //Modify the attributes of the sequences on the SVG
         seq.attr("x",0)
             .attr("y",function (d, i){
-                return (i*50)+"px";
+                return (i*SEQUENCEHEIGHT)+"px";
             })
             .attr("height", 2)
             .attr("width", function (d){
@@ -129,13 +129,38 @@ function Backbone(){
         return this.backbone[seqId1][seqId2];
     };
 
-    this.parseBackbone= function(backboneFile){
+    //Parses and then renders a backbone file in the target multivis object
+    this.parseAndRenderBackbone= function(backboneFile,multiVis){
         var backbonereference = this;
         d3.tsv(backboneFile, function(data){
             numberSequences = (Object.keys(data[0]).length)/2;
             for (var i=0; i<numberSequences; i++){
-                backbonereference.addSequence(i,1000);
+                backbonereference.addSequence(i,1000000);
             }
+
+            var choicelist = [];
+            for (var seq1 = 0; seq1 < numberSequences-1; seq1++){
+                for (var seq2 = 1; seq2< numberSequences; seq2++){
+                    choicelist.push([seq1,seq2]);
+                }
+            }
+            for (var row=1; row<data.length; row++){
+                var largestBase = [];
+                for (var choice=0; choice<choicelist.length; choice++) {
+
+                    //Dont Load "Matches" that do not contain a homologous region
+                    if (data[row]["seq" + choicelist[choice][0] + "_rightend"] == 0 || data[row]["seq" + choicelist[choice][1] + "_rightend"] == 0){
+                        continue;
+                    }
+
+                    backbonereference.addHomologousRegion( choicelist[choice][0],  choicelist[choice][1],
+                        data[row]["seq" + choicelist[choice][0] + "_leftend"],
+                        data[row]["seq" + choicelist[choice][0] + "_rightend"],
+                        data[row]["seq" + choicelist[choice][1] + "_leftend"],
+                        data[row]["seq" + choicelist[choice][1] + "_rightend"])
+                }
+            }
+            multiVis.render();
         });
     }
 }
