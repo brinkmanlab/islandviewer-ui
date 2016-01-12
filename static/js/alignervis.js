@@ -2,6 +2,8 @@
 
 function MultiVis(targetNode){
     const SEQUENCEHEIGHT = 200;
+    const CONTAINERWIDTH = 10000;
+    const NUMBERAXISTICKS = 10;
 
     this.container = d3.select(targetNode);
     this.backbone = new Backbone();
@@ -18,7 +20,12 @@ function MultiVis(targetNode){
     };
 
     this.containerWidth = function() {
-        return this.container.node().getBoundingClientRect().width;
+        if (CONTAINERWIDTH != null){
+            return CONTAINERWIDTH;
+        }
+        else {
+            return this.container.node().getBoundingClientRect().width;
+        }
     };
 
     this.containerHeight = function() {
@@ -37,27 +44,13 @@ function MultiVis(targetNode){
         var lines = [];
 
         for (var i=0; i<this.sequences.length-1; i++){
-            var seqlines = svg.append("g");
+            var seqlines = svg.append("g")
+                .attr("class","all-homolous-regions");
             var homologousRegions = (this.backbone.retrieveHomologousRegions(i,i+1));
 
             for (var j=0;j<homologousRegions.length;j++){
-                var homolousRegion = seqlines.append("g");
-
-                //Start Of Homologous Region
-                homolousRegion.append("line")
-                    .style("stroke","black")
-                    .attr("x1",scale(homologousRegions[j].start1))
-                    .attr("y1",SEQUENCEHEIGHT*i)
-                    .attr("x2",scale(homologousRegions[j].start2))
-                    .attr("y2",SEQUENCEHEIGHT*(i+1));
-
-                //End of Homologous Region
-                homolousRegion.append("line")
-                    .style("stroke","black")
-                    .attr("x1",scale(homologousRegions[j].end1))
-                    .attr("y1",SEQUENCEHEIGHT*i)
-                    .attr("x2",scale(homologousRegions[j].end2))
-                    .attr("y2",SEQUENCEHEIGHT*(i+1));
+                var homolousRegion = seqlines.append("g")
+                    .attr("class", "homologous-region");
 
                 //Build Shaded Polygon For Homologous Region
                 var points = scale(homologousRegions[j].start1)+","+SEQUENCEHEIGHT*i+" ";
@@ -73,11 +66,30 @@ function MultiVis(targetNode){
             }
         }
 
-        //Add the sequences to the SVG
-        var seq = svg.selectAll("sequences")
+        //Prepare the xAxis
+        var xAxis = d3.svg.axis().scale(scale)
+            .orient("bottom").ticks(NUMBERAXISTICKS);
+
+        //Add the xAxis to the SVG
+        var sequenceaxis = svg.selectAll("sequencesAxis")
             .data(this.sequences)
             .enter()
             .append("g")
+            .attr("class", "x axis")
+            .call(xAxis);
+
+        //Modify the attributes of the axis on the SVG
+        sequenceaxis.attr("x",0)
+            .attr("transform",function (d, i){
+                return "translate(25,"+(i*SEQUENCEHEIGHT)+")";;
+            });
+
+        //Add the sequences to the SVG
+        var seq = svg.selectAll("sequencesAxis")
+            .data(this.sequences)
+            .enter()
+            .append("g")
+            .attr("class", "sequences")
             .append("rect");
 
         //Modify the attributes of the sequences on the SVG
@@ -89,6 +101,7 @@ function MultiVis(targetNode){
             .attr("width", function (d){
                 return scale(d.getSequenceSize());
             });
+
     };
 
     return this;

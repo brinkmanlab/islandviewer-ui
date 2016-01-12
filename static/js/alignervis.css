@@ -1,0 +1,7 @@
+.axis path {
+    display: none;
+}
+
+svg{
+    padding: 10px;
+}
