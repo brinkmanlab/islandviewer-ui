@@ -1,16 +1,11 @@
+//Notes: seems appropriate to move Multivis.sequences to Backbone
+
 function MultiVis(targetNode){
     const SEQUENCEHEIGHT = 50;
 
     this.container = d3.select(targetNode);
-    this.sequences = [];
     this.backbone = new Backbone();
-
-    this.addSequence = function (sequenceId, sequenceSize){
-        seq = new Sequence(sequenceId, sequenceSize);
-        this.sequences.push(seq);
-
-        return seq;
-    };
+    this.sequences = this.backbone.sequences;
 
     this.getLargestSequenceSize = function(){
         var largestSize=0;
@@ -83,7 +78,7 @@ function MultiVis(targetNode){
             .data(this.sequences)
             .enter()
             .append("g")
-            .append("rect")
+            .append("rect");
 
         //Modify the attributes of the sequences on the SVG
         seq.attr("x",0)
@@ -99,20 +94,15 @@ function MultiVis(targetNode){
     return this;
 }
 
-function Sequence(sequenceId, sequenceSize){
-    this.sequenceId = sequenceId;
-    this.sequenceSize = sequenceSize;
-    this.genes = [];
-
-    this.getSequenceSize = function(){
-        return this.sequenceSize;
-    };
-
-    return this;
-}
-
 function Backbone(){
+    this.sequences = [];
     this.backbone = [[]];
+
+    this.addSequence = function (sequenceId, sequenceSize){
+        seq = new Sequence(sequenceId, sequenceSize);
+        this.sequences.push(seq);
+        return seq;
+    };
 
     this.addHomologousRegion = function(seqId1,seqId2,start1,end1,start2,end2){
         if (this.backbone[seqId1] ===undefined){
@@ -137,6 +127,16 @@ function Backbone(){
 
     this.retrieveHomologousRegions = function(seqId1,seqId2){
         return this.backbone[seqId1][seqId2];
+    };
+
+    this.parseBackbone= function(backboneFile){
+        var backbonereference = this;
+        d3.tsv(backboneFile, function(data){
+            numberSequences = (Object.keys(data[0]).length)/2;
+            for (var i=0; i<numberSequences; i++){
+                backbonereference.addSequence(i,1000);
+            }
+        });
     }
 }
 
@@ -145,6 +145,18 @@ function HomologousRegion(start1,end1,start2,end2){
     this.end1 = end1;
     this.start2 = start2;
     this.end2 = end2;
+
+    return this;
+}
+
+function Sequence(sequenceId, sequenceSize){
+    this.sequenceId = sequenceId;
+    this.sequenceSize = sequenceSize;
+    this.genes = [];
+
+    this.getSequenceSize = function(){
+        return this.sequenceSize;
+    };
 
     return this;
 }
