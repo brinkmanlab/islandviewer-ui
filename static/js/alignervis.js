@@ -81,7 +81,7 @@ function MultiVis(targetNode){
         //Modify the attributes of the axis on the SVG
         sequenceaxis.attr("x",0)
             .attr("transform",function (d, i){
-                return "translate(25,"+(i*SEQUENCEHEIGHT)+")";;
+                return "translate(25,"+(i*SEQUENCEHEIGHT)+")";
             });
 
         //Add the sequences to the SVG
