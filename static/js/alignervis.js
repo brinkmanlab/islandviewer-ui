@@ -134,9 +134,6 @@ function Backbone(){
         var backbonereference = this;
         d3.tsv(backboneFile, function(data){
             numberSequences = (Object.keys(data[0]).length)/2;
-            for (var i=0; i<numberSequences; i++){
-                backbonereference.addSequence(i,1000000);
-            }
 
             var choicelist = [];
             for (var seq1 = 0; seq1 < numberSequences-1; seq1++){
@@ -144,9 +141,18 @@ function Backbone(){
                     choicelist.push([seq1,seq2]);
                 }
             }
+            var largestBase = [];
+            for (var j=0; j<numberSequences; j++){
+                largestBase[j] = 0;
+            }
+
             for (var row=1; row<data.length; row++){
-                var largestBase = [];
                 for (var choice=0; choice<choicelist.length; choice++) {
+                    for (var k=0; k<largestBase.length; k++){
+                        if (Number(data[row]["seq"+k+"_rightend"]) > largestBase[k]){
+                            largestBase[k] = Number(data[row]["seq"+k+"_rightend"]);
+                        }
+                    }
 
                     //Dont Load "Matches" that do not contain a homologous region
                     if (data[row]["seq" + choicelist[choice][0] + "_rightend"] == 0 || data[row]["seq" + choicelist[choice][1] + "_rightend"] == 0){
@@ -160,6 +166,12 @@ function Backbone(){
                         data[row]["seq" + choicelist[choice][1] + "_rightend"])
                 }
             }
+
+            for (var i=0; i<numberSequences; i++){
+                backbonereference.addSequence(i,largestBase[i]);
+                console.log(largestBase[i]);
+            }
+
             multiVis.render();
         });
     }
