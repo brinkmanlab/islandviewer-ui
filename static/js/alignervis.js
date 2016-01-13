@@ -101,7 +101,6 @@ function MultiVis(targetNode){
             .attr("width", function (d){
                 return scale(d.getSequenceSize());
             });
-
     };
 
     return this;
@@ -182,7 +181,6 @@ function Backbone(){
 
             for (var i=0; i<numberSequences; i++){
                 backbonereference.addSequence(i,largestBase[i]);
-                console.log(largestBase[i]);
             }
 
             multiVis.render();
