@@ -15,16 +15,8 @@
 </body>
 <script>
     var container = new MultiVis("#testcontainer");
-    var seq0 = container.addSequence(0,100);
-    var seq1 = container.addSequence(1,97);
-    var seq1 = container.addSequence(1,103);
+    container.backbone.parseAndRenderBackbone("http://localhost:8000/islandviewer/static/examples/yersinia3.backbone",container);
+    //container.backbone.parseAndRenderBackbone("http://localhost:8000/islandviewer/static/examples/pseudomonas.backbone",container);
 
-    container.backbone.addHomologousRegion(0,1,0,5,0,5);
-    container.backbone.addHomologousRegion(0,1,5,12,5,15);
-
-    container.backbone.addHomologousRegion(1,2,5,15,4,7);
-
-    //console.log(container.backbone.retrieveHomologousRegions(0,1));
-    container.render();
 </script>
 </html>

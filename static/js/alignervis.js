@@ -140,7 +140,17 @@ function Backbone(){
     };
 
     this.retrieveHomologousRegions = function(seqId1,seqId2){
-        return this.backbone[seqId1][seqId2];
+        try {
+            var homologousRegions = this.backbone[seqId1][seqId2];
+        } catch(e){
+            return [];
+        }
+        if (homologousRegions === undefined){
+            return [];
+        }
+        else{
+            return homologousRegions;
+        }
     };
 
     //Parses and then renders a backbone file in the target multivis object
@@ -165,7 +175,7 @@ function Backbone(){
                     for (var k=0; k<largestBase.length; k++){
                         if (Number(data[row]["seq"+k+"_rightend"]) > largestBase[k]){
                             largestBase[k] = Number(data[row]["seq"+k+"_rightend"]);
-                        }
+                        }517
                     }
 
                     //Dont Load "Matches" that do not contain a homologous region
