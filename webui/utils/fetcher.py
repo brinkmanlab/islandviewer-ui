@@ -1,6 +1,5 @@
 from django.conf import settings
 from webui.models import Analysis, GenomicIsland, GC, CustomGenome, IslandGenes, UploadGenome, Virulence, Genes, Replicon, Genomeproject, STATUS, STATUS_CHOICES
-from django.db import connections
 from .formatter import formatResults
 
 def fetchgenes(aid, methods, format):
@@ -13,13 +12,8 @@ def fetchgenes(aid, methods, format):
     return resultstr
 
 def fetchGenbankFile(accession):
-    cursor = connections['microbedb'].cursor()
-    sql = "select genomeproject.gpv_directory from genomeproject, replicon where genomeproject.gpv_id=replicon.gpv_id and replicon.rep_accnum = '"+accession+"';"
-
-    print sql
-    cursor.execute(sql)
-
-    row = cursor.fetchone()
-    print row
-
+    replicon = Replicon.objects.using('microbedb').filter(rep_accnum__exact=accession)[0]
+    key = replicon.gpv_id
+    project = Genomeproject.objects.usig('microbedb').filter(gpv_id__exact=key).order_by('release_date')
+    print project[0].gpv_directory
 
