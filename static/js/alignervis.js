@@ -3,7 +3,7 @@
 function MultiVis(targetNode){
     const SEQUENCEHEIGHT = 200;
     const CONTAINERWIDTH = 10000;
-    const NUMBERAXISTICKS = 10;
+    const NUMBERAXISTICKS = 30;
 
     this.container = d3.select(targetNode);
     this.backbone = new Backbone();
@@ -62,7 +62,9 @@ function MultiVis(targetNode){
                     .attr("points",points)
                     .attr("stroke","#808080")
                     .attr("stroke-width",1)
-                    .attr("fill","#C0C0C0");
+                    .attr("fill","#C0C0C0")
+                    .append("title")
+                    .text("["+homologousRegions[j].start1+","+homologousRegions[j].end1+"],"+"["+homologousRegions[j].start2+","+homologousRegions[j].end2+"]");
             }
         }
 
@@ -197,6 +199,7 @@ function HomologousRegion(start1,end1,start2,end2){
     return this;
 }
 
+//Object to hold sequences
 function Sequence(sequenceId, sequenceSize){
     this.sequenceId = sequenceId;
     this.sequenceSize = sequenceSize;
