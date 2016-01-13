@@ -13,7 +13,7 @@ def fetchgenes(aid, methods, format):
     return resultstr
 
 def fetchGenbankFile(accession):
-    genomeproject = Genomeproject.objects.raw("SELECT genomeproject.gpv_directory FROM genomeproject, replicon WHERE genomeproject.	gpv_id = replicon.gpv_id AND replicon.rep_accum = %s",[accession])
+    genomeproject = Genomeproject.objects.using("microbedb").raw("SELECT genomeproject.gpv_directory FROM genomeproject, replicon WHERE genomeproject.	gpv_id = replicon.gpv_id AND replicon.rep_accum = %s",[accession])
     fileDirectory = genomeproject[0].gpv_directory
     file = open(fileDirectory,'r')
     return file
