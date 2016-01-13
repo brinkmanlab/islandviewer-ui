@@ -15,8 +15,9 @@ def fetchgenes(aid, methods, format):
 
 def fetchGenbankFile(accession):
     cursor = connections['microbedb'].cursor()
-    cursor.execute("SELECT genomeproject.gpv_directory FROM genomeproject, replicon WHERE genomeproject.	gpv_id = replicon.gpv_id AND replicon.rep_accnum = %s",[accession])
-
+    sql = ("SELECT genomeproject.gpv_directory FROM genomeproject, replicon WHERE genomeproject.	gpv_id = replicon.gpv_id AND replicon.rep_accnum = \"%s\"",[accession])
+    print sql
+    cursor.execute(sql)
     row = cursor.fetchone()
     print row
 
