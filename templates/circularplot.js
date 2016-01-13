@@ -318,7 +318,7 @@ function show_gene_search() {
 	return;
     }
 
-    $('#show_gene_search').html("Hide search");
+    $('#show_gene_search').html("Hide Search");
     $('#gene_search_dialog').slideToggle('fast');
     $("#gene_search_input").focus();
 
