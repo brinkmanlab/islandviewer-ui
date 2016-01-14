@@ -6,11 +6,10 @@ def fetchgenes(aid, methods, format):
 
     params = [aid]
     genes = Genes.objects.raw("SELECT GenomicIsland.*, Genes.* FROM Genes, IslandGenes, GenomicIsland WHERE GenomicIsland.aid_id = %s AND GenomicIsland.gi = IslandGenes.gi AND Genes.id = IslandGenes.gene_id ORDER BY GenomicIsland.prediction_method, Genes.start", params)
-    
     resultstr = formatResults(genes, format, methods)
-    
     return resultstr
 
+#Needs additional work but good enough for testing on accension NC_009720
 def fetchPathGenbankFile(accession):
     replicon = Replicon.objects.using('microbedb').filter(rep_accnum__exact=accession)[0]
     key = replicon.gpv_id
