@@ -16,4 +16,4 @@ def fetchPathGenbankFile(accession):
     key = replicon.gpv_id
     project = Genomeproject.objects.using('microbedb').filter(gpv_id__exact=key).order_by('release_date')
     print project[0].gpv_directory+"/"+project[0].file_name
-    return project[0].gpv_directory+"/"+project[0].file_name
+    return project[0].gpv_directory+"/"+replicon[0]
