@@ -60,7 +60,7 @@ def results(request, aid):
         analysis = Analysis.objects.get(pk=aid)
         context['noanalysis'] = False
     except Analysis.DoesNotExist:
-        context['noanalysis'] = True;
+        context['noanalysis'] = True
 
     if context['noanalysis'] != True:
         context['aid'] = aid
@@ -166,19 +166,105 @@ def resultsbyname(request, name):
         if settings.DEBUG:
             print e
         return HttpResponse(status = 403)
-       
+
+# Returns the data as a JSON object for the circos plot
+def circularplotjson(request, aid):
+    if aid == None:
+        return HttpResponse(status=404)
+
+    jsondata = {}
+    jsondata['plotName'] = 'circular'
+    jsondata['plotName'] = request.GET.get('name','circular')
+    jsondata['varName'] = request.GET.get('varname','')
+    jsondata['container'] = request.GET.get('container','#circularchart')
+    if(request.GET.get('skipinit')):
+        jsondata['skip_initialize'] = True
+
+    # Fetch the analysis
+    try:
+        analysis = Analysis.objects.get(pk=aid)
+        jsondata['aid'] = aid
+    except Analysis.DoesNotExist:
+        pass
+
+    # Fetch the genome length
+    if(analysis.atype == Analysis.CUSTOM):
+        genome = CustomGenome.objects.get(pk=analysis.ext_id)
+        jsondata['genomesize'] = genome.rep_size
+        jsondata['genomename'] = genome.name
+        jsondata['ext_id'] = analysis.ext_id
+    elif(analysis.atype == Analysis.MICROBEDB):
+        (jsondata['genomename'], jsondata['genomesize']) = NameCache.objects.filter(cid=analysis.ext_id).values_list('name', 'rep_size')[0]
+        jsondata['ext_id'] = analysis.ext_id
+
+    # Fill in the GIs
+
+    jsondata['gis'] = list(GenomicIsland.objects.filter(aid_id=aid).order_by('start').all().values())
+
+    json_objs = {'Contig_Gap': [],
+                 'Alignments': [],
+                 'Islandpick': [],
+                 'Integrated': [],
+                 'Sigi': [],
+                 'Dimob': []
+                 }
+    gis = GenomicIsland.objects.filter(aid_id=aid).order_by('start').all()
+    for gi in gis:
+        rec = {'id': gi.gi, 'start': gi.start, 'end': gi.end, 'name': gi.gi}
+        if gi.prediction_method == 'Contig_Gap':
+            rec['name'] = 'Contig boundary'
+            json_objs['Contig_Gap'].append(rec)
+        elif gi.prediction_method == 'Alignments':
+            rec['name'] = ('Aligned Contigs' if gi.details == 'aligned' else 'Unaligned Contigs')
+            rec['extraclass'] = gi.details if gi.details else ''
+            json_objs['Alignments'].append(rec)
+        elif gi.prediction_method == 'Islandpick':
+            json_objs['Islandpick'].append(rec)
+            json_objs['Integrated'].append(rec)
+        elif gi.prediction_method == 'Sigi':
+            json_objs['Sigi'].append(rec)
+            json_objs['Integrated'].append(rec)
+        elif gi.prediction_method == 'Dimob':
+            json_objs['Dimob'].append(rec)
+            json_objs['Integrated'].append(rec)
+
+    if json_objs['Contig_Gap'] or json_objs['Alignments']:
+        jsondata['contig_controls'] = True
+
+    jsondata['Contig_Gap'] = json_objs['Contig_Gap']
+    jsondata['Alignments'] = json_objs['Alignments']
+    jsondata['Integrated'] = json_objs['Integrated']
+    jsondata['Islandpick'] = json_objs['Islandpick']
+    jsondata['Sigi'] = json_objs['Sigi']
+    jsondata['Dimob'] = json_objs['Dimob']
+    json_objs = None
+
+    # Fetch the GC plot info
+    try:
+        jsondata['gc'] = list(GC.objects.filter(pk__exact=analysis.ext_id).values())
+    except GC.DoesNotExist:
+        pass
+
+    cursor = connection.cursor()
+
+    # Fetch the virulence factors
+    params = [analysis.ext_id]
+    cursor.execute("SELECT @row:=@row+1 AS No, Genes.id, Genes.name, Genes.start, virulence.source, virulence.external_id FROM Genes, virulence_mapped AS virulence, (SELECT @row := 0) r WHERE Genes.ext_id=%s AND Genes.id = virulence.gene_id", params)
+    jsondata['vir_factors'] = [{'id': vf[1], 'bp': vf[3], 'type': VIRULENCE_FACTOR_CATEGORIES[vf[4]], 'name': vf[4], 'ext_id': vf[5], 'gene': vf[2]} for vf in cursor.fetchall()]
+
+    params = [analysis.ext_id]
+
+    cursor.execute('SELECT Genes.id, Genes.start, Genes.end, Genes.strand, Genes.name, Genes.gene, Genes.locus FROM Genes WHERE Genes.ext_id = %s ORDER BY Genes.start', params)
+    jsondata['genes'] = [{'id': gene[0], 'start': gene[1], 'end': gene[2], 'strand': gene[3], 'accnum': gene[4], 'name': (gene[5] if gene[5] else gene[6] if gene[6] else 'Unknown') } for gene in cursor.fetchall()]
+
+    return HttpResponse(json.dumps(jsondata), content_type='application/json')
+
 @last_modified(Analysis.last_modified)
 def circularplotjs(request, aid):
     context = {}
-    context['plotName'] = 'circular'
-    if(request.GET.get('name')):
-        context['plotName'] = request.GET.get('name')
-    context['varName'] = ''
-    if(request.GET.get('varname')):
-        context['varName'] = request.GET.get('varname')
-    context['container'] = '#circularchart'
-    if(request.GET.get('container')):
-        context['container'] = request.GET.get('container')
+    context['plotName'] = request.GET.get('name','circular')
+    context['varName'] = request.GET.get('varname','')
+    context['container'] = request.GET.get('container','#circularchart')
     if(request.GET.get('skipinit')):
         context['skip_initialize'] = True
 
@@ -196,12 +282,8 @@ def circularplotjs(request, aid):
         context['genomename'] = genome.name
         context['ext_id'] = analysis.ext_id
     elif(analysis.atype == Analysis.MICROBEDB):
-#        (context['genomesize'], gpv_id) = Replicon.objects.using('microbedb').filter(rep_accnum=analysis.ext_id).values_list("rep_size", "gpv_id")[0]
-#        context['genomename'] = Genomeproject.objects.using('microbedb').get(pk=gpv_id).org_name
         (context['genomename'], context['genomesize']) = NameCache.objects.filter(cid=analysis.ext_id).values_list('name', 'rep_size')[0]
-#        context['genomename'] = NameCache.objects.get(cid=analysis.ext_id).name
         context['ext_id'] = analysis.ext_id
-#        context['genomesize'] = '6000000'
 
     # Fill in the GIs
     context['gis'] = GenomicIsland.objects.filter(aid_id=aid).order_by('start').all()
@@ -255,40 +337,12 @@ def circularplotjs(request, aid):
     # Fetch the virulence factors
     params = [analysis.ext_id]
     cursor.execute("SELECT @row:=@row+1 AS No, Genes.id, Genes.name, Genes.start, virulence.source, virulence.external_id FROM Genes, virulence_mapped AS virulence, (SELECT @row := 0) r WHERE Genes.ext_id=%s AND Genes.id = virulence.gene_id", params)
-#    pprint.pprint(cursor.fetchall())
-#    vir_factors = Genes.objects.raw("SELECT Genes.id, Genes.name, Genes.start, virulence.source, virulence.external_id FROM Genes, virulence WHERE ext_id=%s AND Genes.name = virulence.protein_accnum", params)
     context['vir_factors'] = json.dumps([{'id': vf[1], 'bp': vf[3], 'type': VIRULENCE_FACTOR_CATEGORIES[vf[4]], 'name': vf[4], 'ext_id': vf[5], 'gene': vf[2]} for vf in cursor.fetchall()])
-#    vf_obj = []
-#    vf_count = 0
-#    for vf in vir_factors:
-#        vf_obj.append({'id': vf_count, 'bp': vf.start, 'type': VIRULENCE_FACTOR_CATEGORIES[vf.source], 'name': vf.source, 'ext_id': vf.external_id, 'gene': vf.name})
-#        vf_count += 1
-#    context['vir_factors'] = json.dumps(vf_obj)
-#    vf_obj = None
 
     params = [analysis.ext_id]
-#    island_genes = Genes.objects.filter(ext_id=analysis.ext_id).order_by('start').all() 
     
     cursor.execute('SELECT Genes.id, Genes.start, Genes.end, Genes.strand, Genes.name, Genes.gene, Genes.locus FROM Genes WHERE Genes.ext_id = %s ORDER BY Genes.start', params)
-    #genes_obj = [] 
-#    genes_obj = [{'id': gene[0], 'start': gene[1], 'end': gene[2], 'strand': gene[3], 'accnum': gene[4], 'name': (gene[5] if gene[5] else gene[6] if gene[6] else 'Unknown') } for gene in cursor.fetchall()]
     context['genes'] = json.dumps([{'id': gene[0], 'start': gene[1], 'end': gene[2], 'strand': gene[3], 'accnum': gene[4], 'name': (gene[5] if gene[5] else gene[6] if gene[6] else 'Unknown') } for gene in cursor.fetchall()])
-#    for gene in island_genes:
-#        genes_obj.append({'id': gene.id, 'start': gene.start, 'end': gene.end, 'strand': gene.strand, 'accnum': gene.name, 'name': (gene.gene if gene.gene else gene.locus if gene.locus else 'Unknown')})
-    #context['genes'] = json.dumps(genes_obj)
-    #genes_obj = None
-#    context['genes'] = island_genes
- #   vir_dict = dict(Virulence.objects.using('microbedb').filter(protein_accnum__in=
- #                                                                  list(island_genes.values_list('name', flat=True))).values_list('protein_accnum', 'source'))
-    
-#    context['vir_factors'] = []
-#    for gene in island_genes:
-#        if vir_dict.has_key(gene.name):
-#            context['vir_factors'].append((gene.start,vir_dict[gene.name],gene.name,))
-
-#    pprint.pprint(context['vir_factors']) 
-    
-#    return render(request, "iv4/circularplot.js", context)
 
     return render(request, "circularplot.js", context, content_type='text/javascript')
     
