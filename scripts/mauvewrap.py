@@ -1,6 +1,8 @@
 import subprocess
+import time
 import shutil
 import os
+import xml.etree.ElementTree as ET
 
 #This can file can be moved to lib after testing
 #These paths can be moved to the settings file after testing
@@ -23,12 +25,32 @@ def runMauve(gbk1,gbk2,outputfile=None,outputbackbonefile=None, async=False):
     shutil.copyfile(gbk1,gbk1temppath)
     shutil.copyfile(gbk2,gbk2temppath)
 
-    sp = subprocess.Popen(["/bin/bash",MAUVE_SCRIPT_BASH_PATH,outputfile,
-                      outputbackbonefile,gbk1temppath,gbk2temppath], cwd=MAUVE_PATH)
+    pbsFile = open(outputfile+".pbs","w+")
+    pbsFile.write("#!/bin/bash")
+    pbsFile.write("#PBS -S /bin/bash")
+    pbsFile.write("/progressiveMauve --output="+outputfile+".xmfa --backbone-output="
+                  +outputbackbonefile+".backbone "+gbk1temppath+" "+gbk2temppath)
+    pbsFile.close()
+    sp = subprocess.Popen(["qsub", outputfile+".pbs"], cwd=MAUVE_PATH)
 
-    #waits for subprocess to finish if async = False
+    # waits for job when using torque if async = False
     if not async:
-        sp.wait()
+        completeFlag = False
+        while not completeFlag:
+            qstatOutput = subprocess.Popen(["qstat", "-x"],stdout=subprocess.PIPE, cwd=MAUVE_PATH)
+            output = qstatOutput.communicate()[0]
+            tree = ET.fromstring(output)
+            for index in range(0,len(tree)):
+                if outputfile+".psb" == tree[index][1].text:
+                    status = tree[index][4].text
+                    if status == 'C':
+                        completeFlag = True
+                    else:
+                        if status != 'R':
+                            completeFlag = True
+                            print "Error has occured to submitted job (cluster)"
+            if not completeFlag:
+                time.sleep(6000)
 
 #Given the paths of 2 genebank files, returns path of backbone file if it exists or None if it doesnt
 def retrieveBackboneFile(gbk1,gbk2):
