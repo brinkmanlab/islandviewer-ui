@@ -6,9 +6,8 @@ import xml.etree.ElementTree as ET
 
 #This can file can be moved to lib after testing
 #These paths can be moved to the settings file after testing
-MAUVE_PATH = "/data/Modules/iv-backend/islandviewer_dev/utils/mauve_2.4.0/linux-x64"
+MAUVE_PATH = "/data/Modules/iv-backend/islandviewer_dev/utils/mauve_2.4.0/linux-x64/progressiveMauve"
 MAUVE_OUTPUT_PATH = "/data/Modules/iv-backend/islandviewer/pairwise_mauve"
-MAUVE_SCRIPT_BASH_PATH = "/data/Modules/islandviewer4/islandviewer-ui/scripts/mauve-wrapper.sh"
 
 #Parameters = path to 2 genebank files
 #Returns None
@@ -25,13 +24,14 @@ def runMauve(gbk1,gbk2,outputfile=None,outputbackbonefile=None, async=False):
     shutil.copyfile(gbk1,gbk1temppath)
     shutil.copyfile(gbk2,gbk2temppath)
 
-    pbsFile = open(outputfile+".pbs","w+")
+    jobFile = outputfile+".pbs"
+    pbsFile = open(jobFile,"w+")
     pbsFile.write("#!/bin/bash")
     pbsFile.write("#PBS -S /bin/bash")
-    pbsFile.write("/progressiveMauve --output="+outputfile+".xmfa --backbone-output="
+    pbsFile.write(MAUVE_PATH+" --output="+outputfile+".xmfa --backbone-output="
                   +outputbackbonefile+".backbone "+gbk1temppath+" "+gbk2temppath)
     pbsFile.close()
-    sp = subprocess.Popen(["qsub", outputfile+".pbs"], cwd=MAUVE_PATH)
+    sp = subprocess.Popen(["qsub", jobFile], cwd=MAUVE_PATH)
 
     # waits for job when using torque if async = False
     if not async:
@@ -40,8 +40,10 @@ def runMauve(gbk1,gbk2,outputfile=None,outputbackbonefile=None, async=False):
             qstatOutput = subprocess.Popen(["qstat", "-x"],stdout=subprocess.PIPE, cwd=MAUVE_PATH)
             output = qstatOutput.communicate()[0]
             tree = ET.fromstring(output)
+            matchfile = os.path.basename(jobFile)
             for index in range(0,len(tree)):
-                if outputfile+".psb" == tree[index][1].text:
+                currentFile = tree[index][1].text
+                if currentFile == matchfile:
                     status = tree[index][4].text
                     if status == 'C':
                         completeFlag = True
@@ -50,7 +52,7 @@ def runMauve(gbk1,gbk2,outputfile=None,outputbackbonefile=None, async=False):
                             completeFlag = True
                             print "Error has occured to submitted job (cluster)"
             if not completeFlag:
-                time.sleep(6000)
+                time.sleep(60)
 
 #Given the paths of 2 genebank files, returns path of backbone file if it exists or None if it doesnt
 def retrieveBackboneFile(gbk1,gbk2):
