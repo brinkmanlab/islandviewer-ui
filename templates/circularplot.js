@@ -141,9 +141,10 @@ var {{ varName|default:"circular" }}_aid = "{{ aid }}";
 {% comment %}Skip the entire code section if we're just pulling in another plot's data{% endcomment %}
 {% if not skip_initialize %}
 
-window.container = new MultiVis("#linearchartcomparisons");
-window.islandviewerObj = new Islandviewer('{{ aid }}', '{{ext_id}}', {{ genomesize|default:"0" }}, "{{ genomename }}", {{ plotName|default:"circular" }}data);
-window.islandviewerObj.addComparison(window.container.updateSequenceVisualization);
+//Comment out comparison code
+//window.container = new MultiVis("#linearchartcomparisons");
+//window.islandviewerObj = new Islandviewer('{{ aid }}', '{{ext_id}}', {{ genomesize|default:"0" }}, "{{ genomename }}", {{ plotName|default:"circular" }}data);
+//window.islandviewerObj.addComparison(window.container.updateSequenceVisualization);
 
 update_legend();
 
@@ -602,7 +603,8 @@ function load_second(aidParam, reloadParams) {
     var secondLinearlayout = {id:1,genomesize: second_genomesize, container: "#secondchartlinear", width: linearcontainerwidth, height: 135, bottom_margin:0, plotid: 'circularchartlinear'};
 //    var secondLinearTrack = new genomeTrack(secondLinearlayout, seconddata);
 
-	secondislandviewerObj.addComparison(window.container.updateSequenceVisualization);
+	//Comment out comparison code
+	//secondislandviewerObj.addComparison(window.container.updateSequenceVisualization);
 
     window.secondLinearTrack = secondislandviewerObj.addLinearPlot(secondLinearlayout);
 
