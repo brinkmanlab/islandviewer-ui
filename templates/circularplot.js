@@ -584,9 +584,9 @@ function load_second(aidParam, reloadParams) {
 		cahce: false,});
 
     window.secondislandviewerObj = new Islandviewer(aid, second_extid, second_genomesize, second_genomename, seconddata);
-
-	container.backbone.parseAndRenderBackbone("getMauve/?firstgenomeextid="+islandviewerObj.ext_id+"&secondgenomeextid="+window.secondislandviewerObj.ext_id,container);
-	$("#linearchartcomparisons").toggle();
+	//Comment out more code for linear visualization
+	//container.backbone.parseAndRenderBackbone("getMauve/?firstgenomeextid="+islandviewerObj.ext_id+"&secondgenomeextid="+window.secondislandviewerObj.ext_id,container);
+	//$("#linearchartcomparisons").toggle();
 
     $('#second_genome_title').html(second_genomename);
     // We can update the legend here because it only depends on the dataset
