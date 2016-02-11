@@ -143,7 +143,7 @@ var {{ varName|default:"circular" }}_aid = "{{ aid }}";
 
 //Comment out comparison code
 //window.container = new MultiVis("#linearchartcomparisons");
-//window.islandviewerObj = new Islandviewer('{{ aid }}', '{{ext_id}}', {{ genomesize|default:"0" }}, "{{ genomename }}", {{ plotName|default:"circular" }}data);
+window.islandviewerObj = new Islandviewer('{{ aid }}', '{{ext_id}}', {{ genomesize|default:"0" }}, "{{ genomename }}", {{ plotName|default:"circular" }}data);
 //window.islandviewerObj.addComparison(window.container.updateSequenceVisualization);
 
 update_legend();
