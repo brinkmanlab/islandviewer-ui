@@ -321,12 +321,12 @@ def tablejson(request, aid):
     )gi
     LEFT JOIN IslandGenes AS ig ON ig.gi = gi.gi
     LEFT JOIN Genes AS g ON ig.gene_id = g.id
-    LEFT JOIN virulence AS v ON g.name = v.protein_accnum
+    LEFT JOIN virulence_mapped AS v ON g.name = v.protein_accnum
     GROUP BY gi.gi
     """
 
     context['gis'] = GenomicIsland.objects.raw(sql, params)
-#    context['gis'] = GenomicIsland.objects.raw("SELECT DISTINCT gi.gi, gi.aid_id, gi.start, gi.end, gi.prediction_method,  GROUP_CONCAT( DISTINCT v.type ) AS annotations FROM GenomicIsland AS gi JOIN IslandGenes AS ig ON ig.gi = gi.gi JOIN Genes AS g ON ig.gene_id = g.id LEFT JOIN virulence AS v ON g.name = v.protein_accnum WHERE gi.aid_id = %s AND (gi.prediction_method = 'Islandpick' or gi.prediction_method = 'Sigi' or gi.prediction_method = 'Dimob') GROUP BY gi.gi", params)
+#    context['gis'] = GenomicIsland.objects.raw("SELECT DISTINCT gi.gi, gi.aid_id, gi.start, gi.end, gi.prediction_method,  GROUP_CONCAT( DISTINCT v.type ) AS annotations FROM GenomicIsland AS gi JOIN IslandGenes AS ig ON ig.gi = gi.gi JOIN Genes AS g ON ig.gene_id = g.id LEFT JOIN virulence_mapped AS v ON g.name = v.protein_accnum WHERE gi.aid_id = %s AND (gi.prediction_method = 'Islandpick' or gi.prediction_method = 'Sigi' or gi.prediction_method = 'Dimob') GROUP BY gi.gi", params)
     
     context['gislength'] = sum(1 for result in context['gis'])
     
@@ -848,9 +848,9 @@ def genesbybpjson(request):
 
     return render(request, "genesbybp.json", context, content_type='application/json')
 
-#    query = "SELECT DISTINCT g.id, g.start, g.end, g.name, g.gene, g.product, g.locus, ig.gi AS gi, gi.prediction_method AS method, v.source AS virulence_source, v.external_id as virulence_id FROM Genes AS g LEFT JOIN IslandGenes AS ig ON g.id = ig.gene_id LEFT JOIN GenomicIsland AS gi ON ig.gi = gi.gi AND gi.aid_id = %s LEFT JOIN virulence AS v ON g.name = v.protein_accnum WHERE ext_id = %s AND g.start >=%s AND g.end <=%s"
+#    query = "SELECT DISTINCT g.id, g.start, g.end, g.name, g.gene, g.product, g.locus, ig.gi AS gi, gi.prediction_method AS method, v.source AS virulence_source, v.external_id as virulence_id FROM Genes AS g LEFT JOIN IslandGenes AS ig ON g.id = ig.gene_id LEFT JOIN GenomicIsland AS gi ON ig.gi = gi.gi AND gi.aid_id = %s LEFT JOIN virulence_mapped AS v ON g.name = v.protein_accnum WHERE ext_id = %s AND g.start >=%s AND g.end <=%s"
 #    context['genes'] = GenomicIsland.sqltodict(query, params)
-#    genes = Genes.objects.raw("SELECT DISTINCT g.id, g.start, g.end, g.name, g.gene, g.product, g.locus, ig.gi AS gi, gi.prediction_method AS method, v.source AS virulence_source, v.external_id as virulence_id FROM Genes AS g LEFT JOIN IslandGenes AS ig ON g.id = ig.gene_id LEFT JOIN GenomicIsland AS gi ON ig.gi = gi.gi AND gi.aid_id = %s LEFT JOIN virulence AS v ON g.name = v.protein_accnum WHERE ext_id = %s AND g.start >=%s AND g.end <=%s GROUP BY g.id", params)
+#    genes = Genes.objects.raw("SELECT DISTINCT g.id, g.start, g.end, g.name, g.gene, g.product, g.locus, ig.gi AS gi, gi.prediction_method AS method, v.source AS virulence_source, v.external_id as virulence_id FROM Genes AS g LEFT JOIN IslandGenes AS ig ON g.id = ig.gene_id LEFT JOIN GenomicIsland AS gi ON ig.gi = gi.gi AND gi.aid_id = %s LEFT JOIN virulence_mapped AS v ON g.name = v.protein_accnum WHERE ext_id = %s AND g.start >=%s AND g.end <=%s GROUP BY g.id", params)
 
 #    genes = dict(genes)
 #    pprint.pprint(genes)
@@ -1109,7 +1109,7 @@ def downloadCoordinates(request):
 
     params = [aid]   
 #    islandset = Genes.objects.raw("SELECT G.id, GI.start AS island_start, GI.end AS island_end, GI.prediction_method, G.ext_id, G.start AS gene_start, G.end AS gene_end, G.strand, G.name, G.gene, G.product, G.locus FROM Genes AS G, IslandGenes AS IG, GenomicIsland AS GI WHERE GI.aid_id = %s AND GI.gi = IG.gi AND G.id = IG.gene_id ORDER BY GI.start, GI.prediction_method", params)
-    islandset = Genes.objects.raw("SELECT G.id, GI.gi AS gi, GI.start AS island_start, GI.end AS island_end, GI.prediction_method, G.ext_id, G.start AS gene_start, G.end AS gene_end, G.strand, G.name, G.gene, G.product, G.locus, GROUP_CONCAT( DISTINCT V.source ) AS virulence FROM Genes AS G JOIN IslandGenes AS IG ON G.id = IG.gene_id JOIN GenomicIsland AS GI ON GI.gi = IG.gi LEFT JOIN virulence AS V ON G.name = V.protein_accnum WHERE GI.aid_id = %s GROUP BY IG.id ORDER BY GI.start, GI.prediction_method", params)
+    islandset = Genes.objects.raw("SELECT G.id, GI.gi AS gi, GI.start AS island_start, GI.end AS island_end, GI.prediction_method, G.ext_id, G.start AS gene_start, G.end AS gene_end, G.strand, G.name, G.gene, G.product, G.locus, GROUP_CONCAT( DISTINCT V.source ) AS virulence FROM Genes AS G JOIN IslandGenes AS IG ON G.id = IG.gene_id JOIN GenomicIsland AS GI ON GI.gi = IG.gi LEFT JOIN virulence_mapped AS V ON G.name = V.protein_accnum WHERE GI.aid_id = %s GROUP BY IG.id ORDER BY GI.start, GI.prediction_method", params)
     if settings.DEBUG:
         pprint.pprint(islandset)
     
@@ -1144,7 +1144,7 @@ def downloadAnnotations(request):
         return HttpResponse(status=400)
 
     params = [analysis.ext_id]
-    annotations = Genes.objects.raw("SELECT G.id, G.name, G.start, G.end, V.external_id, V.source FROM Genes AS G JOIN virulence AS V ON G.name = V.protein_accnum WHERE G.ext_id = %s ORDER BY V.source", params)
+    annotations = Genes.objects.raw("SELECT G.id, G.name, G.start, G.end, V.external_id, V.source FROM Genes AS G JOIN virulence_mapped AS V ON G.name = V.protein_accnum WHERE G.ext_id = %s ORDER BY V.source", params)
 
     response = annotationformats[format](annotations, filename + '_annotations' + '.' + extension)
 
@@ -1191,7 +1191,7 @@ def downloadSequences(request):
         #islandset = Genes.objects.raw("SELECT IG.id, GI.start AS island_start, GI.end AS island_end, GI.prediction_method FROM IslandGenes AS IG, GenomicIsland AS GI WHERE GI.aid_id = %s AND GI.gi = IG.gi ORDER BY GI.start, GI.prediction_method", params)
     else:
         #islandset = Genes.objects.raw("SELECT G.id, GI.start AS island_start, GI.end AS island_end, GI.prediction_method, G.ext_id, G.start AS gene_start, G.end AS gene_end, G.strand, G.name, G.gene, G.product, G.locus FROM Genes AS G, IslandGenes AS IG, GenomicIsland AS GI WHERE GI.aid_id = %s AND GI.gi = IG.gi AND G.id = IG.gene_id ORDER BY GI.start, GI.prediction_method", params)
-        islandset = Genes.objects.raw("SELECT G.id, GI.gi AS gi, GI.start AS island_start, GI.end AS island_end, GI.prediction_method, G.ext_id, G.start AS gene_start, G.end AS gene_end, G.strand, G.name, G.gene, G.product, G.locus, GROUP_CONCAT( DISTINCT V.source ) AS virulence FROM Genes AS G JOIN IslandGenes AS IG ON G.id = IG.gene_id JOIN GenomicIsland AS GI ON GI.gi = IG.gi LEFT JOIN virulence AS V ON G.name = V.protein_accnum WHERE GI.aid_id = %s GROUP BY IG.id ORDER BY GI.start, GI.prediction_method", params)
+        islandset = Genes.objects.raw("SELECT G.id, GI.gi AS gi, GI.start AS island_start, GI.end AS island_end, GI.prediction_method, G.ext_id, G.start AS gene_start, G.end AS gene_end, G.strand, G.name, G.gene, G.product, G.locus, GROUP_CONCAT( DISTINCT V.source ) AS virulence FROM Genes AS G JOIN IslandGenes AS IG ON G.id = IG.gene_id JOIN GenomicIsland AS GI ON GI.gi = IG.gi LEFT JOIN virulence_mapped AS V ON G.name = V.protein_accnum WHERE GI.aid_id = %s GROUP BY IG.id ORDER BY GI.start, GI.prediction_method", params)
         
     response = downloadformats[format](islandset, p, methods, filename + "." + extension)
 

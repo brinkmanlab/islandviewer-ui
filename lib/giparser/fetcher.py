@@ -40,7 +40,7 @@ class GenbankParser():
         self.gis = GenomicIsland.objects.filter(aid_id=aid).order_by('start')
 
         params = [self.analysis.ext_id]
-        self.annotations = Genes.objects.raw("SELECT G.id, G.name, G.start, G.end, V.external_id, V.source FROM Genes AS G JOIN virulence AS V ON G.name = V.protein_accnum WHERE G.ext_id = %s", params)
+        self.annotations = Genes.objects.raw("SELECT G.id, G.name, G.start, G.end, V.external_id, V.source FROM Genes AS G JOIN virulence_mapped AS V ON G.name = V.protein_accnum WHERE G.ext_id = %s", params)
                 
         gbhandle = SeqIO.parse(self.fname, "genbank")
         records = next(gbhandle)
