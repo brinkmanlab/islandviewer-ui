@@ -18,9 +18,11 @@
 <div style=" width: 500px;">
     <span class="pageName">IslandViewer</span><br />
     &nbsp;<br />
-    <p class="bodyText">IslandViewer is a computational tool that integrates three different genomic island prediction methods: IslandPick, IslandPath-DIMOB, and SIGI-HMM (<a href="{% url 'about' %}">more Information</a>). See our <a href="{% url 'faq' %}">FAQs</a></p>
-    <p>Submit your custom genome for genomic island prediction <a href="/islandviewer/upload">here</a>. </p>
-    <p>Or browse the precomputed genomic island predictions for publicly available genomes:</p>
+    <div class="bodyText">
+        <p>IslandViewer is a computational tool that integrates three different genomic island prediction methods: IslandPick, IslandPath-DIMOB, and SIGI-HMM (<a href="{% url 'about' %}">more information</a>). See our <a href="{% url 'faq' %}">FAQs</a></p>
+        <p>Submit <a href="{% url "uploadform" %}">here</a> your custom genome to predict genomic islands. </p>
+        <p>Or browse the precomputed genomic island predictions for publicly available genomes:</p>
+    </div>
     <select id="genomelist" class="chosen-select extraclass" style="width:550px;" data-placeholder="Select or start typing a species name, strain name or genome accession...">
         <option></option>
         {% for genome in analysis %}
@@ -44,7 +46,7 @@
 
             <p>2015/04/20 - Islandviewer 3 is now out of beta, however if you still need to access older analysis using IslandViewer 2 we will keep it <a href="http://www.pathogenomics.sfu.ca/islandviewer2/query.php">available here</a> for the next few months.</p>
 
-            <p>2015/03/03 - IslandViewer 3 has officially been released and is available here. IslandViewer 3 includes a new interactive genome visualization tool, IslandPlot, and expanded virulence factor, antimicrobial resistance gene, and pathogen-associated gene annotations, as well as homologs of these genes in closely related genomes. Notably, incomplete genomes are accepted as input in IslandViewer 3, though we strongly urge users to use complete genomes whenever possible. The old IslandViewer website will still be available for users to download results for any previously analyized custom genomes, but will eventually be replaced by IslandViewer 3. If you have any questions, comments, or issues with IslandViewer 3, please <a href="{% url 'contactus' %}">contact us.</a> </p>
+            <p>2015/03/03 - IslandViewer 3 has officially been released and is available here. IslandViewer 3 includes a new interactive genome visualization tool, IslandPlot, and expanded virulence factor, antimicrobial resistance gene, and pathogen-associated gene annotations, as well as homologs of these genes in closely related genomes. Notably, incomplete genomes are accepted as input in IslandViewer 3, though we strongly urge users to use complete genomes whenever possible. The old IslandViewer website will still be available for users to download results for any previously analyzed custom genomes, but will eventually be replaced by IslandViewer 3. If you have any questions, comments, or issues with IslandViewer 3, please <a href="{% url 'contactus' %}">contact us.</a> </p>
 
             <p>2015/01/01 - Interactive IslandPlot visualizations are now available for circular and linear genomes views. In addition to this, more curated virulence and resistance gene annotations have been incorporated, as well as homologs of these genes as determined using the Resistance Gene Identifier (RGI) and a custom approach for virulence factors. An updated pathogen-associated genes analysis has also been complete for all available genomes.</p>
 
