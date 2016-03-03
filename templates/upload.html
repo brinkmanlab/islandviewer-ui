@@ -2,7 +2,6 @@
 {% load static %} 
 
 {% block headextras %}
-
 <link href="{% static 'js/chosen/chosen.min.css' %}" rel="stylesheet">
 <script src="{% static 'js/chosen/chosen.jquery.min.js' %}"></script>
 {% endblock headextras %}
@@ -42,8 +41,8 @@ function postSubmit() {
 <span class="bodyText">
 <p>Genomic island predictions can be calculated for your genome using IslandPick, IslandPath-DIMOB, and SIGI-HMM. <a href="{% url 'about' %}">More Information</a>. <a href="{% url 'faq' %}">See our FAQs</a></p>
 <p class="bodyText">Examples of genome files you should submit:
-			<a href="http://www.pseudomonas.com/downloads/pseudomonas/genbank/NC_002516.gbk">GENBANK</a>, 
-			<a href="http://www.pseudomonas.com/downloads/pseudomonas/embl/NC_002516.embl">EMBL</a>.
+			<a href="http://www.pseudomonas.com/downloads/pseudomonas/pgd_r_15_3/Pseudomonas_aeruginosa_PAO1_107/Pseudomonas_aeruginosa_PAO1_107.gbk" target="_blank">GENBANK</a>,
+			<a href="http://www.pseudomonas.com/downloads/pseudomonas/pgd_r_15_3/Pseudomonas_aeruginosa_PAO1_107/Pseudomonas_aeruginosa_PAO1_107.embl" target="_blank">EMBL</a>.
 </p>
 
 <div id="error_message" class="errortext" style="display: none;"></div>
@@ -334,7 +333,7 @@ $(document).ready( function() {
 		
 		<p id="noteIncomplete"><b>Note for incomplete genomes</b></p>
 		<div id="noteIncomplete1">
-		<p>Incomplete genomes are now accepted as input due to popular demand. However, whole genome analysis is still preferred to reduce false predictions and missing GIs. Please use at your own risk. We suggest to minimize the number of contigs before performing GI analysis and carefully evaluate all results from such custom jobs. Contigs will be ordered against a user-selected reference genome using the Mauve contig orderer (<a href="http://bioinformatics.oxfordjournals.org/content/25/16/2071.full">Rissman et al., 2009</a>). Please note that annotation of the contigs is still required.</p>
+		<p>Incomplete genomes are now accepted as input due to popular demand. However, whole genome analysis is still preferred to reduce false predictions and missing GIs. Please use at your own risk. We suggest to minimize the number of contigs before performing GI analysis and carefully evaluate all results from such custom jobs. Contigs will be ordered against a user-selected reference genome using the Mauve contig orderer (<a href="http://bioinformatics.oxfordjournals.org/content/25/16/2071.full" target="_blank">Rissman et al., 2009</a>). Please note that annotation of the contigs is still required.</p>
 		</div>
 		&nbsp;<br />
 		

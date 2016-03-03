@@ -1,60 +1,62 @@
 {% load virulencefactors %}
 <span class="bodyText">
-<p>Predicted genomic islands and virulence/resistance gene annotations (when available) are coloured within the images based on the legend.  Individual items for display can be selected below.</p>
-{% if ref_genome %}Use caution when interpreting GI predictions for incomplete genomes. Gaps are indicated as grey bars in the circular plot, and any unaligned contigs are displayed at the end of the genome plot (indicated in grey on the circular alignment plot) and should be evaluated accordingly.{% endif %}
-<div id"tourbox" class="outline">
-<span class="largetext"><center><a href="javascript:feature_tour();">Take a tour</a></center></span>
-</div>
-&nbsp;<br />
-<div id="legend" class="outline">
-<span class="subHeader">Legend</span><strong> </strong><span id="legend_help" class="subHeader">(<a href="{% url 'about' %}">Help</a>)</span><br />
-&nbsp;<br />
-<span class="sectionHeader">Prediction Methods</span><br />
-  <span class="red"><input id="showcircularIntegrated" class="methodcheckbox islandmethod showcircularIntegrated" type="checkbox" name="showIntegrated" onchange="updateStrand(this, 'integrated'); return false;" checked>Integrated</span><br />
-  <span class="green"><input id="showcircularIslandpick" class="methodcheckbox islandmethod showcircularIslandpick" type="checkbox" name="showIslandpick" onchange="updateStrand(this, 'islandpick'); return false;" checked>IslandPick</span><span id="nocircularIslandpick" class="nomethodtext nocircularIslandpick"> (No results found)</span><br />
-  <span class="orange"><input id="showcircularSigi" class="methodcheckbox islandmethod showcircularSigi" type="checkbox" name="showSigi" onchange="updateStrand(this, 'sigi'); return false;" checked>SIGI-HMM</span><span id="nocircularSigi" class="nomethodtext nocircularSigi"> (No results found)</span><br />
-  <span class="blue"><input id="showcircularDimob" class="methodcheckbox islandmethod showcircularDimob" type="checkbox" name="showDimob" onchange="updateStrand(this, 'dimob'); return false;" checked>IslandPath-DIMOB</span><span id="nocircularDimob" class="nomethodtext nocircularDimob"> (No results found)</span><br />
-&nbsp;<br />
-<span id="contigcontrols" style="display:none;"><span class="sectionHeader">Contigs & Alignment</span><br />
-  <span class="contig_label"><input id="showcircularContig" class="showcircularContig" type="checkbox" name="showContig" onchange="updateStrand(this, 'contig'); return false;" checked>Contig Boundary</span><br />
-  <span class="alignment_label"><input id="showcircularAlignment" class="showcircularAlignment" type="checkbox" name="showAlignment" onchange="updateStrand(this, 'alignment'); return false;" checked>Alignment</span><br />
-&nbsp;<br /></span>
-<span class="sectionHeader">VF/AMR Annotations</span></br />
-  <span class="{{ plotName|default:"circular" }}Virulence_VFDB"><input type="checkbox" class="methodcheckbox virulencemethod showVFDB showVictors showPATRIC_VF" id="showVFDB" name="showVFDB" onchange="updateVirulence(this, 'VFDB'); return false;" checked>Curated virulence factors</span><span id="noVFDB" class="nomethodtext noVFDB noVictors noPATRIC_VF"> (No results found)</span><br />
-  <span class="{{ plotName|default:"circular" }}Virulence_BLAST"><input type="checkbox" class="methodcheckbox virulencemethod showBLAST" id="showBLAST" name="showBLAST" onchange="updateVirulence(this, 'BLAST'); return false;" checked>Homologs of virulence factors</span><span id="noBLAST" class="nomethodtext noBLAST"> (No results found)</span><br />
-  <span class="{{ plotName|default:"circular" }}Virulence_ARDB"><input type="checkbox" class="methodcheckbox virulencemethod showARDB showCARD" id="showARDB" name="showARDB" onchange="updateVirulence(this, 'ARDB'); return false;" checked>Curated resistance genes</span><span id="noARDB" class="nomethodtext noCARD noARDB"> (No results found)</span><br />
-  <span class="{{ plotName|default:"circular" }}Virulence_RGI"><input type="checkbox" class="methodcheckbox virulencemethod showRGI" id="showRGI" name="showRGI" onchange="updateVirulence(this, 'RGI'); return false;" checked>Homologs of resistance genes</span><span id="noRGI" class="nomethodtext noRGI"> (No results found)</span><br />
-  <span class="{{ plotName|default:"circular" }}Virulence_PAG"><input type="checkbox" class="methodcheckbox virulencemethod showPAG" id="showPAG" name="showPAG" onchange="updateVirulence(this, 'PAG'); return false;" checked>Pathogen-associated genes</span><span id="noPAG" class="nomethodtext noPAG"> (No results found)</span><br />
-</div>
-<p>&nbsp;</p>
-<div id="toolbox" class="outline">
-<span class="subHeader">Toolbox</span>
-    <div class="toolbox_item">
-        <div id="gene_search_dialog">Search for gene:<br />
-            <input id="gene_search_input" placeholder="Type a gene name, refseq accession, locus tag or product name...">
+    <p>Predicted genomic islands and virulence/resistance gene annotations (when available) are coloured within the images based on the legend.  Individual items for display can be selected below.</p>
+    {% if ref_genome %}Use caution when interpreting GI predictions for incomplete genomes. Gaps are indicated as grey bars in the circular plot, and any unaligned contigs are displayed at the end of the genome plot (indicated in grey on the circular alignment plot) and should be evaluated accordingly.{% endif %}
+    <div id="tourbox" class="outline">
+        <span class="largetext"><center><a href="javascript:feature_tour();">Take a tour</a></center></span>
+    </div>
+    &nbsp;<br />
+    <div id="legend" class="outline">
+        <span class="subHeader">Legend</span><strong> </strong><span id="legend_help" class="subHeader">(<a href="{% url 'about' %}">Help</a>)</span><br />
+        &nbsp;<br />
+        <span class="sectionHeader">Prediction Methods</span><br />
+        <span class="red"><input id="showcircularIntegrated" class="methodcheckbox islandmethod showcircularIntegrated" type="checkbox" name="showIntegrated" onchange="updateStrand(this, 'integrated'); return false;" checked>Integrated</span><br />
+        <span class="green"><input id="showcircularIslandpick" class="methodcheckbox islandmethod showcircularIslandpick" type="checkbox" name="showIslandpick" onchange="updateStrand(this, 'islandpick'); return false;" checked>IslandPick</span><span id="nocircularIslandpick" class="nomethodtext nocircularIslandpick"> (No results found - unavailable for draft genomes)</span><br />
+        <span class="orange"><input id="showcircularSigi" class="methodcheckbox islandmethod showcircularSigi" type="checkbox" name="showSigi" onchange="updateStrand(this, 'sigi'); return false;" checked>SIGI-HMM</span><span id="nocircularSigi" class="nomethodtext nocircularSigi"> (No results found)</span><br />
+        <span class="blue"><input id="showcircularDimob" class="methodcheckbox islandmethod showcircularDimob" type="checkbox" name="showDimob" onchange="updateStrand(this, 'dimob'); return false;" checked>IslandPath-DIMOB</span><span id="nocircularDimob" class="nomethodtext nocircularDimob"> (No results found)</span><br />
+        &nbsp;<br />
+        <span id="contigcontrols" style="display:none;"><span class="sectionHeader">Contigs & Alignment</span><br />
+          <span class="contig_label"><input id="showcircularContig" class="showcircularContig" type="checkbox" name="showContig" onchange="updateStrand(this, 'contig'); return false;" checked>Contig Boundary</span><br />
+          <span class="alignment_label"><input id="showcircularAlignment" class="showcircularAlignment" type="checkbox" name="showAlignment" onchange="updateStrand(this, 'alignment'); return false;" checked>Alignment</span><br />
+            &nbsp;<br />
+        </span>
+        <span class="sectionHeader">VF/AMR Annotations</span></br />
+        <span class="{{ plotName|default:"circular" }}Virulence_VFDB"><input type="checkbox" class="methodcheckbox virulencemethod showVFDB showVictors showPATRIC_VF" id="showVFDB" name="showVFDB" onchange="updateVirulence(this, 'VFDB'); return false;" checked>Curated virulence factors</span><span id="noVFDB" class="nomethodtext noVFDB noVictors noPATRIC_VF"> (No results found)</span><br />
+        <span class="{{ plotName|default:"circular" }}Virulence_BLAST"><input type="checkbox" class="methodcheckbox virulencemethod showBLAST" id="showBLAST" name="showBLAST" onchange="updateVirulence(this, 'BLAST'); return false;" checked>Homologs of virulence factors</span><span id="noBLAST" class="nomethodtext noBLAST"> (No results found)</span><br />
+        <span class="{{ plotName|default:"circular" }}Virulence_ARDB"><input type="checkbox" class="methodcheckbox virulencemethod showARDB showCARD" id="showARDB" name="showARDB" onchange="updateVirulence(this, 'ARDB'); return false;" checked>Curated resistance genes</span><span id="noARDB" class="nomethodtext noCARD noARDB"> (No results found)</span><br />
+        <span class="{{ plotName|default:"circular" }}Virulence_RGI"><input type="checkbox" class="methodcheckbox virulencemethod showRGI" id="showRGI" name="showRGI" onchange="updateVirulence(this, 'RGI'); return false;" checked>Homologs of resistance genes</span><span id="noRGI" class="nomethodtext noRGI"> (No results found)</span><br />
+        <span class="{{ plotName|default:"circular" }}Virulence_PAG"><input type="checkbox" class="methodcheckbox virulencemethod showPAG" id="showPAG" name="showPAG" onchange="updateVirulence(this, 'PAG'); return false;" checked>Pathogen-associated genes</span><span id="noPAG" class="nomethodtext noPAG"> (No results found)</span><br />
+    </div>
+    <p>&nbsp;</p>
+    <div id="toolbox" class="outline">
+        <span class="subHeader">Toolbox</span>
+        <div class="toolbox_item">
+            <div id="gene_search_dialog">Search for gene:<br />
+                <input id="gene_search_input" placeholder="Type a gene name, refseq accession, locus tag or product name...">
+            </div>
         </div>
+        <div class="toolbox_item" style="z-index:100"><a href="javascript:show_genome_dialog();" id="show_second_link">Visualize two genomes</a>
+           <div id="genome_selector_dialog" style="display:none">Select a second genome to display:<br />
+               <div style="display: inline-block;width:100%">
+                   <select id="second_genome_select" class="extraclass" style="width:100%;" data-placeholder="Select a genome...">
+                       <option></option>
+                    </select><br />
+                <span><a href="javascript:load_second_helper();">Display genome</a></span>
+               </div><br />
+           </div>
+        </div>
+        <div class="toolbox_item"><a href="javascript:show_islandpick_genomes();" id="show_islandpick_genomes" >Show Islandpick Comparison Genomes</a></div>
+        <div class="toolbox_item"><a href="javascript:show_gene_search();" id="show_gene_search" >Search Genes</a></div>
+        <div class="toolbox_item"><a href="javascript:show_download();" id="show_download_link" >Download</a></div>
+        <div class="toolbox_item"><a href="javascript:serialize();" id="save_view" >Save view</a></div>
     </div>
-   <div class="toolbox_item" style="z-index:100"><a href="javascript:show_genome_dialog();" id="show_second_link">Visualize two genomes</a>
-    <div id="genome_selector_dialog" style="display:none">Select a second genome to display:<br />
-        <div style="display: inline-block;width:100%">
-            <select id="second_genome_select" class="extraclass" style="width:100%;" data-placeholder="Select a genome...">
-                <option></option>
-            </select><br />
-            <span ><a href="javascript:load_second_helper();">Display genome</a></span></div><br />
-    </div>
-   </div>
-<div class="toolbox_item"><a href="javascript:show_islandpick_genomes();" id="show_islandpick_genomes" >Show Islandpick Comparison Genomes</a></div>
-<div class="toolbox_item"><a href="javascript:show_gene_search();" id="show_gene_search" >Search Genes</a></div>
-<div class="toolbox_item"><a href="javascript:show_download();" id="show_download_link" >Download</a></div>
-<div class="toolbox_item"><a href="javascript:serialize();" id="save_view" >Save view</a></div>
-</div>
-<p>&nbsp;</p>
-<p><span class="subHeader">Additional Tools (<a href="{% url 'about' %}#analysis">Help</a>)  </span></p>
-  <!--<li><a href="reference_input.php?query_input=117174">IslandPick</a> can be run using manually selected comparison genomes instead of default genomes.</li>-->
-  <li><a href="http://www.sanger.ac.uk/Software/Artemis/">Artemis</a> (with  <a href="download_table.php?query_input=NC_002516.2&view=0&type=gbk">GenBank </a>file) can be used to conduct further analysis of GIs. Artemis can be easily run using the <a href="http://www.sanger.ac.uk/Software/Artemis/v11/u5.5/Artemis.jnlp">web start version</a>.</li>
-  <li><a href="http://asap.ahabs.wisc.edu/mauve/">Mauve  </a> (using <a href="download_table.php?query_input=NC_002516.2&view=0&type=gbk">GenBank </a>file) can be used to produce whole genome alignments and view conserved regions surronding GIs. </li>	
+    <p>&nbsp;</p>
+    <p><span class="subHeader">Additional Tools (<a href="{% url 'about' %}#analysis">Help</a>)  </span></p>
+      <!--<li><a href="reference_input.php?query_input=117174">IslandPick</a> can be run using manually selected comparison genomes instead of default genomes.</li>-->
+    <li><a href="http://www.sanger.ac.uk/Software/Artemis/" target="_blank">Artemis (using GenBank file) can be used to conduct further analysis of GIs. Artemis can be easily run using the <a href="http://www.sanger.ac.uk/Software/Artemis/v11/u5.5/Artemis.jnlp" target="_blank">web start version</a>.</li>
+    <li><a href="http://asap.ahabs.wisc.edu/mauve/" target="_blank">Mauve  </a> (using GenBank file) can be used to produce whole genome alignments and view conserved regions surronding GIs. </li>
 </span>
-	<p>&nbsp;</p>
-  {% include "citation.html" %}
+<p>&nbsp;</p>
+{% include "citation.html" %}
 <script>
 </script>

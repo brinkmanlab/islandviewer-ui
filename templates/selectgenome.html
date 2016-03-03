@@ -15,62 +15,64 @@
 {% endblock %}
 
 {% block content %}
-    <div style=" width: 500px;">
-        <span class="pageName">IslandViewer</span><br />
+<div style=" width: 500px;">
+    <span class="pageName">IslandViewer</span><br />
+    &nbsp;<br />
+    <p class="bodyText">IslandViewer is a computational tool that integrates three different genomic island prediction methods: IslandPick, IslandPath-DIMOB, and SIGI-HMM. <a href="{% url 'about' %}">More Information</a>. See our <a href="{% url 'faq' %}">FAQs</a></p>
+    <select id="genomelist" class="chosen-select extraclass" style="width:550px;" data-placeholder="Select or start typing a species name, strain name or genome accession...">
+        <option></option>
+        {% for genome in analysis %}
+            <option value="{{ genome.ext_id }}">{{ genome.name }} ({{ genome.ext_id }})</option>
+        {% endfor %}
+    </select><br />
+    &nbsp;<br />
+    <input id="gotoresults" type="button" value="Go to Genome" onclick="return goto_results()" />&nbsp;&nbsp; <a href="{% url "demo" %}">Example</a>, <a href="http://www.pathogenomics.sfu.ca/islandviewer/results/8952/?token=ayYTCUw1jK81T10A76t5PT">Example (incomplete genome)</a>
+    <span class="bodyText">
+        <br />
+        <br />
+        <br />
+        <span class="pageName">News</span><br/>
         &nbsp;<br />
-        <p class="bodyText">IslandViewer is a computational tool that integrates three different genomic island prediction methods: IslandPick, IslandPath-DIMOB, and SIGI-HMM. <a href="{% url 'about' %}">More Information</a>. See our <a href="{% url 'faq' %}">FAQs</a></p>
-        <select id="genomelist" class="chosen-select extraclass" style="width:550px;" data-placeholder="Select or start typing a species name, strain name or genome accession...">
-            <option></option>
-            {% for genome in analysis %}
-                <option value="{{ genome.ext_id }}">{{ genome.name }} ({{ genome.ext_id }})</option>
-            {% endfor %}
-        </select><br />
-        &nbsp;<br />
-        <input id="gotoresults" type="button" value="Go to Genome" onclick="return goto_results()" />&nbsp;&nbsp; <a href="{% url "demo" %}">Example</a>, <a href="http://www.pathogenomics.sfu.ca/islandviewer/results/8952/?token=ayYTCUw1jK81T10A76t5PT">Example (incomplete genome)</a>
-<span class="bodyText">
+        <div>
+            <p>2016/01/21 - Small changes have been made to IslandViewer for improved clarity and better acknowledgement of past work. If you haven't already, check out the latest <a href="http://nar.oxfordjournals.org/content/43/W1/W104.full" target="_blank">IslandViewer</a> paper published last summer. Much more on improved visualization and genomic island predictions to come soon. </p>
 
-<br />&nbsp;<br />
-&nbsp;<br />
-<span class="pageName">News</span><br/>
-&nbsp;<br />
-<p>2016/01/21 - Small changes have been made to IslandViewer for improved clarity and better acknowledgement of past work. If you haven't already, check out the latest <a href="http://nar.oxfordjournals.org/content/43/W1/W104.full" target="_blank">IslandViewer</a> paper published last summer. Much more on improved visualization and genomic island predictions to come soon. </p>
+            <p>2015/12/08 - Service was disrupted to IslandViewer and the SFU emergency power supply on Tuesday, December 8 while planned repairs took place. We apologize for the inconvenience. </p>
 
-<p>2015/12/08 - Service was disrupted to IslandViewer and the SFU emergency power supply on Tuesday, December 8 while planned repairs took place. We apologize for the inconvenience. </p>
+            <p>2015/04/20 - Islandviewer 3 is now out of beta, however if you still need to access older analysis using IslandViewer 2 we will keep it <a href="http://www.pathogenomics.sfu.ca/islandviewer2/query.php">available here</a> for the next few months.</p>
 
-<p>2015/04/20 - Islandviewer 3 is now out of beta, however if you still need to access older analysis using IslandViewer 2 we will keep it <a href="http://www.pathogenomics.sfu.ca/islandviewer2/query.php">available here</a> for the next few months.</p>
+            <p>2015/03/03 - IslandViewer 3 has officially been released and is available here. IslandViewer 3 includes a new interactive genome visualization tool, IslandPlot, and expanded virulence factor, antimicrobial resistance gene, and pathogen-associated gene annotations, as well as homologs of these genes in closely related genomes. Notably, incomplete genomes are accepted as input in IslandViewer 3, though we strongly urge users to use complete genomes whenever possible. The old IslandViewer website will still be available for users to download results for any previously analyized custom genomes, but will eventually be replaced by IslandViewer 3. If you have any questions, comments, or issues with IslandViewer 3, please <a href="{% url 'contactus' %}">contact us.</a> </p>
 
-<p>2015/03/03 - IslandViewer 3 has officially been released and is available here. IslandViewer 3 includes a new interactive genome visualization tool, IslandPlot, and expanded virulence factor, antimicrobial resistance gene, and pathogen-associated gene annotations, as well as homologs of these genes in closely related genomes. Notably, incomplete genomes are accepted as input in IslandViewer 3, though we strongly urge users to use complete genomes whenever possible. The old IslandViewer website will still be available for users to download results for any previously analyized custom genomes, but will eventually be replaced by IslandViewer 3. If you have any questions, comments, or issues with IslandViewer 3, please <a href="{% url 'contactus' %}">contact us.</a> </p>
+            <p>2015/01/01 - Interactive IslandPlot visualizations are now available for circular and linear genomes views. In addition to this, more curated virulence and resistance gene annotations have been incorporated, as well as homologs of these genes as determined using the Resistance Gene Identifier (RGI) and a custom approach for virulence factors. An updated pathogen-associated genes analysis has also been complete for all available genomes.</p>
 
-<p>2015/01/01 - Interactive IslandPlot visualizations are now available for circular and linear genomes views. In addition to this, more curated virulence and resistance gene annotations have been incorporated, as well as homologs of these genes as determined using the Resistance Gene Identifier (RGI) and a custom approach for virulence factors. An updated pathogen-associated genes analysis has also been complete for all available genomes.</p>
+            <p>2013/03/12 - Pathogen-associated gene annotations are now available on top of GI predictions, as determined in the study by <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0008094" target="_blank">Ho Sui et al., 2009</a>. Custom genome submissions are back online, but if you are experiencing any difficulties, please don't hesitate to contact us. Note that this pathogen-associated genes analysis is currently being updated for a future data release Some genomes will not have any results until this update is completed.</p>
 
-<p>2013/03/12 - Pathogen-associated gene annotations are now available on top of GI predictions, as determined in the study by <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0008094" target="_blank">Ho Sui et al., 2009</a>. Custom genome submissions are back online, but if you are experiencing any difficulties, please don't hesitate to contact us. Note that this pathogen-associated genes analysis is currently being updated for a future data release Some genomes will not have any results until this update is completed.</p>
+            <p>2013/03/10 - Genome submissions are currently unavailable as we are upgrading our submission pipeline. Any jobs submitted on March 10th, 2013 may need to be re-run once the pipeline has been upgraded. We anticipate the pipeline should be back up within one or two days. Please don't hestitate to contact us if you have any further questions. Thank you for your patience as we improve IslandViewer!</p>
 
-<p>2013/03/10 - Genome submissions are currently unavailable as we are upgrading our submission pipeline. Any jobs submitted on March 10th, 2013 may need to be re-run once the pipeline has been upgraded. We anticipate the pipeline should be back up within one or two days. Please don't hestitate to contact us if you have any further questions. Thank you for your patience as we improve IslandViewer!</p>
+            <p>2012/12/31 - New changes have been implemented in IslandViewer. This includes incorporation of virulence factor and antibiotic resistance gene classifications from the Virulence Factor Database (VFDB) (see <a href="http://nar.oxfordjournals.org/content/40/D1/D641.full" target="_blank">Chen et al., 2012</a>) and the Antibiotic Resistance Gene Database (ARDB) (see <a href="http://nar.oxfordjournals.org/content/37/suppl_1/D443.long" target="_blank">Liu et al., 2009</a>) respectively, on top of GI predictions as well as a new side-by-side visualization page to compare two genomes. Please note that genomic island predictions have not changed. </p>
 
-<p>2012/12/31 - New changes have been implemented in IslandViewer. This includes incorporation of virulence factor and antibiotic resistance gene classifications from the Virulence Factor Database (VFDB) (see <a href="http://nar.oxfordjournals.org/content/40/D1/D641.full" target="_blank">Chen et al., 2012</a>) and the Antibiotic Resistance Gene Database (ARDB) (see <a href="http://nar.oxfordjournals.org/content/37/suppl_1/D443.long" target="_blank">Liu et al., 2009</a>) respectively, on top of GI predictions as well as a new side-by-side visualization page to compare two genomes. Please note that genomic island predictions have not changed. </p>
-    
-&nbsp;<br />
-&nbsp;<br />
-&nbsp;<br />
-</span>
+            &nbsp;<br />
+            &nbsp;<br />
+            &nbsp;<br />
+        </div>
+    </span>
 
-        <script type="text/javascript">
-            $(window).ready(function() {
-                $(".chosen-select").chosen({disable_search_threshold: 10, no_results_text: "Oops, no genomes matching that name!", search_contains: true});
-            });
+    <script type="text/javascript">
+        $(window).ready(function() {
+            $(".chosen-select").chosen({disable_search_threshold: 10, no_results_text: "Oops, no genomes matching that name!", search_contains: true});
+        });
 
-            //$("#genomelist").select2();
+        //$("#genomelist").select2();
 
-            function goto_results()
-            {
-                if(!($("#genomelist").val())) {
-                    return;
-                }
-
-                var url = "{% url "resultsbyaccnum" 'NC11111.1' %}".replace('NC11111.1', $("#genomelist").val());
-                window.location = url;
-
+        function goto_results()
+        {
+            if(!($("#genomelist").val())) {
+                return;
             }
-        </script>
-    </div>
+
+            var url = "{% url "resultsbyaccnum" 'NC11111.1' %}".replace('NC11111.1', $("#genomelist").val());
+            window.location = url;
+
+        }
+    </script>
+</div>
 {% endblock content %}
