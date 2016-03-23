@@ -27,8 +27,7 @@ function scrolltoelem(elem) {
  <ul class="bodyText">
   <li><a href="http://www.uni-goettingen.de/en/research/185810.html" target="_blank">SIGI-HMM</a> - measures codon usage to identify possible GIs and is one of the methods integrated into <a href="./">IslandViewer</a>. (<a href="{% url 'about' %}#sigi">More Information</a>)</li>
   <li><a href="{% url 'download' %}#source">IslandPath-DIMOB</a> - measures dinucleotide bias to identify possible GIs and is one of the methods integrated into <a href="./">IslandViewer</a>. (<a href="{% url 'about' %}#dimob">More Information</a>)</li>
-  <li><a href="http://www.sanger.ac.uk/Software/analysis/alien_hunter/" target="_blank">Alien Hunter/IVOM </a>- uses variable order motifs to measure sequence bias and predict GIs. </li>
-<!--  <li><a href="http://compbio.sibsnet.org/projects/pai-ida/" target="_blank">PAI IDA</a> - uses a combination of  G+C content, dinucleotide frequency and codon usage to predict the location of GIs. </li>-->
+  <li><a href="http://www.sanger.ac.uk/science/tools/alien-hunter" target="_blank">Alien Hunter/IVOM </a>- uses variable order motifs to measure sequence bias and predict GIs. </li>
 </ul>
 
 <p class="subHeader">Databases <span class="bodyText"> - websites with only pre-computed genomic islands</span></p>
@@ -41,16 +40,21 @@ function scrolltoelem(elem) {
 <p class="subHeader">Other Useful Software <span class="bodyText">- tools that can help aid in the analysis of genomic islands </span></p>
 <ul class="bodyText">
    <li><a href="http://www.pathogenomics.sfu.ca/islandpath/" target="_blank">IslandPath</a> - provides an integrated view of several features that are often associated with GIs. Links to IslandPath genome pages are provide directly from IslandViewer result pages.</li>
-   <li><a href="http://www.sanger.ac.uk/Software/Artemis/" target="_blank">Artemis</a> - is a genome viewer and annotation tool that allows further analysis of genes within and surounding predicted GIs. GI predictions in <a href="./">IslandViewer</a> can be loaded directly into Artemis using the provided GenBank files. </li>
+   <li><a href="http://www.sanger.ac.uk/science/tools/artemis" target="_blank">Artemis</a> - is a genome viewer and annotation tool that allows further analysis of genes within and surounding predicted GIs. GI predictions in <a href="./">IslandViewer</a> can be loaded directly into Artemis using the provided GenBank files. </li>
    <li><a href="http://asap.ahabs.wisc.edu/mauve/" target="_blank">Mauve</a> - is a whole genome alignment tool that allows inspection of conserved regions across related species. Alignments can be created using the GenBank files provided with <a href="./">IslandViewer</a>. </li>
 </ul>
 		  
 <p class="subHeader">External Gene Annotation Datasets<span class="bodyText">- datasets used for additional annotation of genes </span></p>
 <ul class="bodyText">
-  <li><a href="http://www.mgc.ac.cn/VFs/" target="_blank">Virulence Factor Database (VFDB)</a> - provides annotations of genes as virulence factors in major pathogen genomes (<a href="http://nar.oxfordjournals.org/content/40/D1/D641.full" target="_blank">Chen et al., 2012</a>).</li>
-  <li><a href="http://www.patricbrc.org/" target="_blank">PATRIC</a> - database of integrated virulence and resistance gene annotations, as well as a multitude of other data (e.g. pathways, transcriptomics data) for major pathogen genomes (<a href="http://nar.oxfordjournals.org/content/42/D1/D581.long" target="_blank">Wattam et al., 2014</a>)</li>
-  <li><a href="http://arpcard.mcmaster.ca/" target="_blank">Comprehensive Antibiotic Resistance Database (CARD)</a> - a collection of manually curated antibiotic resistance genes as well as a predictive tool (Resistance Gene Identifier) (<a href="http://aac.asm.org/content/57/7/3348.long" target="_blank">McArthur et al., 2013</a>)</li>
-  <li><a href="http://www.pathogenomics.sfu.ca/pathogen-associated/" target="_blank">Pathogen-associated genes</a> - genes found to be only in the genomes of pathogenic species based on a set criteria (<a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0008094" target="_blank">Ho Sui et al., 2009).</li>
+    <li><a href="http://www.mgc.ac.cn/VFs/" target="_blank">Virulence Factor Database (VFDB)</a> - provides annotations of genes as virulence factors in major pathogen genomes (<a href="http://nar.oxfordjournals.org/content/40/D1/D641.full" target="_blank">Chen et al., 2012</a>).</li>
+    <li><a href="http://www.patricbrc.org/" target="_blank">PATRIC</a> - database of integrated virulence and resistance gene annotations, as well as a multitude of other data (e.g. pathways, transcriptomics data) for major pathogen genomes (<a href="http://nar.oxfordjournals.org/content/42/D1/D581.long" target="_blank">Wattam et al., 2014</a>).</li>
+    <li><a href="http://www.phidias.us/victors/" target="_blank">Victor's virulence factors</a> - a database of manually curated virulence factors </li>
+    <li><a href="http://arpcard.mcmaster.ca/" target="_blank">Comprehensive Antibiotic Resistance Database (CARD)</a> - a collection of manually curated antibiotic resistance genes as well as a predictive tool (Resistance Gene Identifier) (<a href="http://aac.asm.org/content/57/7/3348.long" target="_blank">McArthur et al., 2013</a>).</li>
+    <li><a href="http://www.pathogenomics.sfu.ca/pathogen-associated/" target="_blank">Pathogen-associated genes</a> - genes found to be only in the genomes of pathogenic species based on a set criteria (<a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0008094" target="_blank">Ho Sui et al., 2009</a>).</li>
+</ul>
+<p class="subHeader">Other resources <span class="bodyText">- previous tools for genomic island predictions </span></p>
+<ul class="bodyText">
+    <li><!--  <a href="http://compbio.sibsnet.org/projects/pai-ida/" target="_blank">PAI IDA</a>--> PAI IDA - uses a combination of  G+C content, dinucleotide frequency and codon usage to predict the location of GIs. </li>
 </ul>
 
 {% endblock content %}
