@@ -60,6 +60,12 @@
     			<li ><a href="{% url 'contactus' %}">Contact Us</a></li>
     			<li ><a href="{% url 'faq' %}">FAQ</a></li>
     			<li ><a href="{% url 'acknowledgements' %}">Acknowledgements</a></li>
+                {% if user and not user.is_anonymous %}
+                <li><a>Hello, {{ user.get_full_name }}!</a></li>
+                <li><a href="/logout">Logout</a></li>
+                {% else %}
+                <li><a href="{% url 'social:begin' 'orcid' %}?next={{ request.path }}">Login with Orcid</a></li>
+                {% endif %}
     		</ul>
     		{% if showtour %}
     		<ul class="nav navbar-nav navbar-right hidden-xs hidden-small">

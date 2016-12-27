@@ -51,7 +51,7 @@ def send_action(message, host=default_host, port=default_port):
         raise Exception("Failure to send message, no action")
          
 
-def send_job(genome_data, genome_format, genome_name, email, ip_addr, host=default_host, port=default_port):
+def send_job(genome_data, genome_format, genome_name, email, ip_addr, user_id = None, host=default_host, port=default_port, **kwargs):
     try:
         s = connect_to_server(host, port)
     except Exception as e:
@@ -65,6 +65,21 @@ def send_job(genome_data, genome_format, genome_name, email, ip_addr, host=defau
     json_obj = {'action': 'submit', 'genome_name': genome_name,
             'email': email, 'genome_data': encoded_genome,
             'genome_format': genome_format, 'ip_addr': ip_addr }
+
+    if user_id:
+        json_obj['owner_id'] = user_id
+
+    try:
+        json_obj['ref_accnum'] = kwargs['ref_accnum']
+    except:
+        pass
+
+    # Add any extra arguments to the call to the backend
+    if kwargs:
+        for key in kwargs:
+            if key in kwargs:
+                continue
+            json_obj[key] = kwargs[key]
 
     json_str = json.dumps(json_obj)
     json_str += "\nEOF\n"

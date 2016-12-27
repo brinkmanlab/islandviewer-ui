@@ -12,6 +12,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'webui',
+    'social_django',
 )
 
 #if env.DEV_ENV:

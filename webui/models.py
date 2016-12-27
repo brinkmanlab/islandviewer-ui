@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.conf import settings
+from django.contrib.auth.models import User
+from datetime import datetime, timedelta
 import pprint
 #from Bio.Phylo.TreeConstruction import _DistanceMatrix, DistanceTreeConstructor
 from Bio import Phylo
@@ -34,24 +36,26 @@ VIRULENCE_FACTOR_CATEGORIES = {
 }
 
 MODULES = ['Prepare', 'Distance', 'Sigi', 'Dimob', 'Islandpick', 'Virulence', 'Summary']
+GI_MODULES = ['Sigi', 'Dimob', 'Islandpick']
 
 class CustomGenome(models.Model):
     cid = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=60)
+    name = models.CharField(max_length=100)
+    owner_id = models.IntegerField(default=0)
     cds_num = models.IntegerField(default=0)
     rep_size = models.IntegerField(default=0)
-    filename = models.CharField(max_length=60)
+    filename = models.CharField(max_length=100, blank=True, null=True)
     formats = models.CharField(max_length=50)
     contigs = models.IntegerField(default=1)
     genome_status = models.IntegerField()
-    submit_date = models.DateTimeField('date submitted')
+    submit_date = models.DateTimeField('date submitted', auto_now_add=True)
 
     class Meta:
         db_table = "CustomGenome"
 
 class NameCache(models.Model):
-    cid = models.CharField(max_length=15)
-    name = models.CharField(max_length=60)
+    cid = models.CharField(max_length=24, unique=True)
+    name = models.CharField(max_length=100)
     cds_num = models.IntegerField(default=0)
     rep_size = models.IntegerField(default=0)
     isvalid = models.IntegerField(default=1)
@@ -69,13 +73,13 @@ class Analysis(models.Model):
     aid = models.AutoField(primary_key=True)
     atype = models.IntegerField(choices=ATYPE_CHOICES,
                                 default=CUSTOM)
-    ext_id = models.CharField(max_length=15)
+    ext_id = models.CharField(max_length=24)
     owner_id = models.IntegerField(default=0)
-    token = models.CharField(max_length=22, blank=True)
+    token = models.CharField(max_length=22, null=True, blank=True)
     default_analysis = models.BooleanField(default=True)
     status = models.IntegerField(choices=STATUS_CHOICES,
                                  default=STATUS['PENDING'])
-    workdir = models.CharField(max_length=50)
+    workdir = models.CharField(max_length=100)
     microbedb_ver = models.IntegerField(default=0)
     start_date = models.DateTimeField('date started')
     complete_date = models.DateTimeField('date completed')
@@ -184,7 +188,7 @@ class GIAnalysisTask(models.Model):
     prediction_method = models.CharField(max_length=15)
     status = models.IntegerField(choices=STATUS_CHOICES,
                                  default=STATUS['PENDING'])
-    parameters = models.CharField(max_length=15)
+    parameters = models.TextField(blank=True, null=True)
     start_date = models.DateTimeField('date started')
     complete_date = models.DateTimeField('date completed')
 
@@ -220,8 +224,8 @@ class GenomicIsland(models.Model):
     aid = models.ForeignKey(Analysis)
     start = models.IntegerField(default=0)
     end = models.IntegerField(default=0)
-    prediction_method = models.CharField(max_length=15)
-    details = models.CharField(max_length=20)
+    prediction_method = models.CharField(max_length=15, db_index=True)
+    details = models.CharField(max_length=20, blank=True, null=True)
 
     @classmethod
     def sqltodict(cls, query,param):
@@ -239,9 +243,10 @@ class GenomicIsland(models.Model):
 
     class Meta:
         db_table = "GenomicIsland"
+        index_together = ['aid', 'prediction_method']
 
 class GC(models.Model):
-    ext_id = models.CharField(primary_key=True,max_length=15)
+    ext_id = models.CharField(primary_key=True,max_length=24)
     min = models.FloatField()
     max = models.FloatField()
     mean = models.FloatField()
@@ -251,28 +256,30 @@ class GC(models.Model):
         db_table = "GC"
 
 class Genes(models.Model):
-    ext_id = models.CharField(max_length=15)
+    ext_id = models.CharField(max_length=24)
     start = models.IntegerField(default=0)
     end = models.IntegerField(default=0)
     strand = models.IntegerField()
-    name = models.CharField(max_length=14)
-    gene = models.CharField(max_length=10)
-    product = models.CharField(max_length=100)
-    locus = models.CharField(max_length=10)
+    name = models.CharField(max_length=18, blank=True, null=True)
+    gene = models.CharField(max_length=10, blank=True, null=True)
+    product = models.CharField(max_length=100, blank=True, null=True)
+    locus = models.CharField(max_length=20, blank=True, null=True)
     
     class Meta:
         db_table = "Genes"
+        # dup_catcher index
+        unique_together = ('ext_id', 'start', 'end')
 
 class IslandGenes(models.Model):
-    gi = models.IntegerField()
-    gene = models.ForeignKey(Genes)
+    gi = models.IntegerField(db_index=True)
+    gene = models.ForeignKey(Genes, db_index=True)
     
     class Meta:
         db_table = "IslandGenes"
 
 class Distance(models.Model):
-    rep_accnum1 = models.CharField(max_length=15)
-    rep_accnum2 = models.CharField(max_length=15)
+    rep_accnum1 = models.CharField(max_length=24)
+    rep_accnum2 = models.CharField(max_length=24)
     distance = models.FloatField()
 
     @classmethod
@@ -345,21 +352,29 @@ class Distance(models.Model):
     
     class Meta:
         db_table = "Distance"
+        index_together = [
+            ['rep_accnum1', 'rep_accnum2'],
+            ['rep_accnum2', 'rep_accnum1'],
+        ]
 
 class DistanceAttempts(models.Model):
-    rep_accnum1 = models.CharField(max_length=15)
-    rep_accnum2 = models.CharField(max_length=15)
+    rep_accnum1 = models.CharField(max_length=24)
+    rep_accnum2 = models.CharField(max_length=24)
     status = models.IntegerField()
     run_date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = "DistanceAttempts"
+        index_together = [
+            ['rep_accnum1', 'rep_accnum2'],
+            ['rep_accnum2', 'rep_accnum1'],
+        ]
         
 class UploadGenome(models.Model):
     id = models.AutoField(primary_key=True)
-    filename = models.CharField(max_length=120)
-    ip_addr = models.IPAddressField()
-    genome_name = models.CharField(max_length=40)
+    filename = models.CharField(max_length=120, blank=True, null=True)
+    ip_addr = models.GenericIPAddressField()
+    genome_name = models.CharField(max_length=40, blank=True, null=True)
     email = models.EmailField()
     cid = models.IntegerField(default=0)
     date_uploaded = models.DateTimeField(auto_now_add=True)
@@ -374,12 +389,12 @@ class Notification(models.Model):
     
     class Meta:
         db_table = "Notification"
+        unique_together = ('analysis', 'email')
 
 class SiteStatus(models.Model):
     status = models.IntegerField(default=0, primary_key=True)
     message = models.CharField(max_length=500)
     class Meta:
-        managed = False
         db_table = 'SiteStatus'
         
 class Virulence(models.Model):
@@ -494,3 +509,10 @@ class Version(models.Model):
         managed = False
         db_table = 'version'
  
+class UserToken(models.Model):
+    user = models.ForeignKey(User, unique=True)
+    token = models.CharField(max_length=36)
+    expires = models.DateTimeField(default=datetime.now()+timedelta(days=30))
+    
+    class Meta:
+        db_table = 'UserToken'

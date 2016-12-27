@@ -1,0 +1,1 @@
+curl -F"genome_file"=@/home/lairdm/workspace/islandviewer-ui/tiny.gbk -F"genome_name"="my test" -F"email_addr"="lairdm@luther.ca" -F"format_type"="GENBANK" http://localhost:8000/islandviewer/ajax/uplod/

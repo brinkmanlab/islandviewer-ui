@@ -1,0 +1,9 @@
+curl http://localhost:8000/islandviewer/rest/jobs/ -H 'X-authtoken:e75bea25-313f-05f2-2887-259746586857'
+
+curl http://localhost:8000/islandviewer/rest/job/2886/ -H 'X-authtoken:e75bea25-313f-05f2-2887-259746586857'
+
+curl http://localhost:8000/islandviewer/rest/genomes/ -H 'x-authtoken:e75bea25-313f-05f2-2887-259746586857'
+
+curl -X POST -H 'x-authtoken:e75bea25-313f-05f2-2887-259746586857' -Fgenome_file=@tiny.gbk -Fgenome_name="my genome" -Femail_addr="me@email.addr.com" -Fformat_type="GENBANK" http://localhost:8000/islandviewer/rest/job/submit/
+
+curl -X POST -H 'x-authtoken:e75bea25-313f-05f2-2887-259746586857' -Fref_accnum="NC_022792.1" -Fgenome_file=@tiny.gbk -Fgenome_name="my test" -Femail_addr="me@email.addr.com" -Fformat_type="GENBANK" http://localhost:8000/islandviewer/rest/job/submit/

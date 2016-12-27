@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+{% url 'user_jobs_json' as user_jobs_json %}{% url 'results' as results %}
+
+{% block headextras %}
+    <script src="{% static 'js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'js/datatables.inputPagination.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<table id="{{ summarytablename|default:"summarytable" }}" class="summarytable table table-striped table-condensed table-hover idb-table" style="font-size: 90%">
+<thead>
+<tr>
+<th>Analysis id</th>
+<th>Genome Name</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<script type="text/javascript">
+var displayLength = 30;
+var anOpen = [];
+
+var arrayColumns = [
+                    {"mData": "aid", "bVisible": true, "sSortDataType": "dom-text"},
+                    {"mData": "genome_name", "bVisible": true},
+                    {"mData": "status", "bVisible": true},                    
+                ];
+
+var  oTable = $('#{{ summarytablename|default:"summarytable" }}').dataTable({
+	"iDisplayLength": displayLength,
+    "sScrollX": "100%",
+    "sScrollXInner": "100%",
+    "bProcessing": true,
+    "bAutoWidth": false,
+    "bPaginate": true,
+    "sPaginationType": "input",
+    "bInfo": true,
+    //"bFilter": true,
+    "sAjaxSource": "{% url 'user_jobs_json' %}",
+    "bServerSide": true,
+    "aoColumns": arrayColumns,
+    "aaSorting": [[ 0, 'asc' ]],
+    "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+    	  $(nRow).addClass('method' + aData.group);
+    },
+    "aoColumnDefs": [
+ 					{
+ 	    				"aTargets": [0],
+ 	    				"mData": null,
+ 	    				"mRender": function(data, type, full) {
+ 							var url = '{%url 'results' '9999' %}'.replace(9999, full.aid);
+ 							if('undefined' !== typeof full.token) {
+ 								url += '?token=' + full.token;
+ 							}
+ 	        				return '<a href="' + url + '">' + full.aid + '</a>';
+ 	    					},
+ 						},
+					{
+    					"aTargets": [2],
+    					"mData": null,
+    					"mRender": function(data, type, full) {
+        					return '<span class="' + full.status + '">' + full.status + '</span>';
+    					},
+					},
+					]
+});
+
+</script>
+
+{% endblock content %}

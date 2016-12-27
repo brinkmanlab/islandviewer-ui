@@ -5,3 +5,6 @@ biopython==1.63
 distribute==0.7.3
 wsgiref==0.1.2
 xlwt==0.7.5
+django-ratelimit==1.0.1
+pytz==2016.10
+python-social-auth==0.2.21
