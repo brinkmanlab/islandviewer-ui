@@ -36,7 +36,7 @@ $(document).ready( function() {
 	$('#refresh').click(function(e) {
 
 		$.ajax({type: "POST",
-			    url: '{% url 'user_rest_token_reset' %}',
+			    url: '{% url 'iv_social:user_rest_token_reset' %}',
 			    success: function(data) {
 			    	$('#token').html(data['token']);
 			    	$('#expires').html(data['expiry']);
