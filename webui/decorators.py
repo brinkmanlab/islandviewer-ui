@@ -10,27 +10,25 @@ def auth_token(function=None):
     def decorator(view_func):
         def decorated(request, *args, **kwargs):
 
-            try:
-                token = request.META['HTTP_X_AUTHTOKEN']
+            if 'iv_social' in settings.INSTALLED_APPS:
+                try:
+                    token = request.META['HTTP_X_AUTHTOKEN']
 
-                uuid.UUID(token)
-                usertoken = UserToken.objects.get(token=token)
+                    uuid.UUID(token)
+                    usertoken = UserToken.objects.get(token=token)
 
-                if usertoken.expires < datetime.now(pytz.utc):
-                    return HttpResponse(status=403)                    
+                    if usertoken.expires < datetime.now(pytz.utc):
+                        return HttpResponse(status=403)                    
 
-                # Do rate limit check here
+                except Exception as e:
+                    if settings.DEBUG:
+                        print str(e)
+                    return HttpResponse(status=403)
 
+                # Set the authenticated user for the request
+                request.user = usertoken.user
 
-            except Exception as e:
-                if settings.DEBUG:
-                    print str(e)
-                return HttpResponse(status=403)
-
-            # Set the authenticated user for the request
-            request.user = usertoken.user
-
-            response = view_func(request, *args, usertoken=usertoken, **kwargs)
+            response = view_func(request, *args, **kwargs)
 
             return response
 

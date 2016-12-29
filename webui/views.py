@@ -3,13 +3,11 @@ from django.shortcuts import render, get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.conf import settings
 from django import forms
-from django.db.models import Q, F
+from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import last_modified
 import json
-from webui.models import Analysis, GenomicIsland, GC, CustomGenome, IslandGenes, UploadGenome, Virulence, NameCache, Genes, Replicon, Genomeproject, GIAnalysisTask, Distance, Notification, SiteStatus, STATUS, STATUS_CHOICES, VIRULENCE_FACTORS, MODULES,\
-    UserToken, GI_MODULES
-from decorators import auth_token, ratelimit_warning
+from webui.models import Analysis, GenomicIsland, GC, CustomGenome, IslandGenes, UploadGenome, Virulence, NameCache, Genes, Replicon, Genomeproject, GIAnalysisTask, Distance, Notification, SiteStatus, STATUS, STATUS_CHOICES, VIRULENCE_FACTORS, MODULES
 from django.core.urlresolvers import reverse
 from islandplot import plot
 from giparser import fetcher
@@ -29,6 +27,7 @@ from scripts import mauvewrap
 import glob
 from django.core import serializers
 from ratelimit.decorators import ratelimit
+from webui.decorators import ratelimit_warning
 
 def index(request):
     return render(request, 'index.html')
@@ -567,110 +566,6 @@ def runstatus(request):
     return render(request, 'status.html', context)
     
 
-@auth_token
-@ratelimit(group='rest', key='user', rate='10/m')
-@ratelimit(group='rest', key='user', rate='120/h')
-@ratelimit_warning
-def user_jobs_rest(request, usertoken, **kwargs):
-
-    user = usertoken.user
-    analysis = Analysis.objects.filter(owner_id=user.id).order_by('-aid')
-    
-    analysis_set = []
-    for a in analysis:
-        """A big assumption! That it's a custom genome.
-           Fetching genome names (done multiple places) should be
-           abstracted out at some point."""
-        genome = CustomGenome.objects.get(pk=a.ext_id)
-
-        analysis_set.append({'aid': a.aid,
-                             'results': request.build_absolute_uri( reverse('results', kwargs={'aid': a.aid}) ) + ("?token={}".format(a.token) if a.token else ''),
-
-                            'genome_name': genome.name,
-                            'status': STATUS_CHOICES[a.status][1],
-                            })
-
-    data = json.dumps(analysis_set, indent=4, sort_keys=False)
-
-    return HttpResponse(data, content_type="application/json")
-
-@auth_token
-@ratelimit(group='rest', key='user', rate='10/m')
-@ratelimit(group='rest', key='user', rate='120/h')
-@ratelimit_warning
-def user_job_rest(request, usertoken, aid, **kwargs):
-    user = usertoken.user
-    analysis = Analysis.objects.select_related().get(pk=aid)
-    CHOICES = dict(STATUS_CHOICES)
-    context = {}
-
-    if user.id != analysis.owner_id:
-        return HttpResponse(status=400)
-    
-    context['aid'] = analysis.aid
-    context['status'] = CHOICES[analysis.status]
-    context['results'] = request.build_absolute_uri( reverse('results', kwargs={'aid': analysis.aid}) ) + ("?token={}".format(analysis.token) if analysis.token else '')
-
-    # Fetch the genome name and such
-    if(analysis.atype == Analysis.CUSTOM):
-        genome = CustomGenome.objects.get(pk=analysis.ext_id)
-        context['genome_name'] = genome.name
-    elif(analysis.atype == Analysis.MICROBEDB):
-        context['genome_name'] = NameCache.objects.get(cid=analysis.ext_id).name
-    
-    context['tasks'] = {}
-    context['taskcount'] = {}
-    for method in analysis.tasks.all():
-        context['tasks'][method.prediction_method] = CHOICES[method.status]
-
-        if method.prediction_method not in GI_MODULES:
-            continue
-        try:
-            context['taskcount'][method.prediction_method] = GenomicIsland.objects.filter(aid=analysis, prediction_method=method.prediction_method).count()
-        except Exception as e:
-            if settings.DEBUG:
-                print str(e)
-            pass
-    
-    try:
-        context['emails'] = ','.join(Notification.objects.filter(analysis=analysis).values_list('email', flat=True))
-    except Exception as e:
-        if settings.DEBUG:
-            print e
-        pass    
-    
-    data = json.dumps(context, indent=4, sort_keys=False)
-    
-    return HttpResponse(data, content_type="application/json")
-
-@auth_token
-@ratelimit(group='rest', key='user', rate='10/m')
-@ratelimit(group='rest', key='user', rate='120/h')
-@ratelimit_warning
-def ref_genomes_rest(request, **kwargs):
-
-    genomes = list(NameCache.objects.filter(isvalid=1).annotate(ref_accnum=F('cid')).values('ref_accnum', 'name').all())
-
-    data = json.dumps(genomes, indent=4, sort_keys=False)
-
-    return HttpResponse(data, content_type="application/json")
-
-@csrf_exempt
-@auth_token
-@ratelimit(group='rest_submit', key='user', rate='10/h')
-@ratelimit(group='rest_submit', key='user', rate='50/d')
-@ratelimit_warning
-def user_job_submit_rest(request, usertoken, **kwargs):
-
-    if request.method != 'POST':
-        return HttpResponse(status=403)
-
-    # If we were rate limited, return a watning to the user
-    if getattr(request, 'limited', False):
-        return ratelimit_warning(request)
-
-    user = usertoken.user
-    return _uploadcustomajax(request, userid=user.id)
 
 def runstatusjson(request):
     context = {}
@@ -754,7 +649,6 @@ def runstatusdetailsjson(request, aid):
     data = json.dumps(context, indent=4, sort_keys=False)
     
     return HttpResponse(data, content_type="application/json")
-
 
 @csrf_exempt
 def add_notify(request, aid):

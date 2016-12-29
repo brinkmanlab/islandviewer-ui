@@ -66,15 +66,19 @@ def user_jobs_json(request):
     context['iTotalDisplayRecords'] = len(analysis)
         
     analysis_set = []
+    CHOICES = dict(STATUS_CHOICES)
+
     for a in analysis[startAt:endAt]:
         """A big assumption! That it's a custom genome.
            Fetching genome names (done multiple places) should be
            abstracted out at some point."""
+        print "analysis {}, status {}".format(a.aid, CHOICES[a.status])
+
         genome = CustomGenome.objects.get(pk=a.ext_id)
 
         analysis_set.append({'aid': a.aid,
                             'genome_name': genome.name,
-                            'status': STATUS_CHOICES[a.status][1],
+                            'status': CHOICES[a.status],
                             'token': a.token})
 
     context['aaData'] = analysis_set
