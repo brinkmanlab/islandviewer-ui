@@ -18,12 +18,12 @@ def auth_token(function=None):
                     usertoken = UserToken.objects.get(token=token)
 
                     if usertoken.expires < datetime.now(pytz.utc):
-                        return HttpResponse(status=403)                    
+                        return HttpResponse(status=401)                    
 
                 except Exception as e:
                     if settings.DEBUG:
                         print str(e)
-                    return HttpResponse(status=403)
+                    return HttpResponse(status=401)
 
                 # Set the authenticated user for the request
                 request.user = usertoken.user
@@ -48,7 +48,7 @@ def ratelimit_warning(function=None):
         def decorated(request, *args, **kwargs):
 
             if getattr(request, 'limited', False):
-                context = {'status': 500, 'error': 'Your request has been rate limited, please wait and try again later'}
+                context = {'status': 429, 'error': 'Your request has been rate limited, please wait and try again later'}
 
                 data = json.dumps(context, indent=4, sort_keys=False)
 

@@ -19,8 +19,8 @@ elif env.TEST_ENV:
     PIPELINE_PATH = "/data/Resources/MetaScheduler/pipeline"
     ANALYSIS_PATH = "/data/Modules/iv-backend/islandviewer_dev/analysis/"
 else:
-    CUSTOM_GENOMES = "/home/lairdm/islandviewer/custom_genomes/"
-    GENOME_UPLOAD_PATH = "/home/lairdm/islandviewer/custom_genomes/tmp/"
-    GENOME_SUBMISSION_SCRIPT = "/home/lairdm/islandviewer/bin/submit_uploaded_genome.pl -c /home/lairdm/islandviewer/etc/islandviewer.config -f {filename} -n \"{genome_name}\""
+    CUSTOM_GENOMES = "/data/Modules/iv-backend/islandviewer/custom_genomes/"
+    GENOME_UPLOAD_PATH = "//data/Modules/iv-backend/islandviewer/custom_genomes/tmp/"
+    GENOME_SUBMISSION_SCRIPT = "/data/Modules/iv-backend/islandviewer/bin/submit_uploaded_genome.pl -c /data/Modules/iv-backend/islandviewer/etc/islandviewer.config -f {filename} -n \"{genome_name}\""
     PIPELINE_PATH = "/home/lairdm/workspace/metascheduler/pipelines"
-    ANALYSIS_PATH = "/home/lairdm/islandviewer/analysis/"
+    ANALYSIS_PATH = "/data/Modules/iv-backend/islandviewer/analysis/"

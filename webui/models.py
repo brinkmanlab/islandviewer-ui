@@ -8,7 +8,7 @@ import pprint
 #from Bio.Phylo.TreeConstruction import _DistanceMatrix, DistanceTreeConstructor
 from Bio import Phylo
 import StringIO
-import json
+import json, os
 
 STATUS = {'PENDING':1,'RUNNING':2,'ERROR':3,'COMPLETE':4}
 STATUS_CHOICES = [
@@ -50,6 +50,10 @@ class CustomGenome(models.Model):
     genome_status = models.IntegerField()
     submit_date = models.DateTimeField('date submitted', auto_now_add=True)
 
+    @property
+    def isvalid(self):
+        return self.genome_status == 6
+
     class Meta:
         db_table = "CustomGenome"
 
@@ -59,6 +63,42 @@ class NameCache(models.Model):
     cds_num = models.IntegerField(default=0)
     rep_size = models.IntegerField(default=0)
     isvalid = models.IntegerField(default=1)
+
+    '''
+    Make a NameCache item look like a CustomGenome so they can more easily
+    be used interchangably to clean the code up.
+    '''
+        
+    @property
+    def replicon(self):
+        if not hasattr(self, 'rep'):
+            self.rep = Replicon.objects.using('microbedb').by_accnum(self.cid)
+            
+        return self.rep
+    
+    @property
+    def owner_id(self):
+        return 0
+    
+    @property
+    def filename(self):
+        rep = self.replicon
+        if rep:
+            return rep.base_path
+
+    @property
+    def formats(self):
+        rep = self.replicon
+        if rep:
+            return rep.file_types
+
+    @property
+    def contigs(self):
+        return 1
+
+    @property
+    def genome_status(self):
+        return 6
 
     class Meta:
         db_table = "NameCache"
@@ -83,6 +123,59 @@ class Analysis(models.Model):
     microbedb_ver = models.IntegerField(default=0)
     start_date = models.DateTimeField('date started')
     complete_date = models.DateTimeField('date completed')
+
+    @property
+    def is_complete(self):
+        return self.status == STATUS['COMPLETE']
+    
+    @property
+    def is_precomputed(self):
+        return self.atype == Analysis.MICROBEDB
+    
+    @property
+    def is_custom(self):
+        return self.atype == Analysis.CUSTOM
+    
+    @property
+    def is_system_owned(self):
+        return self.owner_id == 0
+
+    @property
+    def valid_token(self, token):
+        if self.token and not self.is_system_owned:
+            return token == self.token
+        
+        return True
+
+    @property
+    def generate_filename(self):
+        if self.is_precomputed:
+            return self.ext_id
+        elif self.is_custom:
+            return ''.join(e for e in self.genome.name if e.isalnum())
+
+    def is_owner(self, uid, precomputed_ok=True):
+        """
+        Check if the given user id owns the analysis,
+        optional parameter which by default allows analysis owned
+        by the system user (pre-computed) to be disallowed.
+        """
+        if self.owner_id == 0 and precomputed_ok:
+            return True
+        elif self.owner_id == uid:
+            return True
+        
+        return False
+
+    @property
+    def genome(self):
+        if not hasattr(self, '_genome'):
+            if self.atype == Analysis.CUSTOM:
+                self._genome = CustomGenome.objects.get(pk=self.ext_id)
+            elif self.atype == Analysis.MICROBEDB:
+                self._genome = NameCache.objects.get(cid=self.ext_id)
+                
+        return self._genome
 
     # Specialty function to find an analysis with the same 
     # Islandpick settings (comparison genomes, min_gi_size)
@@ -226,6 +319,14 @@ class GenomicIsland(models.Model):
     end = models.IntegerField(default=0)
     prediction_method = models.CharField(max_length=15, db_index=True)
     details = models.CharField(max_length=20, blank=True, null=True)
+
+    @classmethod
+    def island_gene_set(cls, aid):
+        params = [aid] 
+
+        islandset = Genes.objects.raw("SELECT G.id, GI.gi AS gi, GI.start AS island_start, GI.end AS island_end, GI.prediction_method, G.ext_id, G.start AS gene_start, G.end AS gene_end, G.strand, G.name, G.gene, G.product, G.locus, GROUP_CONCAT( DISTINCT V.source ) AS virulence FROM Genes AS G JOIN IslandGenes AS IG ON G.id = IG.gene_id JOIN GenomicIsland AS GI ON GI.gi = IG.gi LEFT JOIN virulence_mapped AS V ON G.name = V.protein_accnum WHERE GI.aid_id = %s GROUP BY IG.id ORDER BY GI.start, GI.prediction_method", params)
+
+        return islandset
 
     @classmethod
     def sqltodict(cls, query,param):
@@ -406,6 +507,14 @@ class Virulence(models.Model):
         managed = False
         db_table = 'virulence'
 
+class UserToken(models.Model):
+    user = models.ForeignKey(User, unique=True)
+    token = models.CharField(max_length=36)
+    expires = models.DateTimeField(default=datetime.now()+timedelta(days=30))
+    
+    class Meta:
+        db_table = 'UserToken'
+
 '''
 MicrobeDB models
 '''
@@ -467,7 +576,7 @@ class Genomeproject_Meta(models.Model):
 
 class Replicon(models.Model):
     rpv_id = models.IntegerField(primary_key=True)
-    gpv_id = models.IntegerField()
+    gpv_id = models.ForeignKey('Genomeproject', related_name='replicons')
     version_id = models.IntegerField()
     rep_accnum = models.CharField(max_length=20, blank=True)
     rep_version = models.IntegerField()
@@ -480,6 +589,35 @@ class Replicon(models.Model):
     gene_num = models.IntegerField(blank=True, null=True)
     rep_size = models.IntegerField(blank=True, null=True)
     rna_num = models.IntegerField(blank=True, null=True)
+
+    @property
+    def base_path(self):
+        return os.path.join(self.gpv_id.gpv_directory, self.file_name)
+
+    @classmethod
+    def by_accnum(cls, rep_accnum, rep_version=None):
+        try:
+            # If we haven't been given a version, see if we have one in the accession
+            if not rep_accnum:
+                split_accnum = rep_accnum.split('.')
+                if len(split_accnum == 2):
+                    rep_accnum = split_accnum[0]
+                    rep_version = split_accnum[1]
+
+            lookup_param = {'rep_accnum': rep_accnum}
+            if rep_version:
+                lookup_param['rep_version'] = rep_version
+                            
+            rep = cls.objects.filter(**lookup_param).first()
+            
+            return rep
+            
+        except Exception as e:
+            if settings.DEBUG:
+                print str(e)
+                
+            return None
+
     class Meta:
         managed = False
         db_table = 'replicon'
@@ -508,11 +646,3 @@ class Version(models.Model):
     class Meta:
         managed = False
         db_table = 'version'
- 
-class UserToken(models.Model):
-    user = models.ForeignKey(User, unique=True)
-    token = models.CharField(max_length=36)
-    expires = models.DateTimeField(default=datetime.now()+timedelta(days=30))
-    
-    class Meta:
-        db_table = 'UserToken'

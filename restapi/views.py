@@ -10,6 +10,8 @@ from ratelimit.decorators import ratelimit
 from webui.models import Analysis, CustomGenome, GenomicIsland, NameCache, Notification, STATUS_CHOICES, GI_MODULES
 from webui.views import _uploadcustomajax
 from webui.decorators import auth_token, ratelimit_warning
+from webui.utils import formatter
+from giparser import fetcher
 
 @auth_token
 @ratelimit(group='rest', key='user', rate='10/m')
@@ -50,8 +52,8 @@ def user_job(request, aid, **kwargs):
     CHOICES = dict(STATUS_CHOICES)
     context = {}
 
-    if user.id != analysis.owner_id:
-        return HttpResponse(status=400)
+    if not analysis.is_owner(user.id):
+        return HttpResponse(status=401)
     
     context['aid'] = analysis.aid
     context['status'] = CHOICES[analysis.status]
@@ -88,6 +90,43 @@ def user_job(request, aid, **kwargs):
     data = json.dumps(context, indent=4, sort_keys=False)
     
     return HttpResponse(data, content_type="application/json")
+
+@auth_token
+@ratelimit(group='rest', key='user', rate='10/m')
+@ratelimit(group='rest', key='user', rate='120/h')
+@ratelimit_warning
+def user_job_download(request, aid, format, **kwargs):
+    user = request.user
+    args = []
+    analysis = Analysis.objects.select_related().get(pk=aid)
+    
+    if not analysis.is_owner(user.id):
+        return HttpResponse(status=401)
+
+    if not analysis.is_complete:
+        return HttpResponse(status=204)
+
+    format = format.lower()
+    if format not in formatter.downloadformats:
+        return HttpResponse(status=400)
+
+    if format == 'genbank':
+        islandset = GenomicIsland.objects.filter(aid_id=aid).order_by('start').all()
+    else:
+        islandset = GenomicIsland.island_gene_set(aid)
+
+    args.append(islandset)
+    if format == 'genbank' or format == 'fasta':
+        p = fetcher.GenbankParser(aid)
+        args.append(p)
+
+    args.append(['integrated'] + formatter.allowedmethods)
+    filename = analysis.generate_filename + '.' + formatter.downloadextensions[format]
+    args.append(filename)
+    
+    response = formatter.downloadformats[format](*args)
+    
+    return response
 
 @auth_token
 @ratelimit(group='rest', key='user', rate='10/m')
