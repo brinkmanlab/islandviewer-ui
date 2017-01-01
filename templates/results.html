@@ -114,7 +114,7 @@
   {% endif %}
 
     </script>
-    <script src="{% url 'circularplotjs' aid %}"></script>
+    <script src="{% url 'circularplotjs' aid %}?token={{ token }}"></script>
 
     {% include "results.download.html" %}
     

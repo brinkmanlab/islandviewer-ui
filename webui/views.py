@@ -71,55 +71,22 @@ def results(request, aid):
         context['default_analysis'] = (True if analysis.default_analysis == 1 else False)
 
         # Check for a security token 
-        if analysis.token and analysis.owner_id != 0:
-            # We have a security token
-            if request.GET.get('token'):
-                token = request.GET.get('token')
-                if token != analysis.token:
-                    # Uh-oh, the token didn't match!
-                    return HttpResponse(status=403)
-                    
-            else:
-                # There's a token in the analysis but the user didn't supply one...
-                return HttpResponse(status=403)
-
+        if not analysis.valid_token(request.GET.get('token')):
+            return HttpResponse(status=403)
 
         # Fetch the genome name and such
-        if(analysis.atype == Analysis.CUSTOM):
-            genome = CustomGenome.objects.get(pk=analysis.ext_id)
-            context['genomename'] = genome.name
-            
-            if genome.contigs > 1:
-                ref_accnum = analysis.find_reference_genome()
-                ref_genome = Analysis.lookup_genome(ref_accnum)
+        genome = analysis.genome
+        context['genomename'] = genome.name
+        if genome.contigs > 1:
+            ref_accnum = analysis.find_reference_genome()
+            ref_genome = Analysis.lookup_genome(ref_accnum)
                 
-                context['ref_genome'] = ref_genome.name
-                
-        elif(analysis.atype == Analysis.MICROBEDB):
-#           gpv_id = Replicon.objects.using('microbedb').filter(rep_accnum=analysis.ext_id)[0].gpv_id
-#           context['genomename'] = Genomeproject.objects.using('microbedb').get(pk=gpv_id).org_name
-            context['genomename'] = NameCache.objects.get(cid=analysis.ext_id).name
-#           context['genomename'] = 'Something from Microbedb'
-
-        # Fetch the virulence factors
-#        island_genes = Genes.objects.filter(ext_id=analysis.ext_id).order_by('start').all() 
-#        vir_list = Virulence.objects.using('microbedb').filter(protein_accnum__in=
-#                                                              list(island_genes.values_list('name', flat=True))).values_list('source', flat=True).distinct()
-#        context['vir_types'] = {}
-#        context['has_vir'] = False
-#        for vir in VIRULENCE_FACTORS.keys():
-#            if vir in vir_list:
-#                context['vir_types'][vir] = True
-#                context['has_vir'] = True
-#            else:
-#                context['vir_types'][vir] = False
-
-
-        # Remember the methods we have available
-#        context['methods'] = dict.fromkeys(GenomicIsland.objects.filter(aid_id=aid).values_list("prediction_method", flat=True).distinct(), 1)
-
+            context['ref_genome'] = ref_genome.name
+        
         CHOICES = dict(STATUS_CHOICES)
         context['status'] = CHOICES[analysis.status]
+        
+        context['token'] = request.GET.get('token')
 
         if analysis.status == STATUS['PENDING'] or analysis.status == STATUS['RUNNING']:
             try:    
@@ -192,6 +159,10 @@ def circularplotjs(request, aid):
         context['aid'] = aid
     except Analysis.DoesNotExist:
         pass
+
+    # Check for a security token 
+    if not analysis.valid_token(request.GET.get('token')):
+        return HttpResponse(status=403)
 
     # Fetch the genome length
     if(analysis.atype == Analysis.CUSTOM):
@@ -303,6 +274,10 @@ def tablejson(request, aid):
         analysis = Analysis.objects.get(pk=aid)
     except Analysis.DoesNotExist:
         context['noanalysis'] = True;
+
+    # Check for a security token 
+    if not analysis.valid_token(request.GET.get('token')):
+        return HttpResponse(status=403)
 
     context['aid'] = aid
     context['cid'] = analysis.ext_id
@@ -804,6 +779,10 @@ def fetchislands(request):
     else:
         return HttpResponse(status=400)
     
+    analysis = get_object_or_404(Analysis, pk=aid)
+    if not analysis.valid_token(request.GET.get('token')):
+        return HttpResponse(status=403)
+
     p = fetcher.GenbankParser(aid)
     recs = p.fetchRecords()
     
@@ -1103,6 +1082,10 @@ def downloadCoordinates(request):
             return HttpResponse(status=400)
         analysis = Analysis.objects.get(pk=aid)
 
+        # Check for a security token 
+        if not analysis.valid_token(request.GET.get('token')):
+            return HttpResponse(status=403)
+
 
         if(analysis.atype == Analysis.CUSTOM):
             genome = CustomGenome.objects.get(pk=analysis.ext_id)
@@ -1147,6 +1130,9 @@ def downloadAnnotations(request):
             return HttpResponse(status=400)
         analysis = Analysis.objects.get(pk=aid)
 
+        # Check for a security token 
+        if not analysis.valid_token(request.GET.get('token')):
+            return HttpResponse(status=403)
 
         if(analysis.atype == Analysis.CUSTOM):
             genome = CustomGenome.objects.get(pk=analysis.ext_id)
@@ -1181,6 +1167,10 @@ def downloadSequences(request):
             return HttpResponse(status=400)
         analysis = Analysis.objects.get(pk=aid)
         p = fetcher.GenbankParser(aid)
+
+        # Check for a security token 
+        if not analysis.valid_token(request.GET.get('token')):
+            return HttpResponse(status=403)
 
         if(analysis.atype == Analysis.CUSTOM):
             genome = CustomGenome.objects.get(pk=analysis.ext_id)
@@ -1229,8 +1219,8 @@ def fetchislandsfasta(request):
         aid = request.GET.get('aid')
         if not aid.isdigit():
             return HttpResponse(status=400)
-        aidrec = get_object_or_404(Analysis, pk=aid)
-        filename = aidrec.ext_id
+        analysis = get_object_or_404(Analysis, pk=aid)
+        filename = analysis.ext_id
     elif request.GET.get('gi'):
         gi = request.GET.get('gi')
         if not gi.isdigit():
@@ -1240,10 +1230,15 @@ def fetchislandsfasta(request):
         aid = girec.aid_id
         gi = str(gi)
         aid = aid
+        analysis = get_object_or_404(Analysis, pk=aid)
         filename = str(girec.start) + '_' + str(girec.end)
         rangestr = str(girec.start) + '..' + str(girec.end)
     else:
         return HttpResponse(status=400)
+        # Check for a security token 
+
+    if not analysis.valid_token(request.GET.get('token')):
+        return HttpResponse(status=403)
     
     seqtype = 'protein'
     if request.GET.get('seq'):

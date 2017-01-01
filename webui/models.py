@@ -140,7 +140,6 @@ class Analysis(models.Model):
     def is_system_owned(self):
         return self.owner_id == 0
 
-    @property
     def valid_token(self, token):
         if self.token and not self.is_system_owned:
             return token == self.token
