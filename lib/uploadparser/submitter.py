@@ -118,7 +118,7 @@ def send_picker(accnum, host=default_host, port=default_port, **kwargs):
     return decoded_json
     
 
-def send_clone(aid, host=default_host, port=default_port, **kwargs):
+def send_clone(aid, user_id=None, host=default_host, port=default_port, **kwargs):
     try:
         s = connect_to_server(host, port)
     except Exception as e:
@@ -126,6 +126,9 @@ def send_clone(aid, host=default_host, port=default_port, **kwargs):
             print "Socket error: " +  str(e) + " to " + host + ":" + str(port)
             raise Exception("Socket error: " +  str(e) + " to " + host + ":" + str(port))
         raise Exception("Failure to submit file")
+
+    if user_id:
+        kwargs['args'].update({'owner_id': user_id})
 
     json_obj = {'action': 'clone', 'aid': aid}
     json_obj.update(kwargs)

@@ -7,7 +7,7 @@ from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import last_modified
 import json
-from webui.models import Analysis, GenomicIsland, GC, CustomGenome, IslandGenes, UploadGenome, Virulence, NameCache, Genes, Replicon, Genomeproject, GIAnalysisTask, Distance, Notification, SiteStatus, STATUS, STATUS_CHOICES, VIRULENCE_FACTORS, MODULES
+from webui.models import Analysis, GenomicIsland, GC, CustomGenome, IslandGenes, UploadGenome, Virulence, NameCache, Genes, Replicon, Genomeproject, GIAnalysisTask, Distance, Notification, SiteStatus, STATUS, STATUS_CHOICES, VIRULENCE_FACTORS, MODULES, PICKER_DEFAULTS
 from django.core.urlresolvers import reverse
 from islandplot import plot
 from giparser import fetcher
@@ -901,7 +901,37 @@ def islandpick_select_genomes(request, aid):
 
 
 @csrf_exempt
-def islandpick_genomes(request, aid):
+def islandpick_genomes_json(request, aid, **kwargs):
+
+    # Were we given parameters?
+    for p in ['min_cutoff', 'max_cutoff', 'max_dist_single_cutoff', 'max_compare_cutoff', 'min_gi_size', 'reselect']:
+        if not request.GET.get(p):
+            continue
+        try:
+            kwargs[p] = float(request.GET.get(p))
+        except Exception as e:
+            if settings.DEBUG:
+                print "Sent a bad value for {}, ignoring: {}".format(p, str(e))
+            pass
+
+    try:
+        picked_genomes = []
+        if request.method == 'POST':
+            for name in request.POST:
+                picked_genomes.append(name)
+
+        results = islandpick_genomes(aid, picked=picked_genomes, **kwargs)
+        
+    except Exception as e:
+        if settings.DEBUG:
+            print str(e)
+        return HttpResponse(status = 403)
+
+    data = json.dumps(results, indent=4, sort_keys=False)
+    
+    return HttpResponse(data, content_type="application/json")
+
+def islandpick_genomes(aid, picked=None, reselect=False, **kwargs):
     context = {}
     
     try:
@@ -912,8 +942,6 @@ def islandpick_genomes(request, aid):
         if settings.DEBUG:
             print "Can't fetch analysis"
         return HttpResponse(status = 403)
-        
-    kwargs = {}
 
     selected = {}
     try:
@@ -922,37 +950,15 @@ def islandpick_genomes(request, aid):
         parameters = json.loads(iptask.parameters)
         context['parameters'] = parameters
 
-        if 'min_cutoff' in parameters:
-            kwargs.update({'min_cutoff': float(parameters['min_cutoff'])})
-
-        if 'max_distance' in parameters:
-            kwargs.update({'max_cutoff': float(parameters['max_cutoff'])})
+        # Get previously used parameters, if they exist
+        for p in ['min_cutoff', 'max_cutoff']:
+            if p in parameters and p not in kwargs:
+                kwargs[p] = float(parameters[p])
 
     except Exception as e:
         if settings.DEBUG:
             print e
-        return HttpResponse(status = 403)
-
-    try:
-        if request.GET.get('min_cutoff'):
-            kwargs.update({'min_cutoff': float(request.GET.get('min_cutoff'))})
-            
-        if request.GET.get('max_cutoff'):
-            kwargs.update({'max_cutoff': float(request.GET.get('max_cutoff'))})
-
-        if request.GET.get('max_dist_single_cutoff'):
-            kwargs.update({'max_dist_single_cutoff': float(request.GET.get('max_dist_single_cutoff'))})
-
-        if request.GET.get('min_compare_cutoff'):
-            kwargs.update({'min_compare_cutoff': float(request.GET.get('min_compare_cutoff'))})
-
-        if request.GET.get('max_compare_cutoff'):
-            kwargs.update({'max_compare_cutoff': float(request.GET.get('max_compare_cutoff'))})
-        
-    except ValueError as e:
-        if settings.DEBUG:
-            print e
-        return HttpResponse(status = 403)
+        raise Exception("Can't find analysis task")
 
     if 'comparison_genomes' in parameters:
         selected = {x: True for x in parameters['comparison_genomes'].split()}
@@ -962,7 +968,7 @@ def islandpick_genomes(request, aid):
         
     genomes = Distance.find_genomes(analysis.ext_id, **kwargs)
 
-    if request.method == 'GET':
+    if not picked:
 
         try:
 
@@ -994,12 +1000,12 @@ def islandpick_genomes(request, aid):
                 continue
             genome_list.update({g: {'dist': "%0.3f" % dist,
                                     'used': (True if g in selected else False),
-                                    'picked' : (True if g in selected and 'reselect' not in request.GET else False),
+                                    'picked' : (True if g in selected and not reselect else False),
                                     'name': (cache_names[g] if g in cache_names else custom_names[g] if g in custom_names else "Unknown" )
                                     }
                                 })
 
-        if request.GET.get('reselect'):
+        if reselect:
             try:
                 # If we're re-selecting the candidates, make the call to the backend
                 picker = send_picker(analysis.ext_id, **kwargs)
@@ -1019,19 +1025,17 @@ def islandpick_genomes(request, aid):
         context['genomes'] = genome_list
         context['status'] = "OK"            
         
-        data = json.dumps(context, indent=4, sort_keys=False)
-    
-        return HttpResponse(data, content_type="application/json")
+        return context
 
     else:
         try:
         
             #print request.GET.get('min_gi_size')
             accnums = []
-            min_gi_size = filter(lambda x: x.isdigit(), request.GET.get('min_gi_size') )
-            for name in request.POST:
+            min_gi_size = int(getattr(kwargs, 'min_gi_size', PICKER_DEFAULTS['min_gi_size']))
+            for name in picked:
                 #print name, request.POST[name]
-                if name not in (x[0] for  x in genomes):
+                if name not in (x[0] for x in genomes):
                     if settings.DEBUG:
                         print "Error, " + name + " not in genomes set"
                     raise Exception("Error, requested genome isn't in the allowed set")
@@ -1048,7 +1052,12 @@ def islandpick_genomes(request, aid):
                     context['token'] = token
             
             else:
-                clone_ret = send_clone(aid, **clone_kwargs)
+                if analysis.is_precomputed:
+                    user_id = 1
+                else:
+                    user_id = analysis.owner_id
+
+                clone_ret = send_clone(aid, user_id=user_id, **clone_kwargs)
             
                 if 'code' in clone_ret and clone_ret['code'] == 200:
                     if settings.DEBUG:
@@ -1070,10 +1079,8 @@ def islandpick_genomes(request, aid):
                 print str(e)
             return HttpResponse(status = 403)
 
-        data = json.dumps(context, indent=4, sort_keys=False)
-    
-        return HttpResponse(data, content_type="application/json")
-    
+        return context
+
 def downloadCoordinates(request):
     
     if request.GET.get('aid'):

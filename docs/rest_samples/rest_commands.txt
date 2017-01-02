@@ -11,3 +11,13 @@ curl -X POST -H 'x-authtoken:e75bea25-313f-05f2-2887-259746586857' -Fref_accnum=
 curl http://localhost:8000/islandviewer/rest/job/14/download/genbank/ -H 'x-authtoken:8792faf6-a232-dc5a-7629-0f503aa0c322
 
 curl http://localhost:8000/islandviewer/rest/job/14/download/tab/ -H 'x-authtoken:8792faf6-a232-dc5a-7629-0f503aa0c322
+
+curl http://localhost:8000/islandviewer/rest/job/26/islandpick/ -H 'x-authtoken:8792faf6-a232-dc5a-7629-0f503aa0c322'
+
+curl http://localhost:8000/islandviewer/rest/job/26/islandpick/picker/ -H 'x-authtoken:8792faf6-a232-dc5a-7629-0f503aa0c322'
+
+curl "http://localhost:8000/islandviewer/rest/job/26/islandpick/picker/?min_cutoff=0.10&max_dist_single_cutoff=0.30&max_cutoff=0.42&min_compare_cutoff=3&max_compare_cutoff=6&min_gi_size=4000" -H 'x-authtoken:8792faf6-a232-dc5a-7629-0f503aa0c322'
+
+curl http://localhost:8000/islandviewer/rest/job/26/islandpick/picker/ -H 'x-authtoken:8792faf6-a232-dc5a-7629-0f503aa0c322' -X POST -d '{ "min_cutoff": 0.10, "max_dist_single_cutoff": 0.30, "mx_cutoff": 0.42 }'
+
+curl http://localhost:8000/islandviewer/rest/job/26/islandpick/rerun/ -H 'x-authtoken:8792faf6-a232-dc5a-7629-0f503aa0c322' -X POST -d '{ "genomes": ["NZ_CP008896.1", "NZ_CP012400.1", "NZ_CP011317.1"], "min_gi_size": 8000 }'

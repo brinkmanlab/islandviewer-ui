@@ -38,6 +38,12 @@ VIRULENCE_FACTOR_CATEGORIES = {
 MODULES = ['Prepare', 'Distance', 'Sigi', 'Dimob', 'Islandpick', 'Virulence', 'Summary']
 GI_MODULES = ['Sigi', 'Dimob', 'Islandpick']
 
+PICKER_DEFAULTS = {
+    'min_gi_size': 4000,
+    'min_cutoff': 0.1,
+    'max_cutoff': 0.42,
+}
+
 class CustomGenome(models.Model):
     cid = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
@@ -53,6 +59,13 @@ class CustomGenome(models.Model):
     @property
     def isvalid(self):
         return self.genome_status == 6
+
+    @property
+    def is_system_owned(self):
+        return False
+
+    def is_owner(self, uid):
+        return uid == self.owner_id
 
     class Meta:
         db_table = "CustomGenome"
@@ -79,6 +92,13 @@ class NameCache(models.Model):
     @property
     def owner_id(self):
         return 0
+
+    def is_owner(self, uid):
+        return False
+
+    @property
+    def is_system_owned(self):
+        return True
     
     @property
     def filename(self):
@@ -389,12 +409,12 @@ class Distance(models.Model):
         if 'min_cutoff' in kwargs:
             min_cutoff = kwargs['min_cutoff']
         else:
-            min_cutoff = 0.1
+            min_cutoff = PICKER_DEFAULTS['min_cutoff']
 
         if 'max_cutoff' in kwargs:
             max_cutoff = kwargs['max_cutoff']
         else:
-            max_cutoff = 0.42
+            max_cutoff = PICKER_DEFAULTS['max_cutoff']
 
         params = [accnum, accnum, min_cutoff, max_cutoff]
         sql = "SELECT id, rep_accnum1, rep_accnum2, distance from Distance WHERE (rep_accnum1 = %s or rep_accnum2 = %s) AND "
