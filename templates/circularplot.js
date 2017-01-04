@@ -38,11 +38,27 @@ var {{ varName|default:"circular" }}data = [
 	  {% if ext_id %}ext_id: '{{ext_id}}',{% endif %}
 	  items: {{ Alignments|safe }}
 	 },
+{% comment %}Islander track data{% endcomment %}
+{ trackName: "{{ plotName|default:"circular" }}Islander",
+	trackType: "track",
+	inner_radius: {{ ip_inner_radius|default:140 }},
+	outer_radius: {{ ip_outer_radius|default:160 }},
+	min_slice: true,
+		mouseover_callback: '{{ varName|default:'' }}islandviewerObj',
+	mouseout_callback: '{{ varName|default:'' }}islandviewerObj',
+	mouseclick: '{{ varName|default:'' }}islandviewerObj',
+	linear_skipInit: true,
+{% if ext_id %}ext_id: '{{ext_id}}',
+	linear_mouseclick: '{{ varName|default:'' }}islandviewerObj',{% endif %}
+	linear_mouseover: '{{ varName|default:'' }}islandviewerObj',
+	linear_mouseout: '{{ varName|default:'' }}islandviewerObj',
+	items: {{ Islander|safe }}
+},
 {% comment %}Islandpick track data{% endcomment %}
         { trackName: "{{ plotName|default:"circular" }}Islandpick",
 	  trackType: "track",
-	  inner_radius: {{ ip_inner_radius|default:50 }},
-	  outer_radius: {{ ip_outer_radius|default:100 }},
+	  inner_radius: {{ ip_inner_radius|default:160 }},
+	  outer_radius: {{ ip_outer_radius|default:180 }},
 	  min_slice: true,
 	  mouseover_callback: '{{ varName|default:'' }}islandviewerObj',
 	  mouseout_callback: '{{ varName|default:'' }}islandviewerObj',
@@ -57,8 +73,8 @@ var {{ varName|default:"circular" }}data = [
 {% comment %}SIGI track data{% endcomment %}
         { trackName: "{{ plotName|default:"circular" }}Sigi",
 	  trackType: "track",
-	  inner_radius: {{ sigi_inner_radius|default:100 }},
-	  outer_radius: {{ sigi_outer_radius|default:150 }},
+	  inner_radius: {{ sigi_inner_radius|default:180 }},
+	  outer_radius: {{ sigi_outer_radius|default:200 }},
 	  mouseover_callback: '{{ varName|default:'' }}islandviewerObj',
 	  mouseout_callback: '{{ varName|default:'' }}islandviewerObj',
 	  mouseclick: '{{ varName|default:'' }}islandviewerObj',
@@ -72,8 +88,8 @@ var {{ varName|default:"circular" }}data = [
 {% comment %}Dimob track data{% endcomment %}
         { trackName: "{{ plotName|default:"circular" }}Dimob",
 	  trackType: "track",
-	  inner_radius: {{ dimob_inner_radius|default:150 }},
-	  outer_radius: {{ dimob_outer_radius|default:200 }},
+	  inner_radius: {{ dimob_inner_radius|default:200 }},
+	  outer_radius: {{ dimob_outer_radius|default:220 }},
 	  min_slice: true,
 	  mouseover_callback: '{{ varName|default:'' }}islandviewerObj',
 	  mouseout_callback: '{{ varName|default:'' }}islandviewerObj',
@@ -88,8 +104,8 @@ var {{ varName|default:"circular" }}data = [
 {% comment %}Integrated track data{% endcomment %}
         { trackName: "{{ plotName|default:"circular" }}Integrated",
 	  trackType: "track",
-	  inner_radius: {{ int_inner_radius|default:215 }},
-	  outer_radius: {{ int_outer_radius|default:245 }},
+	  inner_radius: {{ int_inner_radius|default:220 }},
+	  outer_radius: {{ int_outer_radius|default:240 }},
 	  mouseover_callback: '{{ varName|default:'' }}islandviewerObj',
 	  mouseout_callback: '{{ varName|default:'' }}islandviewerObj',
 	  mouseclick: '{{ varName|default:'' }}islandviewerObj',
@@ -99,7 +115,7 @@ var {{ varName|default:"circular" }}data = [
 {% comment %}GC Plot track data{% endcomment %}
         { trackName: "{{ plotName|default:"circular" }}GCPlot",
 	  trackType: "plot",
-	  plot_radius: {{ gc_plot_radius|default:150 }},
+	  plot_radius: {{ gc_plot_radius|default:100 }},
 	  plot_width: {{ gc_plot_width|default:75 }},
 	  bp_per_element: {{ gc_bp_per_element|default:10000 }},
 	  plot_min: {{ gc.min|default:0 }},
@@ -114,7 +130,7 @@ var {{ varName|default:"circular" }}data = [
 	{ trackName: "{{ plotName|default:"circular" }}Virulence",
 	  trackType: 'glyph',
 	  glyphType: '{{ virulenceShape|default:"circle" }}',
-	  radius: {{ virulenceRadius|default:175 }},
+	  radius: {{ virulenceRadius|default:145 }},
 	  pixel_spacing: 3,
           linear_pixel_spacing: 6,
 	  glyph_buffer: 3,
@@ -184,24 +200,27 @@ function updateStrand(cb, strand) {
   var track = '';
 
   switch(strand) {
-  case "islandpick":
-    track = "{{ plotName|default:"circular" }}Islandpick";
-    break;
-  case "sigi":
-    track = "{{ plotName|default:"circular" }}Sigi";
-    break;
-  case "dimob":
-    track = "{{ plotName|default:"circular" }}Dimob";
-    break;
-  case "integrated":
-    track = "{{ plotName|default:"circular" }}Integrated";
-    break;
-  case "contig":
-    track = "{{ plotName|default:"circular" }}Contig_Gap";
-    break;
-  case "alignment":
-    track = "{{ plotName|default:"circular" }}Alignment";
-    break;
+	  case "islander":
+        track  = "{{ plotName|default:"circular" }}Islander";
+		break;
+	  case "islandpick":
+		track = "{{ plotName|default:"circular" }}Islandpick";
+		break;
+	  case "sigi":
+		track = "{{ plotName|default:"circular" }}Sigi";
+		break;
+	  case "dimob":
+		track = "{{ plotName|default:"circular" }}Dimob";
+		break;
+	  case "integrated":
+		track = "{{ plotName|default:"circular" }}Integrated";
+		break;
+	  case "contig":
+		track = "{{ plotName|default:"circular" }}Contig_Gap";
+		break;
+	  case "alignment":
+		track = "{{ plotName|default:"circular" }}Alignment";
+		break;
   }
 
   if(cb.checked) {
@@ -717,7 +736,7 @@ function update_legend() {
   }
 
   // Now update the legend
-  var allmethods = ['circularIntegrated', 'circularIslandpick', 'circularSigi', 'circularDimob', 'PAG', 'VFDB', 'ARDB', 'CARD', 'RGI', 'Victors', 'PATRIC_VF', 'BLAST'];
+  var allmethods = ['circularIntegrated', 'circularIslandpick', 'circularSigi', 'circularDimob', 'circularIslander', 'PAG', 'VFDB', 'ARDB', 'CARD', 'RGI', 'Victors', 'PATRIC_VF', 'BLAST'];
   // First disable all checkboxes and say nothing is run
   $('.methodcheckbox').each( function() {
       $(this).attr("disabled", true);

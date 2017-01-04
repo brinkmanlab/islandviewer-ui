@@ -31,6 +31,9 @@
   	        		{% elif gi.prediction_method == "Dimob" %}
   	        		"method": "IslandPath-DIMOB",
   	        		"group": 3
+	   				{% elif gi.prediction_method == "Islander" %}
+	   				"method": "Islander",
+	   				"group": 4
 					{% endif %}
   	        	}{% if not forloop.last %},{% endif %}
   	        {% endfor %}

@@ -51,56 +51,56 @@ Islandviewer.prototype.onclick = function(trackname, d, plotid, skip_half_range)
     if(plotid == 'circularchartlinear' || plotid == 'secondchartlinear') {
 
       if(trackname == 'circularVirulence') {
-	var url = false;
+		var url = false;
 
-        if(d.name == "VFDB") {
-          url = 'http://www.mgc.ac.cn/cgi-bin/VFs/vfs.cgi?VFID=' + d.ext_id;
+		if(d.name == "VFDB") {
+		  url = 'http://www.mgc.ac.cn/cgi-bin/VFs/vfs.cgi?VFID=' + d.ext_id;
 
-        } else if(d.name == 'PATRIC_VF') {
-          url = 'http://patricbrc.org/portal/portal/patric/Feature?cType=feature&cId=' + d.ext_id;
-	} else if(d.name == 'Victors') {
-	  url = 'http://www.phidias.us/victors/gene_detail.php?c_mc_victor_id=' + d.ext_id;
-	} else if(d.name == 'CARD') {
-	  url = 'http://arpcard.mcmaster.ca/?q=CARD/ontology/' + d.ext_id
-	} else if(d.name == 'RGI') {
-	  url = 'http://arpcard.mcmaster.ca/?q=CARD/ontology/' + d.ext_id
-	}
+		} else if(d.name == 'PATRIC_VF') {
+		  url = 'http://patricbrc.org/portal/portal/patric/Feature?cType=feature&cId=' + d.ext_id;
+		} else if(d.name == 'Victors') {
+		  url = 'http://www.phidias.us/victors/gene_detail.php?c_mc_victor_id=' + d.ext_id;
+		} else if(d.name == 'CARD') {
+		  url = 'http://arpcard.mcmaster.ca/?q=CARD/ontology/' + d.ext_id
+		} else if(d.name == 'RGI') {
+		  url = 'http://arpcard.mcmaster.ca/?q=CARD/ontology/' + d.ext_id
+		}
 
-	// Open the link if we've found something
-	if(url) {
-	  window.open(url);
-	}
+		// Open the link if we've found something
+		if(url) {
+		  window.open(url);
+		}
       } else if(trackname == 'circularGenes') {
         var url = 'http://www.ncbi.nlm.nih.gov/protein/' + d.accnum;
 
         window.open(url);
-      } else if((trackname == 'circularIslandpick') || (trackname == 'circularDimob') || (trackname == 'circularSigi')) {
+	  } else if((trackname == 'circularIslandpick') || (trackname == 'circularDimob') || (trackname == 'circularSigi') || (trackname == 'circularIslander')) {
 
 //        var view_start = Math.max(0, (d.start-500));
 //	var view_end = Math.min((d.end+500), this.genomesize);
-	$('.method_row').each(function() {
-	    $(this).removeClass('highlightrow')
-	});
-	$('html, body').animate({ scrollTop: $('#table_' + d.id).offset().top }, 'slow');
-	$("#table_" + d.id).addClass('highlightrow');
+		$('.method_row').each(function() {
+			$(this).removeClass('highlightrow')
+		});
+		$('html, body').animate({ scrollTop: $('#table_' + d.id).offset().top }, 'slow');
+		$("#table_" + d.id).addClass('highlightrow');
 
 //	var url = 'http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=' + this.ext_id + '&v=' + view_start + '..' + view_end + '&m=' + d.start + ',' + d.end;
 //	window.open(url);
       }
     } else if(plotid == 'circularchart') {
 
-      if((trackname == 'circularIslandpick') || (trackname == 'circularDimob') || (trackname == 'circularSigi') || (trackname == 'circularIntegrated')) {
+      if((trackname == 'circularIslandpick') || (trackname == 'circularDimob') || (trackname == 'circularSigi')  || (trackname == 'circularIslander') || (trackname == 'circularIntegrated')) {
         clearTimeout(this.popup_timer);
 
-	if(typeof skip_half_range !== 'undefined') {
-	  var half_range = 0;
-	  var do_half_range = false;
-	} else {
-	  var half_range = (d.end - d.start)/2;
-	  var do_half_range = true;
-	}
+		if(typeof skip_half_range !== 'undefined') {
+		  var half_range = 0;
+		  var do_half_range = false;
+		} else {
+		  var half_range = (d.end - d.start)/2;
+		  var do_half_range = true;
+		}
 
-        //var half_range = (d.end - d.start)/2;
+			//var half_range = (d.end - d.start)/2;
         this.linearplot.update(Math.max(0,(d.start-half_range)), Math.min(this.genomesize, (d.end+half_range)));
 
         this.circularplot.moveBrushbyBP(Math.max(0,(d.start-half_range)), 
@@ -157,7 +157,7 @@ Islandviewer.prototype.mouseover = function(trackname, d, plotid) {
     if(plotid == 'circularchartlinear' || plotid == 'secondchartlinear' ) {
       if(trackname == 'circularGenes') {
   	$('#gene_overlay_' + d.id).addClass("highlight_row");
-      } else if((trackname == 'circularIslandpick') || (trackname == 'circularDimob') || (trackname == 'circularSigi')) {
+      } else if((trackname == 'circularIslandpick') || (trackname == 'circularDimob') || (trackname == 'circularSigi') || (trackname == 'circularIslander')) {
 	$('.islandset_' + d.id).addClass("highlight_row");
       } else if(trackname == 'circularVirulence') {
 //        $('.gene_' + d.gene.replace('.', '')).addClass("highlight_row");
@@ -165,7 +165,7 @@ Islandviewer.prototype.mouseover = function(trackname, d, plotid) {
       }
 
     } else if (plotid == 'circularchart') {
-      if((trackname == 'circularIslandpick') || (trackname == 'circularDimob') || (trackname == 'circularSigi') || (trackname == 'circularIntegrated')) {
+      if((trackname == 'circularIslandpick') || (trackname == 'circularDimob') || (trackname == 'circularSigi') || (trackname == 'circularIslander') || (trackname == 'circularIntegrated')) {
 
         this.popup_d = d;
 //        this.popup_timer = setTimeout(function() {this.showHoverGenes(popup_d);}, 1000, [d, this]);
@@ -183,7 +183,7 @@ Islandviewer.prototype.mouseout = function(trackname, d, plotid) {
     if(plotid == 'circularchartlinear' || plotid == 'secondchartlinear') {
       if(trackname == 'circularGenes') {
   	$('#gene_overlay_' + d.id).removeClass("highlight_row");
-      } else if((trackname == 'circularIslandpick') || (trackname == 'circularDimob') || (trackname == 'circularSigi')) {
+      } else if((trackname == 'circularIslandpick') || (trackname == 'circularDimob') || (trackname == 'circularSigi') || (trackname == 'circularIslander')) {
 	$('.islandset_' + d.id).removeClass("highlight_row");
       } else if(trackname == 'circularVirulence') {
 //        $('.gene_' + d.gene.replace('.', '')).removeClass("highlight_row");
@@ -191,7 +191,7 @@ Islandviewer.prototype.mouseout = function(trackname, d, plotid) {
       }
 
     } else if (plotid == 'circularchart') {
-      if((trackname == 'circularIslandpick') || (trackname == 'circularDimob') || (trackname == 'circularSigi') || (trackname == 'circularIntegrated')) {
+      if((trackname == 'circularIslandpick') || (trackname == 'circularDimob') || (trackname == 'circularSigi') || (trackname == 'circularIslander') || (trackname == 'circularIntegrated')) {
         clearTimeout(this.popup_timer);
       }
 
@@ -211,7 +211,7 @@ Islandviewer.prototype.update_finished = function(startBP, endBP, params) {
 
     this.startBP = startBP;
     this.endBP = endBP;
-//        console.log(url);
+        console.log(url);
 
     $.ajax({
 	    url: url,
@@ -232,18 +232,21 @@ Islandviewer.prototype.update_finished = function(startBP, endBP, params) {
 			}
 			html += 'gene_' + row.name.replace('.', '') + ' ';
 			html += "\"><td>";
-//			console.log(row);
+			console.log(row);
 			if(row.method && row.method !== 0) {
 			    methods = row.method.split(',');
 			    if($.inArray('Islandpick', methods) >= 0) {
 				html += "<span class=\"islandbox greenislandbox\">&nbsp;&nbsp;</span>";
 			    }
 			    if($.inArray('Sigi', methods) >= 0) {
-				html += "<span class=\"islandbox orangeislandbox\">&nbsp;&nbsp;</span>";
+				html += "<span class=\"islandbox darkorangeislandbox\">&nbsp;&nbsp;</span>";
 			    }
 			    if($.inArray('Dimob', methods) >= 0) {
-				html += "<span class=\"islandbox blueislandbox\">&nbsp;&nbsp;</span>";
+				html += "<span class=\"islandbox royalblueislandbox\">&nbsp;&nbsp;</span>";
 			    }
+				if($.inArray('Islander', methods) >= 0) {
+					html += "<span class=\"islandbox turquoiseislandbox\">&nbsp;&nbsp;</span>";
+				}
 			}
 			if(row.virulence && row.virulence !== 0) {
 			    virulence = row.virulence.split(',');
@@ -387,15 +390,16 @@ Islandviewer.prototype.findMethods = function() {
 
       // Loop through the data and find all methods
       for(var i=0; i < this.trackdata.length; i++) {
-        if(this.trackdata[i].trackName == "circularIslandpick" || 
-           this.trackdata[i].trackName == "circularSigi" || 
-           this.trackdata[i].trackName == "circularDimob") {
+		  if(this.trackdata[i].trackName == "circularIslandpick" ||
+			this.trackdata[i].trackName == "circularSigi" ||
+			this.trackdata[i].trackName == "circularDimob" ||
+			this.trackdata[i].trackName == "circularIslander") {
 
            if(this.trackdata[i].items.length > 0) {
              types[ this.trackdata[i].trackName] = true;
 
-	     // There's at least one method, so we have integrated...
-	     types['circularIntegrated'] = true;
+			 // There's at least one method, so we have integrated...
+			 types['circularIntegrated'] = true;
            }
         } else if(this.trackdata[i].trackName == "circularVirulence") {
           items = this.trackdata[i].items;
