@@ -35,3 +35,11 @@ ALTER TABLE UploadGenome CHANGE cid cid INT(11) NOT NULL DEFAULT 0;
 ALTER TABLE GIAnalysisTask CHANGE parameters parameters text;
 
 ALTER TABLE SiteStatus CHANGE status status int(11) NOT NULL DEFAULT '0';
+
+ALTER TABLE virulence CHANGE source source enum('VFDB','ARDB','PAG','CARD','RGI','Victors','PATRIC_VF','BLAST',',') DEFAULT NULL;
+
+ALTER TABLE virulence CHANGE type type enum('resistance','virulence','pathogen-associated') NOT NULL;
+
+ALTER TABLE virulence_mapped CHANGE source source enum('VFDB','ARDB','PAG','CARD','RGI','Victors','PATRIC_VF','BLAST',',') DEFAULT NULL;
+
+ALTER TABLE virulence_mapped CHANGE type type enum('resistance','virulence','pathogen-associated') NOT NULL;

@@ -141,8 +141,8 @@ class Analysis(models.Model):
                                  default=STATUS['PENDING'])
     workdir = models.CharField(max_length=100)
     microbedb_ver = models.IntegerField(default=0)
-    start_date = models.DateTimeField('date started')
-    complete_date = models.DateTimeField('date completed')
+    start_date = models.DateTimeField('date started', null=True)
+    complete_date = models.DateTimeField('date completed', null=True)
 
     @property
     def is_complete(self):
@@ -301,8 +301,8 @@ class GIAnalysisTask(models.Model):
     status = models.IntegerField(choices=STATUS_CHOICES,
                                  default=STATUS['PENDING'])
     parameters = models.TextField(blank=True, null=True)
-    start_date = models.DateTimeField('date started')
-    complete_date = models.DateTimeField('date completed')
+    start_date = models.DateTimeField('date started', null=True)
+    complete_date = models.DateTimeField('date completed', null=True)
 
     @classmethod
     def fetch_parameters(cls, aid, method):
@@ -520,11 +520,40 @@ class SiteStatus(models.Model):
 class Virulence(models.Model):
     protein_accnum = models.CharField(max_length=18,primary_key=True)
     external_id = models.CharField(max_length=18)
-    source = models.CharField(max_length=4, blank=True)
-    type = models.CharField(max_length=20, blank=False)
+    source = models.IntegerField()
+    type = models.IntegerField()
+    flag = models.TextField(null=True, blank=True)
+    pmid = models.CharField(max_length=50, null=True, blank=True)
+    date = models.DateTimeField(auto_now_add=True, null=True)
+
     class Meta:
-        managed = False
+#        managed = False
         db_table = 'virulence'
+
+class VirulenceMapped(models.Model):
+    gene_id = models.IntegerField(db_index=True)
+    ext_id = models.CharField(max_length=24, null=True, blank=True)
+    protein_accnum = models.CharField(max_length=18, null=True, blank=True, db_index=True)
+    external_id = models.CharField(max_length=18, null=True, blank=True, db_index=True)
+    source = models.IntegerField()
+    type = models.IntegerField()
+    flag = models.TextField(null=True, blank=True)
+    pmid = models.CharField(max_length=50, null=True, blank=True)
+    date = models.DateTimeField(auto_now_add=True, null=True)
+
+    class Meta:
+        db_table = 'virulence_mapped'
+        unique_together = ('external_id', 'gene_id', 'ext_id')
+        index_together = [
+            ['ext_id', 'gene_id'],
+        ]
+
+
+class VirulenceCuratedReps(models.Model):
+    rep_accnum = models.CharField(max_length=24, primary_key=True)
+
+    class Meta:
+        db_table = 'virulence_curated_reps'
 
 class UserToken(models.Model):
     user = models.ForeignKey(User, unique=True)
