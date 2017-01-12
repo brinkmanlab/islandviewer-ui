@@ -182,9 +182,9 @@ Islandviewer.prototype.mouseout = function(trackname, d, plotid) {
 
     if(plotid == 'circularchartlinear' || plotid == 'secondchartlinear') {
       if(trackname == 'circularGenes') {
-  	$('#gene_overlay_' + d.id).removeClass("highlight_row");
+  		$('#gene_overlay_' + d.id).removeClass("highlight_row");
       } else if((trackname == 'circularIslandpick') || (trackname == 'circularDimob') || (trackname == 'circularSigi') || (trackname == 'circularIslander')) {
-	$('.islandset_' + d.id).removeClass("highlight_row");
+		$('.islandset_' + d.id).removeClass("highlight_row");
       } else if(trackname == 'circularVirulence') {
 //        $('.gene_' + d.gene.replace('.', '')).removeClass("highlight_row");
         $('#gene_overlay_' + d.id).removeClass("highlight_row");
@@ -211,7 +211,7 @@ Islandviewer.prototype.update_finished = function(startBP, endBP, params) {
 
     this.startBP = startBP;
     this.endBP = endBP;
-        console.log(url);
+//        console.log(url);
 
     $.ajax({
 	    url: url,
@@ -232,7 +232,7 @@ Islandviewer.prototype.update_finished = function(startBP, endBP, params) {
 			}
 			html += 'gene_' + row.name.replace('.', '') + ' ';
 			html += "\"><td>";
-			console.log(row);
+//			console.log(row);
 			if(row.method && row.method !== 0) {
 			    methods = row.method.split(',');
 			    if($.inArray('Islandpick', methods) >= 0) {
