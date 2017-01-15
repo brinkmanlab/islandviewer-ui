@@ -27,7 +27,7 @@ from scripts import mauvewrap
 import glob
 from django.core import serializers
 from ratelimit.decorators import ratelimit
-from webui.decorators import ratelimit_warning
+from webui.decorators import ratelimit_warning, staff_required
 
 def index(request):
     return render(request, 'index.html')
@@ -533,6 +533,7 @@ def uploadredirect(request, upload_id):
     else:
         return HttpResponseRedirect(reverse('webui.views.results', kwargs={'aid': upload.aid}))
 
+@staff_required
 def runstatus(request):
     context = {}
 
@@ -542,6 +543,7 @@ def runstatus(request):
     
 
 
+@staff_required
 def runstatusjson(request):
     context = {}
 
@@ -588,6 +590,7 @@ def runstatusjson(request):
     
     return render(request, 'status.json', context)
 
+@staff_required
 def runstatusdetailsjson(request, aid):
     context = {}
     

@@ -18,7 +18,10 @@ def auth_token(function=None):
                     usertoken = UserToken.objects.get(token=token)
 
                     if usertoken.expires < datetime.now(pytz.utc):
-                        return HttpResponse(status=401)                    
+                        return HttpResponse(status=401)
+
+                    if not usertoken.user.is_active:
+                        return HttpResponse(status=401)
 
                 except Exception as e:
                     if settings.DEBUG:
@@ -27,6 +30,37 @@ def auth_token(function=None):
 
                 # Set the authenticated user for the request
                 request.user = usertoken.user
+
+            response = view_func(request, *args, **kwargs)
+
+            return response
+
+        decorated.__name__ = view_func.__name__
+        decorated.__dict__ = view_func.__dict__
+        decorated.__doc__ = view_func.__doc__
+
+        return decorated
+
+    if function is None:
+        return decorator
+    else:
+        return decorator(function)
+
+def staff_required(function=None):
+    def decorator(view_func):
+        def decorated(request, *args, **kwargs):
+
+            print request.user.is_staff
+            print request.user.id
+            if 'iv_social' in settings.INSTALLED_APPS:
+                try:
+                    if not request.user.is_staff:
+                        return HttpResponse(status=401)
+
+                except Exception as e:
+                    if settings.DEBUG:
+                        print str(e)
+                    return HttpResponse(status=401)
 
             response = view_func(request, *args, **kwargs)
 

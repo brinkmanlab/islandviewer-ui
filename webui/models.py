@@ -84,10 +84,10 @@ class NameCache(models.Model):
         
     @property
     def replicon(self):
-        if not hasattr(self, 'rep'):
-            self.rep = Replicon.objects.using('microbedb').by_accnum(self.cid)
+        if not hasattr(self, '_rep'):
+            self._rep = Replicon.by_accnum(self.cid)
             
-        return self.rep
+        return self._rep
     
     @property
     def owner_id(self):
@@ -293,6 +293,10 @@ class Analysis(models.Model):
 
     class Meta:
         db_table = "Analysis"
+#        permissions = (
+#            ("view_analysis", "Can see all analysis"),
+#            ("upgrade_users", "Can see and upgrade users"),
+#        )
 
 class GIAnalysisTask(models.Model):
     taskid = models.AutoField(primary_key=True)
@@ -558,7 +562,7 @@ class VirulenceCuratedReps(models.Model):
 class UserToken(models.Model):
     user = models.ForeignKey(User, unique=True)
     token = models.CharField(max_length=36)
-    expires = models.DateTimeField(default=datetime.now()+timedelta(days=30))
+    expires = models.DateTimeField(default=datetime.now()+timedelta(days=30), null=True)
     
     class Meta:
         db_table = 'UserToken'
@@ -568,11 +572,11 @@ MicrobeDB models
 '''
 
 class Genomeproject(models.Model):
-    gpv_id = models.IntegerField(primary_key=True)
+    gpv_id = models.IntegerField(primary_key=True, db_column='gpv_id')
     assembly_accession = models.CharField(max_length=20)
     asm_name = models.CharField(max_length=24)
     genome_name = models.TextField()
-    version_id = models.IntegerField()
+    version_id = models.ForeignKey('Version')
     bioproject = models.CharField(max_length=14)
     biosample = models.CharField(max_length=14)
     taxid = models.IntegerField(blank=True, null=True)
@@ -584,7 +588,7 @@ class Genomeproject(models.Model):
     gpv_directory = models.TextField(blank=True)
     filename = models.CharField(max_length=75)
     file_types = models.TextField(blank=True)
-    prev_gpv = models.IntegerField()
+    prev_gpv = models.IntegerField(null=True)
     class Meta:
         managed = False
         db_table = 'genomeproject'
@@ -593,28 +597,27 @@ class Genomeproject_Checksum(models.Model):
     version_id = models.IntegerField(primary_key=True)
     filename = models.CharField(max_length=64)
     checksum = models.CharField(max_length=32)
-    gpv_id = models.IntegerField()
+    gpv_id = models.ForeignKey(Genomeproject, db_column='gpv_id')
     class Meta:
         managed = False
         db_table = 'genomeproject_checksum'
     
 class Genomeproject_Meta(models.Model):
-    gpv_id = models.IntegerField(primary_key=True)
-    gram_stain = models.CharField(max_length=7, blank=True)
+    gpv_id = models.OneToOneField(Genomeproject, db_column='gpv_id', on_delete=models.CASCADE, primary_key=True)
+    gram_stain = models.CharField(max_length=7, blank=True, null=True)
     genome_gc = models.FloatField(blank=True, null=True)
-    patho_status = models.CharField(max_length=11, blank=True)
-    disease = models.TextField(blank=True)
+    patho_status = models.CharField(max_length=11, blank=True, null=True)
+    disease = models.TextField(blank=True, null=True)
     genome_size = models.FloatField(blank=True, null=True)
-    pathogenic_in = models.TextField(blank=True)
-    temp_range = models.CharField(max_length=17, blank=True)
-    habitat = models.CharField(max_length=15, blank=True)
-    shape = models.TextField(blank=True)
-    arrangement = models.TextField(blank=True)
-    endospore = models.CharField(max_length=7, blank=True)
-    motility = models.CharField(max_length=7, blank=True)
-    salinity = models.TextField(blank=True)
-    oxygen_req = models.CharField(max_length=15, blank=True)
-    centre = models.TextField(blank=True)
+    pathogenic_in = models.TextField(blank=True, null=True)
+    temp_range = models.CharField(max_length=17, blank=True, null=True)
+    habitat = models.CharField(max_length=15, blank=True, null=True)
+    shape = models.TextField(blank=True, null=True)
+    arrangement = models.TextField(blank=True, null=True)
+    endospore = models.CharField(max_length=7, blank=True, null=True)
+    motility = models.CharField(max_length=7, blank=True, null=True)
+    salinity = models.TextField(blank=True, null=True)
+    oxygen_req = models.CharField(max_length=15, blank=True, null=True)
     chromosome_num = models.IntegerField(blank=True, null=True)
     plasmid_num = models.IntegerField(blank=True, null=True)
     contig_num = models.IntegerField(blank=True, null=True)
@@ -624,7 +627,7 @@ class Genomeproject_Meta(models.Model):
 
 class Replicon(models.Model):
     rpv_id = models.IntegerField(primary_key=True)
-    gpv_id = models.ForeignKey('Genomeproject', related_name='replicons')
+    gpv_id = models.ForeignKey('Genomeproject', related_name='replicons', db_column='gpv_id')
     version_id = models.IntegerField()
     rep_accnum = models.CharField(max_length=20, blank=True)
     rep_version = models.IntegerField()
@@ -646,18 +649,18 @@ class Replicon(models.Model):
     def by_accnum(cls, rep_accnum, rep_version=None):
         try:
             # If we haven't been given a version, see if we have one in the accession
-            if not rep_accnum:
+            if not rep_version:
                 split_accnum = rep_accnum.split('.')
-                if len(split_accnum == 2):
+                if len(split_accnum) == 2:
                     rep_accnum = split_accnum[0]
                     rep_version = split_accnum[1]
 
             lookup_param = {'rep_accnum': rep_accnum}
             if rep_version:
                 lookup_param['rep_version'] = rep_version
-                            
-            rep = cls.objects.filter(**lookup_param).first()
-            
+
+            rep = cls.objects.using('microbedb').filter(**lookup_param).first()
+
             return rep
             
         except Exception as e:
@@ -672,15 +675,15 @@ class Replicon(models.Model):
 
 class Taxonomy(models.Model):
     taxon_id = models.IntegerField(primary_key=True)
-    superkingdom = models.TextField(blank=True)
-    phylum = models.TextField(blank=True)
-    class_field = models.TextField(db_column='class', blank=True) # Field renamed because it was a Python reserved word.
-    order = models.TextField(blank=True)
-    family = models.TextField(blank=True)
-    genus = models.TextField(blank=True)
-    species = models.TextField(blank=True)
-    other = models.TextField(blank=True)
-    synonyms = models.TextField(blank=True)
+    superkingdom = models.TextField(blank=True, null=True)
+    phylum = models.TextField(blank=True, null=True)
+    tax_class = models.TextField(blank=True, null=True)
+    order = models.TextField(blank=True, null=True)
+    family = models.TextField(blank=True, null=True)
+    genus = models.TextField(blank=True, null=True)
+    species = models.TextField(blank=True, null=True)
+    other = models.TextField(blank=True, null=True)
+    synonyms = models.TextField(blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'taxonomy'
@@ -689,7 +692,7 @@ class Version(models.Model):
     version_id = models.IntegerField(primary_key=True)
     dl_directory = models.TextField(blank=True)
     version_date = models.DateField()
-    used_by = models.TextField(blank=True)
+    used_by = models.TextField(blank=True, null=True)
     is_current = models.IntegerField()
     class Meta:
         managed = False
