@@ -50,8 +50,6 @@ def staff_required(function=None):
     def decorator(view_func):
         def decorated(request, *args, **kwargs):
 
-            print request.user.is_staff
-            print request.user.id
             if 'iv_social' in settings.INSTALLED_APPS:
                 try:
                     if not request.user.is_staff:

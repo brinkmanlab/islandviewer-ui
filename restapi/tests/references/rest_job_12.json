@@ -1,0 +1,21 @@
+{
+    "aid": 12, 
+    "emails": "me@sfu.ca", 
+    "genome_name": "matts test", 
+    "results": "http://testserver/islandviewer/results/12/?token=jpcEHLVjP61IMy6TEeg4O1", 
+    "status": "Complete", 
+    "taskcount": {
+        "Dimob": 2, 
+        "Islandpick": 0, 
+        "Sigi": 5
+    }, 
+    "tasks": {
+        "2": "Complete", 
+        "Dimob": "Complete", 
+        "Distance": "Complete", 
+        "Islandpick": "Complete", 
+        "Prepare": "Complete", 
+        "Sigi": "Complete", 
+        "Summary": "Complete"
+    }
+}

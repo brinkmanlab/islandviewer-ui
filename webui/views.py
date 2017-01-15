@@ -679,6 +679,7 @@ def add_notify(request, aid):
     
     return HttpResponse(data, content_type="application/json")
 
+@staff_required
 def restartmodule(request, aid):
     context = {}
     
@@ -708,6 +709,7 @@ def restartmodule(request, aid):
     
     return HttpResponse(data, content_type="application/json")
 
+@staff_required
 def logsmodule(request, aid):
     context = {}
     

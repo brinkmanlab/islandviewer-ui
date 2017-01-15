@@ -1,0 +1,310 @@
+[
+{
+    "model": "webui.namecache",
+    "pk": 1968,
+    "fields": {
+        "cid": "NC_020912.1",
+        "name": "Pseudomonas aeruginosa B136-33, complete genome.",
+        "cds_num": 5828,
+        "rep_size": 6421010,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 1969,
+    "fields": {
+        "cid": "NC_018080.1",
+        "name": "Pseudomonas aeruginosa DK2 chromosome, complete genome.",
+        "cds_num": 5883,
+        "rep_size": 6402658,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 1970,
+    "fields": {
+        "cid": "NC_023066.1",
+        "name": "Pseudomonas aeruginosa LES431, complete genome.",
+        "cds_num": 5964,
+        "rep_size": 6550070,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 1971,
+    "fields": {
+        "cid": "NC_011770.1",
+        "name": "Pseudomonas aeruginosa LESB58 chromosome, complete genome.",
+        "cds_num": 5925,
+        "rep_size": 6601757,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 1972,
+    "fields": {
+        "cid": "NC_017548.1",
+        "name": "Pseudomonas aeruginosa M18 chromosome, complete genome.",
+        "cds_num": 5684,
+        "rep_size": 6327754,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 1973,
+    "fields": {
+        "cid": "NC_023019.1",
+        "name": "Pseudomonas aeruginosa MTB-1, complete genome.",
+        "cds_num": 6078,
+        "rep_size": 6580038,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 1974,
+    "fields": {
+        "cid": "NC_017549.1",
+        "name": "Pseudomonas aeruginosa NCGM2.S1 chromosome 1, complete genome.",
+        "cds_num": 6268,
+        "rep_size": 6764661,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 1975,
+    "fields": {
+        "cid": "NC_022806.1",
+        "name": "Pseudomonas aeruginosa PA1R, complete genome.",
+        "cds_num": 5612,
+        "rep_size": 6309305,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 1976,
+    "fields": {
+        "cid": "NC_022808.1",
+        "name": "Pseudomonas aeruginosa PA1, complete genome.",
+        "cds_num": 5799,
+        "rep_size": 6528877,
+        "isvalid": 0
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 1977,
+    "fields": {
+        "cid": "NC_009656.1",
+        "name": "Pseudomonas aeruginosa PA7 chromosome, complete genome.",
+        "cds_num": 6286,
+        "rep_size": 6588339,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 1979,
+    "fields": {
+        "cid": "NC_021577.1",
+        "name": "Pseudomonas aeruginosa RP73, complete genome.",
+        "cds_num": 5762,
+        "rep_size": 6342034,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 1978,
+    "fields": {
+        "cid": "NC_002516.2",
+        "name": "Pseudomonas aeruginosa PAO1 chromosome, complete genome.",
+        "cds_num": 5572,
+        "rep_size": 6264404,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 1980,
+    "fields": {
+        "cid": "NC_023149.1",
+        "name": "Pseudomonas aeruginosa SCV20265, complete genome.",
+        "cds_num": 6299,
+        "rep_size": 6725183,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 1981,
+    "fields": {
+        "cid": "NC_008463.1",
+        "name": "Pseudomonas aeruginosa UCBPP-PA14 chromosome, complete genome.",
+        "cds_num": 5892,
+        "rep_size": 6537648,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 3669,
+    "fields": {
+        "cid": "NZ_CP008739.1",
+        "name": "Pseudomonas aeruginosa VRFPA04, complete genome.",
+        "cds_num": 6143,
+        "rep_size": 6818030,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 3670,
+    "fields": {
+        "cid": "NZ_CP010555.1",
+        "name": "Pseudomonas aeruginosa strain FRD1, complete genome.",
+        "cds_num": 5902,
+        "rep_size": 6712339,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 3671,
+    "fields": {
+        "cid": "NZ_CP007147.1",
+        "name": "Pseudomonas aeruginosa YL84, complete genome.",
+        "cds_num": 5792,
+        "rep_size": 6433441,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 3672,
+    "fields": {
+        "cid": "NZ_AP014622.1",
+        "name": "Pseudomonas aeruginosa DNA, complete genome, strain: NCGM 1900.",
+        "cds_num": 6247,
+        "rep_size": 6814936,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 3673,
+    "fields": {
+        "cid": "NZ_AP014646.1",
+        "name": "Pseudomonas aeruginosa DNA, complete genome, strain: NCGM 1984.",
+        "cds_num": 6299,
+        "rep_size": 6850954,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 3674,
+    "fields": {
+        "cid": "NZ_CP011317.1",
+        "name": "Pseudomonas aeruginosa strain Carb01 63, complete genome.",
+        "cds_num": 6958,
+        "rep_size": 7497593,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 3675,
+    "fields": {
+        "cid": "NZ_CP012001.1",
+        "name": "Pseudomonas aeruginosa DSM 50071, complete genome.",
+        "cds_num": 5713,
+        "rep_size": 6317050,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 4339,
+    "fields": {
+        "cid": "NZ_CP012066.1",
+        "name": "Pseudomonas aeruginosa strain F9676, complete genome.",
+        "cds_num": 5729,
+        "rep_size": 6368008,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 4340,
+    "fields": {
+        "cid": "NZ_CP007399.1",
+        "name": "Pseudomonas aeruginosa strain F22031, complete genome.",
+        "cds_num": 5981,
+        "rep_size": 6603099,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 5168,
+    "fields": {
+        "cid": "NZ_CP013680.1",
+        "name": "Pseudomonas aeruginosa AES-1R, complete genome.",
+        "cds_num": 5792,
+        "rep_size": 6343337,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 5169,
+    "fields": {
+        "cid": "NZ_CP015877.1",
+        "name": "Pseudomonas aeruginosa SJTD-1, complete genome.",
+        "cds_num": 5618,
+        "rep_size": 6243825,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 5170,
+    "fields": {
+        "cid": "NZ_CP013993.1",
+        "name": "Pseudomonas aeruginosa DHS01, complete genome.",
+        "cds_num": 6567,
+        "rep_size": 7055752,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 5172,
+    "fields": {
+        "cid": "NZ_CP012679.1",
+        "name": "Pseudomonas aeruginosa strain PA1RG, complete genome.",
+        "cds_num": 5923,
+        "rep_size": 6500439,
+        "isvalid": 1
+    }
+},
+{
+    "model": "webui.namecache",
+    "pk": 5173,
+    "fields": {
+        "cid": "NZ_CP013245.1",
+        "name": "Pseudomonas aeruginosa strain VA-134, complete genome.",
+        "cds_num": 5778,
+        "rep_size": 6400418,
+        "isvalid": 1
+    }
+}
+]
