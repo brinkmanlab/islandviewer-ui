@@ -1,0 +1,12 @@
+[
+{
+    "model": "webui.version",
+    "pk": 1,
+    "fields": {
+        "dl_directory": "/data/NCBI_genomes/MicrobeDBv2/Bacteria_2016-12-15",
+        "version_date": "2016-12-15",
+        "used_by": null,
+        "is_current": 1
+    }
+}
+]

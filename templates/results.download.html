@@ -114,15 +114,15 @@
 		var params = $("#downloadtype, #resultstype, #downloadformat").serialize();
 		if(downloadtype == 'coordinates') {
 //			console.log("{% url "downloadcoordinates" %}?"+params);
-			$("#downloadResultsButton").attr("href", "{% url "downloadcoordinates" %}?aid={{ aid }}&"+params);
+			$("#downloadResultsButton").attr("href", "{% url "downloadcoordinates" %}?aid={{ aid }}&token={{ token }}&"+params);
 			$('#resultstypecontainer').toggleClass('hidden', false);
 			$('#imageformatcontainer').toggleClass('hidden', true);
 		} else if(downloadtype == 'annotations') {
-			$("#downloadResultsButton").attr("href", "{% url "downloadannotations" %}?aid={{ aid }}&"+params);						
+			$("#downloadResultsButton").attr("href", "{% url "downloadannotations" %}?aid={{ aid }}&token={{ token }}&"+params);
 			$('#resultstypecontainer').toggleClass('hidden', true);
 			$('#imageformatcontainer').toggleClass('hidden', true);
 		} else if(downloadtype == 'sequence') {
-			$("#downloadResultsButton").attr("href", "{% url "downloadsequences" %}?aid={{ aid }}&"+params);						
+			$("#downloadResultsButton").attr("href", "{% url "downloadsequences" %}?aid={{ aid }}&token={{ token }}&"+params);
 			$('#resultstypecontainer').toggleClass('hidden', false);
 			$('#imageformatcontainer').toggleClass('hidden', true);
 		} else {

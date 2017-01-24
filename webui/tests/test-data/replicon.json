@@ -1,0 +1,534 @@
+[
+{
+    "model": "webui.replicon",
+    "pk": 3427,
+    "fields": {
+        "gpv_id": 2233,
+        "version_id": 1,
+        "rep_accnum": "NC_002516",
+        "rep_version": 2,
+        "definition": "Pseudomonas aeruginosa PAO1 chromosome, complete genome.",
+        "rep_type": "chromosome",
+        "rep_ginum": "110645304",
+        "file_name": "NC_002516",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 5572,
+        "gene_num": 5697,
+        "rep_size": 6264404,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3428,
+    "fields": {
+        "gpv_id": 2234,
+        "version_id": 1,
+        "rep_accnum": "NC_008463",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa UCBPP-PA14, complete genome.",
+        "rep_type": "chromosome",
+        "rep_ginum": "116048575",
+        "file_name": "NC_008463",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 5901,
+        "gene_num": 5976,
+        "rep_size": 6537648,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3429,
+    "fields": {
+        "gpv_id": 2235,
+        "version_id": 1,
+        "rep_accnum": "NC_009656",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa PA7, complete genome.",
+        "rep_type": "chromosome",
+        "rep_ginum": "152983466",
+        "file_name": "NC_009656",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 5993,
+        "gene_num": 6070,
+        "rep_size": 6588339,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3430,
+    "fields": {
+        "gpv_id": 2236,
+        "version_id": 1,
+        "rep_accnum": "NC_011770",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa LESB58 complete genome sequence.",
+        "rep_type": "chromosome",
+        "rep_ginum": "218888746",
+        "file_name": "NC_011770",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 6041,
+        "gene_num": 6125,
+        "rep_size": 6601757,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3431,
+    "fields": {
+        "gpv_id": 2237,
+        "version_id": 1,
+        "rep_accnum": "NZ_CP013680",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa AES-1R, complete genome.",
+        "rep_type": "chromosome",
+        "rep_ginum": "972350565",
+        "file_name": "NZ_CP013680",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 5792,
+        "gene_num": 5877,
+        "rep_size": 6343337,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3432,
+    "fields": {
+        "gpv_id": 2238,
+        "version_id": 1,
+        "rep_accnum": "NC_017548",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa M18, complete genome.",
+        "rep_type": "chromosome",
+        "rep_ginum": "386056071",
+        "file_name": "NC_017548",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 5744,
+        "gene_num": 5820,
+        "rep_size": 6327754,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3433,
+    "fields": {
+        "gpv_id": 2239,
+        "version_id": 1,
+        "rep_accnum": "NC_018080",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa DK2, complete genome.",
+        "rep_type": "chromosome",
+        "rep_ginum": "392981410",
+        "file_name": "NC_018080",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 5843,
+        "gene_num": 5919,
+        "rep_size": 6402658,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3434,
+    "fields": {
+        "gpv_id": 2240,
+        "version_id": 1,
+        "rep_accnum": "NZ_CP015877",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa SJTD-1, complete genome.",
+        "rep_type": "chromosome",
+        "rep_ginum": "1035816055",
+        "file_name": "NZ_CP015877",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 5618,
+        "gene_num": 5697,
+        "rep_size": 6243825,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3435,
+    "fields": {
+        "gpv_id": 2241,
+        "version_id": 1,
+        "rep_accnum": "NC_017549",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa NCGM2.S1 DNA, complete genome.",
+        "rep_type": "chromosome",
+        "rep_ginum": "386062973",
+        "file_name": "NC_017549",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 6197,
+        "gene_num": 6281,
+        "rep_size": 6764661,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3436,
+    "fields": {
+        "gpv_id": 2242,
+        "version_id": 1,
+        "rep_accnum": "NC_020912",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa B136-33, complete genome.",
+        "rep_type": "chromosome",
+        "rep_ginum": "478476202",
+        "file_name": "NC_020912",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 5801,
+        "gene_num": 5877,
+        "rep_size": 6421010,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3437,
+    "fields": {
+        "gpv_id": 2243,
+        "version_id": 1,
+        "rep_accnum": "NC_021577",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa RP73, complete genome.",
+        "rep_type": "chromosome",
+        "rep_ginum": "514407635",
+        "file_name": "NC_021577",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 5772,
+        "gene_num": 5849,
+        "rep_size": 6342034,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3438,
+    "fields": {
+        "gpv_id": 2244,
+        "version_id": 1,
+        "rep_accnum": "NZ_CP008739",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa VRFPA04, complete genome.",
+        "rep_type": "chromosome",
+        "rep_ginum": "749293516",
+        "file_name": "NZ_CP008739",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 6418,
+        "gene_num": 6518,
+        "rep_size": 6818030,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3439,
+    "fields": {
+        "gpv_id": 2245,
+        "version_id": 1,
+        "rep_accnum": "NZ_CP013993",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa DHS01, complete genome.",
+        "rep_type": "chromosome",
+        "rep_ginum": "983584575",
+        "file_name": "NZ_CP013993",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 6567,
+        "gene_num": 6651,
+        "rep_size": 7055752,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3440,
+    "fields": {
+        "gpv_id": 2246,
+        "version_id": 1,
+        "rep_accnum": "NC_022808",
+        "rep_version": 2,
+        "definition": "Pseudomonas aeruginosa PA1, complete genome.",
+        "rep_type": "chromosome",
+        "rep_ginum": "930174200",
+        "file_name": "NC_022808",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 5916,
+        "gene_num": 6014,
+        "rep_size": 6498072,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3441,
+    "fields": {
+        "gpv_id": 2247,
+        "version_id": 1,
+        "rep_accnum": "NC_022806",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa PA1R, complete genome.",
+        "rep_type": "chromosome",
+        "rep_ginum": "558665962",
+        "file_name": "NC_022806",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 5784,
+        "gene_num": 5862,
+        "rep_size": 6309305,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3442,
+    "fields": {
+        "gpv_id": 2248,
+        "version_id": 1,
+        "rep_accnum": "NC_023019",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa MTB-1, complete genome.",
+        "rep_type": "chromosome",
+        "rep_ginum": "564949884",
+        "file_name": "NC_023019",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 5985,
+        "gene_num": 6062,
+        "rep_size": 6580038,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3443,
+    "fields": {
+        "gpv_id": 2249,
+        "version_id": 1,
+        "rep_accnum": "NC_023066",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa LES431, complete genome.",
+        "rep_type": "chromosome",
+        "rep_ginum": "568151185",
+        "file_name": "NC_023066",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 5973,
+        "gene_num": 6052,
+        "rep_size": 6550070,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3444,
+    "fields": {
+        "gpv_id": 2250,
+        "version_id": 1,
+        "rep_accnum": "NC_023149",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa SCV20265, complete genome.",
+        "rep_type": "chromosome",
+        "rep_ginum": "568306739",
+        "file_name": "NC_023149",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 6172,
+        "gene_num": 6248,
+        "rep_size": 6725183,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3445,
+    "fields": {
+        "gpv_id": 2251,
+        "version_id": 1,
+        "rep_accnum": "NZ_CP007147",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa YL84, complete genome.",
+        "rep_type": "chromosome",
+        "rep_ginum": "759447752",
+        "file_name": "NZ_CP007147",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 5831,
+        "gene_num": 5908,
+        "rep_size": 6433441,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3446,
+    "fields": {
+        "gpv_id": 2252,
+        "version_id": 1,
+        "rep_accnum": "NZ_CP007399",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa strain F22031, complete genome.",
+        "rep_type": "chromosome",
+        "rep_ginum": "902970321",
+        "file_name": "NZ_CP007399",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 6000,
+        "gene_num": 6077,
+        "rep_size": 6603099,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3447,
+    "fields": {
+        "gpv_id": 2253,
+        "version_id": 1,
+        "rep_accnum": "NZ_AP014646",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa DNA, complete genome, strain: NCGM 1984.",
+        "rep_type": "chromosome",
+        "rep_ginum": "780007407",
+        "file_name": "NZ_AP014646",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 6298,
+        "gene_num": 6380,
+        "rep_size": 6850954,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3448,
+    "fields": {
+        "gpv_id": 2254,
+        "version_id": 1,
+        "rep_accnum": "NZ_AP014622",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa DNA, complete genome, strain: NCGM 1900.",
+        "rep_type": "chromosome",
+        "rep_ginum": "779958137",
+        "file_name": "NZ_AP014622",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 6253,
+        "gene_num": 6335,
+        "rep_size": 6814936,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3449,
+    "fields": {
+        "gpv_id": 2255,
+        "version_id": 1,
+        "rep_accnum": "NZ_CP010555",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa strain FRD1, complete genome.",
+        "rep_type": "chromosome",
+        "rep_ginum": "751912329",
+        "file_name": "NZ_CP010555",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 6105,
+        "gene_num": 6182,
+        "rep_size": 6712339,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3450,
+    "fields": {
+        "gpv_id": 2256,
+        "version_id": 1,
+        "rep_accnum": "NZ_CP011317",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa strain Carb01 63, complete genome.",
+        "rep_type": "chromosome",
+        "rep_ginum": "817611511",
+        "file_name": "NZ_CP011317",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 6986,
+        "gene_num": 7071,
+        "rep_size": 7497593,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3451,
+    "fields": {
+        "gpv_id": 2257,
+        "version_id": 1,
+        "rep_accnum": "NZ_CP012001",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa DSM 50071, complete genome.",
+        "rep_type": "chromosome",
+        "rep_ginum": "872498167",
+        "file_name": "NZ_CP012001",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 5724,
+        "gene_num": 5801,
+        "rep_size": 6317050,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3452,
+    "fields": {
+        "gpv_id": 2258,
+        "version_id": 1,
+        "rep_accnum": "NZ_CP012066",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa strain F9676, complete genome.",
+        "rep_type": "chromosome",
+        "rep_ginum": "898321271",
+        "file_name": "NZ_CP012066",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 5749,
+        "gene_num": 5825,
+        "rep_size": 6368008,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3453,
+    "fields": {
+        "gpv_id": 2259,
+        "version_id": 1,
+        "rep_accnum": "NZ_CP012679",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa strain PA1RG, complete genome.",
+        "rep_type": "chromosome",
+        "rep_ginum": "928796126",
+        "file_name": "NZ_CP012679",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 5923,
+        "gene_num": 6021,
+        "rep_size": 6500439,
+        "rna_num": 0
+    }
+},
+{
+    "model": "webui.replicon",
+    "pk": 3454,
+    "fields": {
+        "gpv_id": 2260,
+        "version_id": 1,
+        "rep_accnum": "NZ_CP013245",
+        "rep_version": 1,
+        "definition": "Pseudomonas aeruginosa strain VA-134, complete genome.",
+        "rep_type": "chromosome",
+        "rep_ginum": "983470178",
+        "file_name": "NZ_CP013245",
+        "file_types": ".faa .ffn .fna .gbk .ptt",
+        "cds_num": 5778,
+        "gene_num": 5858,
+        "rep_size": 6400418,
+        "rna_num": 0
+    }
+}
+]

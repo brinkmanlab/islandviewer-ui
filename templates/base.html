@@ -1,4 +1,5 @@
-{% load static %} 
+{% load static %}
+{% load iv_social_utils %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,6 +10,8 @@
     <link href="{% static 'css/islandviewer.css' %}" rel="stylesheet">
     <link href="{% static 'css/islandplot.css' %}" rel="stylesheet">
     <link href="{% static 'css/datatable/DT_bootstrap.css' %}" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="//lipis.github.io/bootstrap-social/bootstrap-social.css" rel="stylesheet" >
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -60,6 +63,8 @@
     			<li ><a href="{% url 'contactus' %}">Contact Us</a></li>
     			<li ><a href="{% url 'faq' %}">FAQ</a></li>
     			<li ><a href="{% url 'acknowledgements' %}">Acknowledgements</a></li>
+				{% if request.user.is_staff %}<li ><a href="{% url 'runstatus' %}">Status</a></li>{% endif %}
+				{% social_menu %}
     		</ul>
     		{% if showtour %}
     		<ul class="nav navbar-nav navbar-right hidden-xs hidden-small">

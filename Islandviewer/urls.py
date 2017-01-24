@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 import settings.env
 
 # Uncomment the next two lines to enable the admin:
@@ -6,9 +6,12 @@ import settings.env
 # admin.autodiscover()
 
 if settings.env.DEV_ENV:
-    urlpatterns = patterns('',
-        url(r'^islandviewer/', include('webui.urls'))
-      
+    urlpatterns = [
+        url(r'^islandviewer/', include('webui.urls')),
+        url(r'^islandviewer/', include('iv_social.urls', namespace='iv_social')),
+        url(r'^islandviewer/', include('social_django.urls', namespace='social')),
+        url(r'^islandviewer/', include('restapi.urls', namespace='restapi')),
+
     # Examples:
     # url(r'^$', 'Islandviewer.views.home', name='home'),
     # url(r'^Islandviewer/', include('Islandviewer.foo.urls')),
@@ -18,9 +21,12 @@ if settings.env.DEV_ENV:
 
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
-    )
+    ]
 else:
-    urlpatterns = patterns('',
-        url(r'^', include('webui.urls'))
-    )
+    urlpatterns = [
+        url(r'^', include('webui.urls')),
+        url(r'', include('iv_social.urls', namespace='iv_social')),
+        url(r'', include('social_django.urls', namespace='social')),
+        url(r'', include('restapi.urls', namespace='restapi')),
+    ]
     

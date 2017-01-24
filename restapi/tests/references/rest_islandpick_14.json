@@ -1,0 +1,12 @@
+{
+    "accnum": "15", 
+    "default_analysis": true, 
+    "genomes": {}, 
+    "parameters": {
+        "comparison_genomes": "NZ_CP008896.1 NZ_CP012400.1 NZ_CP015639.1 NZ_CP007410.1 NZ_CP011789.1 NZ_CP011317.1", 
+        "max_cutoff": 0.42, 
+        "min_cutoff": 0.1, 
+        "min_gi_size": 4000
+    }, 
+    "status": "OK"
+}

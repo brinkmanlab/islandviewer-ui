@@ -1,0 +1,317 @@
+[
+{
+    "model": "webui.taxonomy",
+    "pk": 287,
+    "fields": {
+        "superkingdom": "Bacteria",
+        "phylum": "Proteobacteria",
+        "tax_class": "Gammaproteobacteria",
+        "order": "Pseudomonadales",
+        "family": "Pseudomonadaceae",
+        "genus": "Pseudomonas",
+        "species": "Pseudomonas aeruginosa",
+        "other": null,
+        "synonyms": "Bacillus aeruginosus; Bacillus pyocyaneus; Bacterium aeruginosum; Bacterium pyocyaneum; Micrococcus pyocyaneus; Pseudomonas polycolor; Pseudomonas pyocyanea"
+    }
+},
+{
+    "model": "webui.taxonomy",
+    "pk": 208963,
+    "fields": {
+        "superkingdom": "Bacteria",
+        "phylum": "Proteobacteria",
+        "tax_class": "Gammaproteobacteria",
+        "order": "Pseudomonadales",
+        "family": "Pseudomonadaceae",
+        "genus": "Pseudomonas",
+        "species": "Pseudomonas aeruginosa",
+        "other": "Pseudomonas aeruginosa UCBPP-PA14",
+        "synonyms": "Pseudomonas aeruginosa str. UCBPP-PA14"
+    }
+},
+{
+    "model": "webui.taxonomy",
+    "pk": 208964,
+    "fields": {
+        "superkingdom": "Bacteria",
+        "phylum": "Proteobacteria",
+        "tax_class": "Gammaproteobacteria",
+        "order": "Pseudomonadales",
+        "family": "Pseudomonadaceae",
+        "genus": "Pseudomonas",
+        "species": "Pseudomonas aeruginosa",
+        "other": "Pseudomonas aeruginosa PAO1",
+        "synonyms": "Pseudomonas aeruginosa str. PAO1"
+    }
+},
+{
+    "model": "webui.taxonomy",
+    "pk": 381754,
+    "fields": {
+        "superkingdom": "Bacteria",
+        "phylum": "Proteobacteria",
+        "tax_class": "Gammaproteobacteria",
+        "order": "Pseudomonadales",
+        "family": "Pseudomonadaceae",
+        "genus": "Pseudomonas",
+        "species": "Pseudomonas aeruginosa",
+        "other": "Pseudomonas aeruginosa PA7",
+        "synonyms": "Pseudomonas aeruginosa str. PA7; Pseudomonas aeruginosa strain PA7"
+    }
+},
+{
+    "model": "webui.taxonomy",
+    "pk": 557722,
+    "fields": {
+        "superkingdom": "Bacteria",
+        "phylum": "Proteobacteria",
+        "tax_class": "Gammaproteobacteria",
+        "order": "Pseudomonadales",
+        "family": "Pseudomonadaceae",
+        "genus": "Pseudomonas",
+        "species": "Pseudomonas aeruginosa",
+        "other": "Pseudomonas aeruginosa LESB58",
+        "synonyms": "Pseudomonas aeruginosa str. LESB58; Pseudomonas aeruginosa strain LESB58"
+    }
+},
+{
+    "model": "webui.taxonomy",
+    "pk": 941193,
+    "fields": {
+        "superkingdom": "Bacteria",
+        "phylum": "Proteobacteria",
+        "tax_class": "Gammaproteobacteria",
+        "order": "Pseudomonadales",
+        "family": "Pseudomonadaceae",
+        "genus": "Pseudomonas",
+        "species": "Pseudomonas aeruginosa",
+        "other": "Pseudomonas aeruginosa M18",
+        "synonyms": "Pseudomonas aeruginosa str. M18; Pseudomonas aeruginosa strain M18"
+    }
+},
+{
+    "model": "webui.taxonomy",
+    "pk": 1000561,
+    "fields": {
+        "superkingdom": "Bacteria",
+        "phylum": "Proteobacteria",
+        "tax_class": "Gammaproteobacteria",
+        "order": "Pseudomonadales",
+        "family": "Pseudomonadaceae",
+        "genus": "Pseudomonas",
+        "species": "Pseudomonas aeruginosa",
+        "other": "Pseudomonas aeruginosa AES-1R",
+        "synonyms": "Pseudomonas aeruginosa str. AES-1R; Pseudomonas aeruginosa strain AES-1R"
+    }
+},
+{
+    "model": "webui.taxonomy",
+    "pk": 1089456,
+    "fields": {
+        "superkingdom": "Bacteria",
+        "phylum": "Proteobacteria",
+        "tax_class": "Gammaproteobacteria",
+        "order": "Pseudomonadales",
+        "family": "Pseudomonadaceae",
+        "genus": "Pseudomonas",
+        "species": "Pseudomonas aeruginosa",
+        "other": "Pseudomonas aeruginosa NCGM2.S1",
+        "synonyms": "Pseudomonas aeruginosa str. NCGM2.S1; Pseudomonas aeruginosa strain NCGM2.S1"
+    }
+},
+{
+    "model": "webui.taxonomy",
+    "pk": 1093787,
+    "fields": {
+        "superkingdom": "Bacteria",
+        "phylum": "Proteobacteria",
+        "tax_class": "Gammaproteobacteria",
+        "order": "Pseudomonadales",
+        "family": "Pseudomonadaceae",
+        "genus": "Pseudomonas",
+        "species": "Pseudomonas aeruginosa",
+        "other": "Pseudomonas aeruginosa DK2",
+        "synonyms": "Pseudomonas aeruginosa str. DK2; Pseudomonas aeruginosa strain DK2; Pseudomonas aeruginosa CF333-2007-apr0"
+    }
+},
+{
+    "model": "webui.taxonomy",
+    "pk": 1123015,
+    "fields": {
+        "superkingdom": "Bacteria",
+        "phylum": "Proteobacteria",
+        "tax_class": "Gammaproteobacteria",
+        "order": "Pseudomonadales",
+        "family": "Pseudomonadaceae",
+        "genus": "Pseudomonas",
+        "species": "Pseudomonas aeruginosa",
+        "other": "Pseudomonas aeruginosa DSM 50071",
+        "synonyms": null
+    }
+},
+{
+    "model": "webui.taxonomy",
+    "pk": 1193501,
+    "fields": {
+        "superkingdom": "Bacteria",
+        "phylum": "Proteobacteria",
+        "tax_class": "Gammaproteobacteria",
+        "order": "Pseudomonadales",
+        "family": "Pseudomonadaceae",
+        "genus": "Pseudomonas",
+        "species": "Pseudomonas aeruginosa",
+        "other": "Pseudomonas aeruginosa SJTD-1",
+        "synonyms": "Pseudomonas aeruginosa str. SJTD-1; Pseudomonas aeruginosa strain SJTD-1"
+    }
+},
+{
+    "model": "webui.taxonomy",
+    "pk": 1279007,
+    "fields": {
+        "superkingdom": "Bacteria",
+        "phylum": "Proteobacteria",
+        "tax_class": "Gammaproteobacteria",
+        "order": "Pseudomonadales",
+        "family": "Pseudomonadaceae",
+        "genus": "Pseudomonas",
+        "species": "Pseudomonas aeruginosa",
+        "other": "Pseudomonas aeruginosa PA1",
+        "synonyms": null
+    }
+},
+{
+    "model": "webui.taxonomy",
+    "pk": 1279008,
+    "fields": {
+        "superkingdom": "Bacteria",
+        "phylum": "Proteobacteria",
+        "tax_class": "Gammaproteobacteria",
+        "order": "Pseudomonadales",
+        "family": "Pseudomonadaceae",
+        "genus": "Pseudomonas",
+        "species": "Pseudomonas aeruginosa",
+        "other": "Pseudomonas aeruginosa PA1R",
+        "synonyms": null
+    }
+},
+{
+    "model": "webui.taxonomy",
+    "pk": 1280938,
+    "fields": {
+        "superkingdom": "Bacteria",
+        "phylum": "Proteobacteria",
+        "tax_class": "Gammaproteobacteria",
+        "order": "Pseudomonadales",
+        "family": "Pseudomonadaceae",
+        "genus": "Pseudomonas",
+        "species": "Pseudomonas aeruginosa",
+        "other": "Pseudomonas aeruginosa B136-33",
+        "synonyms": null
+    }
+},
+{
+    "model": "webui.taxonomy",
+    "pk": 1340851,
+    "fields": {
+        "superkingdom": "Bacteria",
+        "phylum": "Proteobacteria",
+        "tax_class": "Gammaproteobacteria",
+        "order": "Pseudomonadales",
+        "family": "Pseudomonadaceae",
+        "genus": "Pseudomonas",
+        "species": "Pseudomonas aeruginosa",
+        "other": "Pseudomonas aeruginosa RP73",
+        "synonyms": null
+    }
+},
+{
+    "model": "webui.taxonomy",
+    "pk": 1400868,
+    "fields": {
+        "superkingdom": "Bacteria",
+        "phylum": "Proteobacteria",
+        "tax_class": "Gammaproteobacteria",
+        "order": "Pseudomonadales",
+        "family": "Pseudomonadaceae",
+        "genus": "Pseudomonas",
+        "species": "Pseudomonas aeruginosa",
+        "other": "Pseudomonas aeruginosa VRFPA04",
+        "synonyms": null
+    }
+},
+{
+    "model": "webui.taxonomy",
+    "pk": 1408272,
+    "fields": {
+        "superkingdom": "Bacteria",
+        "phylum": "Proteobacteria",
+        "tax_class": "Gammaproteobacteria",
+        "order": "Pseudomonadales",
+        "family": "Pseudomonadaceae",
+        "genus": "Pseudomonas",
+        "species": "Pseudomonas aeruginosa",
+        "other": "Pseudomonas aeruginosa LES431",
+        "synonyms": null
+    }
+},
+{
+    "model": "webui.taxonomy",
+    "pk": 1411700,
+    "fields": {
+        "superkingdom": "Bacteria",
+        "phylum": "Proteobacteria",
+        "tax_class": "Gammaproteobacteria",
+        "order": "Pseudomonadales",
+        "family": "Pseudomonadaceae",
+        "genus": "Pseudomonas",
+        "species": "Pseudomonas aeruginosa",
+        "other": "Pseudomonas aeruginosa DHS01",
+        "synonyms": null
+    }
+},
+{
+    "model": "webui.taxonomy",
+    "pk": 1415629,
+    "fields": {
+        "superkingdom": "Bacteria",
+        "phylum": "Proteobacteria",
+        "tax_class": "Gammaproteobacteria",
+        "order": "Pseudomonadales",
+        "family": "Pseudomonadaceae",
+        "genus": "Pseudomonas",
+        "species": "Pseudomonas aeruginosa",
+        "other": "Pseudomonas aeruginosa MTB-1",
+        "synonyms": null
+    }
+},
+{
+    "model": "webui.taxonomy",
+    "pk": 1427342,
+    "fields": {
+        "superkingdom": "Bacteria",
+        "phylum": "Proteobacteria",
+        "tax_class": "Gammaproteobacteria",
+        "order": "Pseudomonadales",
+        "family": "Pseudomonadaceae",
+        "genus": "Pseudomonas",
+        "species": "Pseudomonas aeruginosa",
+        "other": "Pseudomonas aeruginosa SCV20265",
+        "synonyms": null
+    }
+},
+{
+    "model": "webui.taxonomy",
+    "pk": 1448140,
+    "fields": {
+        "superkingdom": "Bacteria",
+        "phylum": "Proteobacteria",
+        "tax_class": "Gammaproteobacteria",
+        "order": "Pseudomonadales",
+        "family": "Pseudomonadaceae",
+        "genus": "Pseudomonas",
+        "species": "Pseudomonas aeruginosa",
+        "other": "Pseudomonas aeruginosa YL84",
+        "synonyms": null
+    }
+}
+]

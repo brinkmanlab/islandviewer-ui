@@ -9,7 +9,7 @@ from uploadparser import submitter
 
 class GenomeParser():
         
-    def submitUpload(self, file, format_type, name, email_addr, uploader_ip):
+    def submitUpload(self, file, format_type, name, email_addr, uploader_ip, user_id = None, **kwargs):
         '''
         We're going to accept an uploaded file and
         put it in the uploads directory with an
@@ -32,7 +32,7 @@ class GenomeParser():
 
         try:
             genome_data = file.read()
-            ret = submitter.send_job(genome_data, genome_format, g_name, email_addr, uploader_ip)
+            ret = submitter.send_job(genome_data, genome_format, g_name, email_addr, uploader_ip, user_id, **kwargs)
         except Exception as e:
             if settings.DEBUG:
                 debug_error = ''
@@ -49,7 +49,7 @@ class GenomeParser():
         
         return ret;
     
-    def submitCustom(self, form_data, uploader_ip):
+    def submitCustom(self, form_data, uploader_ip, user_id = None):
         '''
         We're going to take the form data and determine what we need to send based
         on the fields we've received, is this an initial upload or a continuation
@@ -115,7 +115,14 @@ class GenomeParser():
 
            
         else:
+            kwargs = dict()
+            if 'ref_accnum' in form_data and form_data['ref_accnum'] != 'False':
+                if settings.DEBUG:
+                    print "Received ref_accnum: " + form_data['ref_accnum']
+
+                kwargs['ref_accnum'] = form_data['ref_accnum']
+
             # We can relax, this is an initial upload
-            ret = self.submitUpload(form_data['genome_file'], form_data['format_type'], form_data['genome_name'], form_data['email_addr'], uploader_ip)
+            ret = self.submitUpload(form_data['genome_file'], form_data['format_type'], form_data['genome_name'], form_data['email_addr'], uploader_ip, user_id, **kwargs)
            
             return ret

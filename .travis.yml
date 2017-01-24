@@ -1,0 +1,31 @@
+language: python
+
+python:
+  - "2.7"
+
+cache:
+  directories:
+    - $HOME/.pip-cache/
+    - /home/travis/virtualenv/python2.7
+
+env:
+  - DJANGO=1.10
+
+services: mysql
+
+addons:
+  apt:
+    packages:
+      - libmysqlclient-dev
+      - openssl
+      - mysql-client-5.5
+      - mysql-client-core-5.5
+
+install: 
+  - pip install -r requirements.txt --download-cache $HOME/.pip-cache
+
+before_script:
+  - "mysql -e 'CREATE DATABASE travisdb'"
+
+script: 
+  - "python manage.py test"

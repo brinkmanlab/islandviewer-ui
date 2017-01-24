@@ -1,0 +1,23 @@
+{% load iv_social_utils %} 
+                {% if user and not user.is_anonymous %}
+                <li><a>Hello, {{ user.get_full_name }}!</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Jobs
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a role="menuitem" href="{% url "iv_social:user_jobs" %}">My Jobs</a></li>
+                        <li><a role="menuitem" href="{% url "iv_social:user_rest_token" %}">REST API Token</a></li>
+                    </ul>
+                </li>
+                <li><a href="{% url 'iv_social:logout' %}">Logout</a></li>
+                {% else %}
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Login
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu iv-dropdown-menu">
+                        {% for name, backend in available_backends|social_backends %}
+                        <li><a class="btn btn-block btn-social btn-{{ name|icon_name }}" role="menuitem" href="{% url "social:begin" backend=name %}"><span class="fa fa-{{ name|icon_name }}"></span> {{ backend|backend_name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                {% endif %}

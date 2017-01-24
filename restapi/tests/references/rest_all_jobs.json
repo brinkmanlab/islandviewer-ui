@@ -1,0 +1,38 @@
+[
+    {
+        "aid": 28, 
+        "genome_name": "Pseudomonas aeruginosa PAO1 chromosome, complete genome.", 
+        "results": "http://testserver/islandviewer/results/28/?token=uX9Mnrwze2x1CGZu4NHZOK", 
+        "status": "Error"
+    }, 
+    {
+        "aid": 27, 
+        "genome_name": "Pseudomonas aeruginosa PAO1 chromosome, complete genome.", 
+        "results": "http://testserver/islandviewer/results/27/?token=uX9Mnrwze2x1CGZu4NHZOK", 
+        "status": "Running"
+    }, 
+    {
+        "aid": 26, 
+        "genome_name": "Pseudomonas aeruginosa PAO1 chromosome, complete genome.", 
+        "results": "http://testserver/islandviewer/results/26/?token=uX9Mnrwze2x1CGZu4NHZOK", 
+        "status": "Complete"
+    }, 
+    {
+        "aid": 14, 
+        "genome_name": "Pseudomonas aeruginosa PAO1 chromosome, complete genome.", 
+        "results": "http://testserver/islandviewer/results/14/?token=uX9Mnrwze2x1CGZu4NHZOK", 
+        "status": "Complete"
+    }, 
+    {
+        "aid": 13, 
+        "genome_name": "Pseudomonas aeruginosa PAO1 chromosome, complete genome.", 
+        "results": "http://testserver/islandviewer/results/13/?token=os4PstusTcSUSBWMd3lxC4", 
+        "status": "Pending"
+    }, 
+    {
+        "aid": 12, 
+        "genome_name": "matts test", 
+        "results": "http://testserver/islandviewer/results/12/?token=jpcEHLVjP61IMy6TEeg4O1", 
+        "status": "Complete"
+    }
+]

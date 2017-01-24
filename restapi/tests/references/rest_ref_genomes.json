@@ -1,0 +1,110 @@
+[
+    {
+        "name": "Pseudomonas aeruginosa B136-33, complete genome.", 
+        "ref_accnum": "NC_020912.1"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa DK2 chromosome, complete genome.", 
+        "ref_accnum": "NC_018080.1"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa LES431, complete genome.", 
+        "ref_accnum": "NC_023066.1"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa LESB58 chromosome, complete genome.", 
+        "ref_accnum": "NC_011770.1"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa M18 chromosome, complete genome.", 
+        "ref_accnum": "NC_017548.1"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa MTB-1, complete genome.", 
+        "ref_accnum": "NC_023019.1"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa NCGM2.S1 chromosome 1, complete genome.", 
+        "ref_accnum": "NC_017549.1"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa PA1R, complete genome.", 
+        "ref_accnum": "NC_022806.1"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa PA7 chromosome, complete genome.", 
+        "ref_accnum": "NC_009656.1"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa PAO1 chromosome, complete genome.", 
+        "ref_accnum": "NC_002516.2"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa RP73, complete genome.", 
+        "ref_accnum": "NC_021577.1"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa SCV20265, complete genome.", 
+        "ref_accnum": "NC_023149.1"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa UCBPP-PA14 chromosome, complete genome.", 
+        "ref_accnum": "NC_008463.1"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa VRFPA04, complete genome.", 
+        "ref_accnum": "NZ_CP008739.1"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa strain FRD1, complete genome.", 
+        "ref_accnum": "NZ_CP010555.1"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa YL84, complete genome.", 
+        "ref_accnum": "NZ_CP007147.1"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa DNA, complete genome, strain: NCGM 1900.", 
+        "ref_accnum": "NZ_AP014622.1"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa DNA, complete genome, strain: NCGM 1984.", 
+        "ref_accnum": "NZ_AP014646.1"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa strain Carb01 63, complete genome.", 
+        "ref_accnum": "NZ_CP011317.1"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa DSM 50071, complete genome.", 
+        "ref_accnum": "NZ_CP012001.1"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa strain F9676, complete genome.", 
+        "ref_accnum": "NZ_CP012066.1"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa strain F22031, complete genome.", 
+        "ref_accnum": "NZ_CP007399.1"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa AES-1R, complete genome.", 
+        "ref_accnum": "NZ_CP013680.1"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa SJTD-1, complete genome.", 
+        "ref_accnum": "NZ_CP015877.1"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa DHS01, complete genome.", 
+        "ref_accnum": "NZ_CP013993.1"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa strain PA1RG, complete genome.", 
+        "ref_accnum": "NZ_CP012679.1"
+    }, 
+    {
+        "name": "Pseudomonas aeruginosa strain VA-134, complete genome.", 
+        "ref_accnum": "NZ_CP013245.1"
+    }
+]
