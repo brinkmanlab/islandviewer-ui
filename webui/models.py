@@ -282,12 +282,12 @@ class Distance(models.Model):
         if 'min_cutoff' in kwargs:
             min_cutoff = kwargs['min_cutoff']
         else:
-            min_cutoff = 0.1
+            min_cutoff = 0.02
 
         if 'max_cutoff' in kwargs:
             max_cutoff = kwargs['max_cutoff']
         else:
-            max_cutoff = 0.42
+            max_cutoff = 0.21
 
         params = [accnum, accnum, min_cutoff, max_cutoff]
         sql = "SELECT id, rep_accnum1, rep_accnum2, distance from Distance WHERE (rep_accnum1 = %s or rep_accnum2 = %s) AND "
