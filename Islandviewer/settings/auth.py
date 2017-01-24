@@ -1,5 +1,4 @@
 AUTHENTICATION_BACKENDS = (
-#    'social_orcid.orcid.OrcidOAuth2',
     'social_core.backends.github.GithubOAuth2',
     'django.contrib.auth.backends.ModelBackend',
     'social_core.backends.twitter.TwitterOAuth',
