@@ -1,26 +1,37 @@
+.circularIslander {
+    fill: turquoise;
+    color: turquoise;
+}
+.circularIslander:hover {
+    fill: skyblue;
+}
 .circularIslandpick {
 	fill: green;
+    color: green;
 }
 .circularIslandpick:hover {
-	fill: yellow;
+	fill: lightgreen;
 }
 .circularSigi {
-	fill: orange;
+	fill: darkorange;
+    color: darkorange;
 }
 .circularSigi:hover {
 	fill: yellow;
 }
 .circularDimob {
-	fill: blue;
+	fill: royalblue;
+    color: royalblue;
 }
 .circularDimob:hover {
-	fill: yellow;
+	fill: skyblue;
 }
 .circularIntegrated {
-	fill: red;
+	fill: firebrick;
+    color: firebrick;
 }
 .circularIntegrated:hover {
-	fill: blue;
+	fill: lightsalmon;
 }
 .circularContig_Gap {
     stroke: black;
@@ -43,7 +54,7 @@
 }
 
 .circularGCPlot {
-	stroke: black;
+	stroke: gray;
 }
 .circularGCPlot_circle {
 	stroke: lightblue !important;
@@ -53,24 +64,24 @@
 	stroke: black;
 	fill: purple;
 	color:purple;
-	font-size:14px;
-	font-weight:bold;
+#	font-size:14px;
+#	font-weight:bold;
 }
 
 .circularVirulence_ARDB, .circularVirulence_CARD {
 	stroke: black;
 	fill: #D6639A;
 	color:#D6639A;
-	font-size:14px;
-	font-weight:bold;	
+#	font-size:14px;
+#	font-weight:bold;
 }
 
 .circularVirulence_PAG {
 	stroke: black;
 	fill: orange;
-	color:orange;
-	font-size:14px;
-	font-weight:bold;
+	color: orange;
+#	font-size:14px;
+#	font-weight:bold;
 	
 }
 
@@ -78,16 +89,16 @@
 	stroke: black;
 	fill: #d1ace9;
 	color: #d1ace9;
-	font-size:14px;
-	font-weight:bold;
+#	font-size:14px;
+#	font-weight:bold;
 }
 
 .circularVirulence_RGI {
 	stroke: black;
 	fill: #FFC2E0;
 	color: #FFC2E0;
-	font-size:14px;
-	font-weight:bold;
+#	font-size:14px;
+#	font-weight:bold;
 }
 
 .circularGenes_pos {

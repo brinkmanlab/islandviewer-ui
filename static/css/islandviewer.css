@@ -10,16 +10,18 @@ body {
 .header {
 	padding-top: 15px;
 	padding-left: 10px;
-	background-color: #B9F0C1;
-	font: 22px times new roman;
+    color: #002d00;
+	background-color: #ffffff;
+	font: 22px arial;
 	letter-spacing: 0.1em;
 	font-weight: bold;
 }
 
 .subheader {
-	font: 12px times new roman;
-	color: #333399;
-	letter-spacing: 0.05em;
+	font: 13px arial;
+    font-weight:bold;
+	color: #002d00;
+	letter-spacing: 0.02em;
 }
 
 .navbar-iv {
@@ -36,11 +38,12 @@ body {
 .navbar-iv .nav > li > a {
 	color: #ffffff;
 	font: 12px arial;
+    letter-spacing: 0.02em;
 	padding-top:7px; padding-bottom:7px;
 }
 
 .navbar-iv .nav > li > a:hover {
-	color: #B5FFB0;
+	color: #f8ecdb;
 }
 
 .mainbody {
@@ -64,7 +67,7 @@ body {
 .sidebar {
 	padding-top: 15px;
 	height: 100%;
-	background-color: #ffffcc;
+	background-color: #f8ecdb;
 }
 
 .content {
@@ -220,7 +223,8 @@ div.outline {
 
 .pageName {
 	font:20px arial;
-	color: #1F1A80;
+    font-weight:bold;
+	color: #336600;
 	letter-spacing:0.1em;
 	line-height:26px;
     display: inline-block;
@@ -314,16 +318,20 @@ input[type=file] {
 	border: 1px solid #000;
 }
 
-.orangeislandbox {
-	background: orange;
+.darkorangeislandbox {
+	background: darkorange;
 }
 
 .greenislandbox {
 	background: green;
 }
 
-.blueislandbox {
-	background: blue;
+.royalblueislandbox {
+	background: royalblue;
+}
+
+.turquoiseislandbox {
+    background: turquoise;
 }
 
 .virulencecircle_VFDB, .virulencecircle_Victors, .virulencecircle_PATRIC_VF {
@@ -411,6 +419,12 @@ input[type=file] {
 }
 .gitable .method3:hover {
 		opacity:.75;
+}
+.gitable .method4 {
+    background-color: #A2DDDF;
+}
+.gitable .method4:hover {
+    opacity:.75;
 }
 
 /* Section for popup list of genes */

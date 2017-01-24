@@ -186,7 +186,8 @@ def circularplotjs(request, aid):
                  'Islandpick': [],
                  'Integrated': [],
                  'Sigi': [],
-                 'Dimob': [ ]
+                 'Dimob': [],
+                 'Islander': []
                  }
     gis = GenomicIsland.objects.filter(aid_id=aid).order_by('start').all()
     for gi in gis:
@@ -207,6 +208,9 @@ def circularplotjs(request, aid):
         elif gi.prediction_method == 'Dimob':
             json_objs['Dimob'].append(rec)
             json_objs['Integrated'].append(rec)
+        elif gi.prediction_method == 'Islander':
+            json_objs['Islander'].append(rec)
+            json_objs['Integrated'].append(rec)
             
     if json_objs['Contig_Gap'] or json_objs['Alignments']:
         context['contig_controls'] = True
@@ -217,6 +221,7 @@ def circularplotjs(request, aid):
     context['Islandpick'] = json.dumps(json_objs['Islandpick'])
     context['Sigi'] = json.dumps(json_objs['Sigi'])
     context['Dimob'] = json.dumps(json_objs['Dimob'])
+    context['Islander'] = json.dumps(json_objs['Islander'])
     json_objs = None
     
     # Fetch the GC plot info
@@ -295,6 +300,7 @@ def tablejson(request, aid):
         gi.prediction_method =  'Islandpick'
         OR gi.prediction_method =  'Sigi'
         OR gi.prediction_method =  'Dimob'
+        OR gi.prediction_method =  'Islander'
       )
     )gi
     LEFT JOIN IslandGenes AS ig ON ig.gi = gi.gi
@@ -1134,6 +1140,7 @@ def downloadCoordinates(request):
     response = downloadformats[format](islandset,methods, filename + "." + extension)
     
     return response
+
 def downloadAnnotations(request):
 
     if request.GET.get('aid'):

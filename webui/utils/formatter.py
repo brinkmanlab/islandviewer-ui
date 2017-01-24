@@ -291,7 +291,7 @@ excel_annotation_columns = [
     (u'Source', 15000)
 ]
 
-allowedmethods = ['sigi', 'islandpick', 'dimob']
+allowedmethods = ['sigi', 'islandpick', 'dimob', 'islander']
 
 downloadformats = {'genbank': formatGenbank,
                    'fasta': formatFasta,
@@ -314,6 +314,6 @@ downloadextensions = {'genbank': 'gbk',
 
 methodfullnames = {'sigi': 'SIGI-HMM',
                    'dimob': 'IslandPath-DIMOB',
+                   'islander': 'Islander',
                    'islandpick': 'IslandPick'
-                   
-                   }
+}

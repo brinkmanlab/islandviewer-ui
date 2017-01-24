@@ -2,10 +2,11 @@ var graph = {{ json_str|safe }};
 var g = new dagreD3.graphlib.Graph().setGraph({});
 
 var name_substitutions = {Virulence: 'Annotating Genes',
-			  Summary: 'Validating Pipeline',
-                          Sigi: 'SIGI-HMM',
-                          Dimob: 'IslandPath-DIMOB',
-	                  ContigAligner: 'Contig Rearranger'};
+	Summary: 'Validating Pipeline',
+	Sigi: 'SIGI-HMM',
+	Dimob: 'IslandPath-DIMOB',
+	Islander: 'Islander',
+	ContigAligner: 'Contig Rearranger'};
 
 var nodes = graph['nodes'];
 var node_labels = {};
