@@ -285,7 +285,7 @@ circularTrack.prototype.drawAxis = function() {
     .attr("x2", function(d, i){return cfg.w2 + (cfg.radius*Math.cos((d*cfg.radians_pre_bp)-cfg.PI2));})
     .attr("y2", function(d, i){return cfg.h2 + (cfg.radius*Math.sin((d*cfg.radians_pre_bp)-cfg.PI2));})
     .attr("class", "line")
-    .style("stroke", "grey")
+    .style("stroke", "lightgray")
     .style("stroke-width", "1px");
 
     var axis_label = this.axis_container.selectAll(".axislabel")

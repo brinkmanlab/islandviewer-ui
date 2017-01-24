@@ -219,7 +219,7 @@ class GenbankParser():
     def generateMethods(self, start, end, methods = ['integrated']):
         
         if 'integrated' in methods:
-            methods_found = ",".join(self.findMethods(int(start), int(end), ['sigi', 'islandpick', "dimob"]))
+            methods_found = ",".join(self.findMethods(int(start), int(end), ['sigi', 'islandpick', 'dimob', 'islander']))
             return ['Predicted_by_at_least_one_method(' + methods_found + ")"]
         else:
             return self.findMethods(int(start), int(end), methods)

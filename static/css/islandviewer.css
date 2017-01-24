@@ -308,16 +308,20 @@ input[type=file] {
 	border: 1px solid #000;
 }
 
-.orangeislandbox {
-	background: orange;
+.darkorangeislandbox {
+	background: darkorange;
 }
 
 .greenislandbox {
 	background: green;
 }
 
-.blueislandbox {
-	background: blue;
+.royalblueislandbox {
+	background: royalblue;
+}
+
+.turquoiseislandbox {
+    background: turquoise;
 }
 
 .virulencecircle_VFDB, .virulencecircle_Victors, .virulencecircle_PATRIC_VF {
@@ -405,6 +409,12 @@ input[type=file] {
 }
 .gitable .method3:hover {
 		opacity:.75;
+}
+.gitable .method4 {
+    background-color: #A2DDDF;
+}
+.gitable .method4:hover {
+    opacity:.75;
 }
 
 /* Section for popup list of genes */
