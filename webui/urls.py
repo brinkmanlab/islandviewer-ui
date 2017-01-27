@@ -46,4 +46,5 @@ urlpatterns = [
     url(r'^results/graph/(?P<aid>\d+)/$', views.graphanalysis, name='graphanalysis'),
     url(r'^results/graph/js/(?P<aid>\d+)/$', views.graphanalysisjs, name='graphanalysisjs'),
     url(r'^upload/(?P<upload_id>\d+)/$', views.uploadredirect, name='uploadredirect'),
+    url(r'^http_api/$', views.http_api, name='http_api'),
 ]

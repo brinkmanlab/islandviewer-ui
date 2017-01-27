@@ -1330,3 +1330,8 @@ def acknowledgements(request):
 def islandpick(request):
     
     return render(request, "islandpick.html")
+
+def http_api(request):
+    
+    return render(request, "http_api.html")
+
