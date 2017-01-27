@@ -15,7 +15,6 @@
 {% endblock %}
 
 {% block content %}
-<div style=" width: 500px;">
     <span class="pageName">IslandViewer</span><br />
     &nbsp;<br />
     <div class="bodyText">
@@ -30,7 +29,7 @@
         {% endfor %}
     </select><br />
     &nbsp;<br />
-    <input id="gotoresults" type="button" value="Go to Genome" onclick="return goto_results()" />&nbsp;&nbsp; <a href="{% url "demo" %}">Example</a>, <a href="http://www.pathogenomics.sfu.ca/islandviewer/results/8952/?token=ayYTCUw1jK81T10A76t5PT">Example (incomplete genome)</a>
+    <input id="gotoresults" type="button" value="Go to Genome" onclick="return goto_results()" />&nbsp;&nbsp; <a href="{% url "demo" %}">Example</a>, <a href="http://www.pathogenomics.sfu.ca/islandviewer4_dev/results/8740/?token=SdoayjsS31qx3UQr4IeRoC">Example (incomplete genome)</a>
     <span class="bodyText">
         <br />
         <br />
@@ -87,5 +86,4 @@
 
         }
     </script>
-</div>
 {% endblock content %}
