@@ -30,6 +30,7 @@ function scrolltoelem(elem) {
   <li><a href="javascript:scrolltoelem('a10');">How can I compare GI predictions across two species?</a></li>
   <li><a href="javascript:scrolltoelem('a11');">How do I cite IslandViewer?</a></li>
   <li><a href="javascript:scrolltoelem('a12');">Where can I find more information about GI prediction using computational methods?</a> </li>
+  <li><a href="javascript:scrolltoelem('a13');">How do I use the HTTP API?</a></li>
 </ul>
 		
 <p class="bodyText">If you are still having problems or concerns, please <a href="{% url 'contactus' %}">contact us</a> for further assistance.</p>
@@ -106,6 +107,13 @@ function scrolltoelem(elem) {
 <p class="bodyText">If you are interested in learning more about the computational prediction of GIs, please see the review article by <a href="http://www.nature.com/nrmicro/journal/v8/n5/full/nrmicro2350.html" target="_blank">Langille et al., 2010</a> in Nature Reviews Microbiology.</p>
 
 <div align="right"><a href="#">Top</a></div>
+
+<div id='a13' class="subHeader">How to use the HTTP API?</div>
+&nbsp;<br />
+<p class="bodyText">IslandViewer 4 now integrates a HTTP API (REST API) to enable users to submit larger number of genomes and retrieved the predictions programmatically. Please check out our specific <a href="{% url 'http_api' %}">HTTP API</a> page.</p>
+
+<div align="right"><a href="#">Top</a></div>
+
 &nbsp;<br />
 
 {% endblock content %}

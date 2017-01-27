@@ -63,6 +63,7 @@
     			<li ><a href="{% url 'contactus' %}">Contact Us</a></li>
     			<li ><a href="{% url 'faq' %}">FAQ</a></li>
     			<li ><a href="{% url 'acknowledgements' %}">Acknowledgements</a></li>
+                        <li ><a href="{% url 'http_api' %}">HTTP API</a></li>
 				{% if request.user.is_staff %}<li ><a href="{% url 'runstatus' %}">Status</a></li>{% endif %}
 				{% social_menu %}
     		</ul>
