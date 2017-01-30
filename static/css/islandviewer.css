@@ -10,22 +10,22 @@ body {
 .header {
 	padding-top: 15px;
 	padding-left: 10px;
-    color: #002d00;
+    color: #003800;
 	background-color: #ffffff;
-	font: 22px arial;
+	font: 22px Helvetica;
 	letter-spacing: 0.1em;
 	font-weight: bold;
 }
 
 .subheader {
-	font: 13px arial;
+	font: 13px Helvetica;
     font-weight:bold;
-	color: #002d00;
-	letter-spacing: 0.02em;
+	color: #003800;
+	letter-spacing: 0.01em;
 }
 
 .navbar-iv {
-	background-color: #006600;
+	background-color: #003800;
 }
 
 .navbar {
@@ -37,7 +37,8 @@ body {
 
 .navbar-iv .nav > li > a {
 	color: #ffffff;
-	font: 12px arial;
+	font: 10px Helvetica;
+    text-transform: uppercase;
     letter-spacing: 0.02em;
 	padding-top:7px; padding-bottom:7px;
 }
@@ -86,7 +87,7 @@ body {
 }
 
 .headertext {
-    font:16px times new roman;
+    font:16px Garamond;
     color: #555555;
     line-height:22px;
     font-weight:bold;
@@ -104,31 +105,31 @@ input#gene_search_input{
 .chkLabel span { display: block; margin-left: 1.5em;}
 
 .subHeader {
-	font:14px times new roman;
-	color: #336600;
+	font:14px Garamond;
+	color: #003800;
 	font-weight:bold;
 	line-height:20px;
 	letter-spacing:0.1em;
 	}
 .sectionHeader {
-	font:14px times new roman;
+	font:14px Garamond;
 	font-weight:bold;
 	line-height:20px;
 }
 
 .smalltext {
-    font:14px times new roman;
+    font:14px Garamond;
     color: #555555;
     line-height:18px;
 }
 .largetext {
-    font:18px times new roman;
+    font:18px Garamond;
     color: #555555;
     line-height:18px;
     font-weight: bold;
 }
 .errortext {
-    font:14px times new roman;
+    font:14px Garamond;
     color: red;
     line-height:18px;
 }
@@ -150,7 +151,7 @@ input#gene_search_input{
 }
 
 .faq-q {
-	font:14px times new roman;
+	font:14px Garamond;
 	color: #336600;
 	font-weight:bold;
 	line-height:20px;
@@ -222,10 +223,11 @@ div.outline {
 }
 
 .pageName {
-	font:20px arial;
+	font:17px Helvetica;
+    font-variant: small-caps;
     font-weight:bold;
-	color: #336600;
-	letter-spacing:0.1em;
+	color: #003800;
+	letter-spacing:0.05em;
 	line-height:26px;
     display: inline-block;
     white-space: normal;
@@ -233,7 +235,7 @@ div.outline {
 }
 
 .linearLabel {
-	font:0.9em arial;
+	font:0.9em Helvetica;
 	color: #1F1A80;
 }
 
