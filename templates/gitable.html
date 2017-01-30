@@ -1,228 +1,228 @@
 {% url 'fetchislands' as fetchislands %}{% url 'fetchislandsfasta' as fetchislandsfasta %}
-{% load static %} 
+{% load static %}
 <div id="gitable_container" style="white-space: nowrap;">
-  <div id="main_gitable" class="gitable_fullwidth" style="display:inline-block;">
-    <table id="{{ gitablename|default:"maingitable" }}" class="gitable table table-condensed idb-table" style="font-size: 90%; width:100%; white-space: normal;">
-      <thead id="gitableheader">
-      <tr>
-      <th>Group</th>
-      <th>Start</th>
-      <th>End</th>
-      <th>Size</th>
-      <th>GI Prediction Method</th>
-      <th>View</th>
-      <th>External Annotations</th>
-      <th>Download (<a href="javascript:show_download();" id="show_download_link" >all data</a>)</th>
-      </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
-  </div>
-  <div id="right_gitable" class="hidden" style="max-width: 600px;  vertical-align: top;">
-  <table id="rightgitable" class="gitable table table-condensed idb-table" style="font-size: 90%; width:100%;  white-space: normal;">
-  <thead id="rightgitableheader">
-  <tr>
-  <th>Group</th>
-  <th>Start</th>
-  <th>End</th>
-  <th>Size</th>
-  <th>GI Prediction Method</th>
-  <th>View</th>
-  <th>External Annotations</th>
-  <th>Download</th>
-  </tr>
-  </thead>
-  <tbody>
-  </tbody>
-</table>
-  </div>
-</div>    
+    <div id="main_gitable" class="gitable_fullwidth" style="display:inline-block;">
+        <table id="{{ gitablename|default:"maingitable" }}" class="gitable table table-condensed idb-table"
+               style="font-size: 90%; width:100%; white-space: normal;">
+            <thead id="gitableheader">
+            <tr>
+                <th>Group</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Size</th>
+                <th>GI Prediction Method</th>
+                <th>View</th>
+                <th>External Annotations</th>
+                <th>Download (<a href="javascript:show_download();" id="show_download_link">all data</a>)</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div id="right_gitable" class="hidden" style="max-width: 600px;  vertical-align: top;">
+        <table id="rightgitable" class="gitable table table-condensed idb-table"
+               style="font-size: 90%; width:100%;  white-space: normal;">
+            <thead id="rightgitableheader">
+            <tr>
+                <th>Group</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Size</th>
+                <th>GI Prediction Method</th>
+                <th>View</th>
+                <th>External Annotations</th>
+                <th>Download</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
 
-    <script type="text/javascript">
-var displayLength = 80;
-var arrayColumns = [
-                {"mData": "group", "bVisible": false},
-                {"mData": "start", "bVisible": true, "sType": "formatted-num",},
-                {"mData": "end", "bVisible": true, "sType": "formatted-num"},
-                {"mData": null, "bVisible": true, "sSortDataType": "dom-text", "sType": "formatted-num"},
-                {"mData": "method", "bVisible": true, "bSortable": false},
-                {"mData": null, "bVisible": true, "bSortable": false},
-                {"mData": null, "bVisible": true, "bSortable": false},
-                {"mData": null, "bVisible": true, "bSortable": false}
-            ]
-jQuery.extend( jQuery.fn.dataTableExt.oSort, {
-    "formatted-num-pre": function ( a ) {
-        a = (a === "-" || a === "") ? 0 : a.replace( /[^\d\-\.]/g, "" );
-        return parseFloat( a );
-    },
- 
-    "formatted-num-asc": function ( a, b ) {
-        return a - b;
-    },
- 
-    "formatted-num-desc": function ( a, b ) {
-        return b - a;
-    }
-} );
+<script type="text/javascript">
+    var displayLength = 80;
+    var arrayColumns = [
+        {"mData": "group", "bVisible": false},
+        {"mData": "start", "bVisible": true, "sType": "formatted-num",},
+        {"mData": "end", "bVisible": true, "sType": "formatted-num"},
+        {"mData": null, "bVisible": true, "sSortDataType": "dom-text", "sType": "formatted-num"},
+        {"mData": "method", "bVisible": true, "bSortable": false},
+        {"mData": null, "bVisible": true, "bSortable": false},
+        {"mData": null, "bVisible": true, "bSortable": false},
+        {"mData": null, "bVisible": true, "bSortable": false}
+    ]
+    jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+        "formatted-num-pre": function (a) {
+            a = (a === "-" || a === "") ? 0 : a.replace(/[^\d\-\.]/g, "");
+            return parseFloat(a);
+        },
 
-$(window).resize( function () {
-	   oTable.fnAdjustColumnSizing();
-	} );
+        "formatted-num-asc": function (a, b) {
+            return a - b;
+        },
 
-$(window).ready(function() {
-	
-	window.oTable = create_gitable("{{ gitablename|default:"maingitable" }}", "{% url 'tablejson' aid=aid %}?token={{ token }}", 'islandviewerObj');
-	
-	//create_gitable("rightgitable", "{% url 'tablejson' aid=aid %}");
-});
-
-$.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallback, bStandingRedraw )
-{
-    // DataTables 1.10 compatibility - if 1.10 then versionCheck exists.
-    // 1.10s API has ajax reloading built in, so we use those abilities
-    // directly.
-    if ( $.fn.dataTable.versionCheck ) {
-        var api = new $.fn.dataTable.Api( oSettings );
- 
-        if ( sNewSource ) {
-            api.ajax.url( sNewSource ).load( fnCallback, !bStandingRedraw );
+        "formatted-num-desc": function (a, b) {
+            return b - a;
         }
-        else {
-            api.ajax.reload( fnCallback, !bStandingRedraw );
-        }
-        return;
-    }
- 
-    if ( sNewSource !== undefined && sNewSource !== null ) {
-        oSettings.sAjaxSource = sNewSource;
-    }
- 
-    // Server-side processing should just call fnDraw
-    if ( oSettings.oFeatures.bServerSide ) {
-        this.fnDraw();
-        return;
-    }
- 
-    this.oApi._fnProcessingDisplay( oSettings, true );
-    var that = this;
-    var iStart = oSettings._iDisplayStart;
-    var aData = [];
- 
-    this.oApi._fnServerParams( oSettings, aData );
- 
-    oSettings.fnServerData.call( oSettings.oInstance, oSettings.sAjaxSource, aData, function(json) {
-        /* Clear the old information from the table */
-        that.oApi._fnClearTable( oSettings );
- 
-        /* Got the data - add it to the table */
-        var aData =  (oSettings.sAjaxDataProp !== "") ?
-            that.oApi._fnGetObjectDataFn( oSettings.sAjaxDataProp )( json ) : json;
- 
-        for ( var i=0 ; i<aData.length ; i++ )
-        {
-            that.oApi._fnAddData( oSettings, aData[i] );
-        }
-         
-        oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
- 
-        that.fnDraw();
- 
-        if ( bStandingRedraw === true )
-        {
-            oSettings._iDisplayStart = iStart;
-            that.oApi._fnCalculateEnd( oSettings );
-            that.fnDraw( false );
-        }
- 
-        that.oApi._fnProcessingDisplay( oSettings, false );
- 
-        /* Callback user function - for event handlers etc */
-        if ( typeof fnCallback == 'function' && fnCallback !== null )
-        {
-            fnCallback( oSettings );
-        }
-    }, oSettings );
-};
+    });
 
-function create_gitable(elem, source_url, localislandviewerObj) {
-  return oTable = $('#' + elem).dataTable({
-					"iDisplayLength": displayLength,
-                    //"sScrollX": "100%",
-                    //"sScrollXInner": "90%",
-                    "bProcessing": true,
-                    "bAutoWidth": false,
-                    "bPaginate": false,
-                    "bInfo": false,
-                    "bFilter": false,
-                    "sAjaxSource": source_url,
-                    "bServerSide": false,
-                    "aoColumns": arrayColumns,
-                    "aoColumnDefs": [
-                                     {
-                                         "aTargets": [1],
-                                         "mData": null,
-                                         "mRender": function(data, type, full) {
-                                             return (full.start).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                                         },
-                                     },
-                                     {
-                                         "aTargets": [2],
-                                         "mData": null,
-                                         "mRender": function(data, type, full) {
-                                             return (full.end).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                                         },
-                                     },
-                        {
-                            "aTargets": [3],
-                            "mData": null,
-                            "mRender": function(data, type, full) {
-                                return (full.end-full.start).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                            },
-                        },
-                        {
-                            "aTargets": [5],
-                            "mData": null,
-                            "mRender": function(data, type, full) {
-                        	    // We're going to simulate a mouse click in the circulate track to make this work
-                                return '<a href="javascript:' + localislandviewerObj + '.scrollandOpen({ start: ' + full.start + ', end:' + full.end + '})"><img src="{% static 'img/show-property-24.png' %}"></a>';
-                            },
-                        },
-                        {
-                            "aTargets": [6],
-                            "mData": null,
-                            "mRender": function(data, type, full) {
-								if(full.annotations) {
-								    displayStr = full.annotations;
-	                        		substitutions = {'resistance': 'Resistance gene',
-	                        						 'virulence': 'Virulence gene',
-	                        						 'pathogen-associated': 'Pathogen Associated gene'};
-	
-	                        		for(s in substitutions) {
-	                        			displayStr = displayStr.replace(s, substitutions[s]);
-	                        		}
-	                                return displayStr;
-								} else {
-									return '';
-								}
-                            },
-                        },
-                        {
-                            "aTargets": [7],
-                            "mData": null,
-                            "mRender": function(data, type, full) {
-                                return '<a href="{{ fetchislandsfasta }}?token={{ token }}&gi=' + full.gi + '&seq=island">Sequence</a>, <a href="{{ fetchislandsfasta }}?token={{ token }}&gi=' + full.gi + '&seq=nuc">Genes</a>, <a href="{{ fetchislandsfasta }}?token={{ token }}&gi=' + full.gi + '">Proteins</a>';
-                            },
-                        },
-                    ],
-                    "aaSortingFixed": [[ 0, 'asc' ]],
-        	        "aaSorting": [[ 0, 'asc' ],[ 1, 'asc' ]],
-        	        "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-        	        	  $(nRow).addClass('method' + aData.group);
-        	        },
+    $(window).resize(function () {
+        oTable.fnAdjustColumnSizing();
+    });
 
-                });
-} // end create_gitable
+    $(window).ready(function () {
+
+        window.oTable = create_gitable("{{ gitablename|default:"maingitable" }}", "{% url 'tablejson' aid=aid %}?token={{ token }}", 'islandviewerObj');
+
+        //create_gitable("rightgitable", "{% url 'tablejson' aid=aid %}");
+    });
+
+    $.fn.dataTableExt.oApi.fnReloadAjax = function (oSettings, sNewSource, fnCallback, bStandingRedraw) {
+        // DataTables 1.10 compatibility - if 1.10 then versionCheck exists.
+        // 1.10s API has ajax reloading built in, so we use those abilities
+        // directly.
+        if ($.fn.dataTable.versionCheck) {
+            var api = new $.fn.dataTable.Api(oSettings);
+
+            if (sNewSource) {
+                api.ajax.url(sNewSource).load(fnCallback, !bStandingRedraw);
+            }
+            else {
+                api.ajax.reload(fnCallback, !bStandingRedraw);
+            }
+            return;
+        }
+
+        if (sNewSource !== undefined && sNewSource !== null) {
+            oSettings.sAjaxSource = sNewSource;
+        }
+
+        // Server-side processing should just call fnDraw
+        if (oSettings.oFeatures.bServerSide) {
+            this.fnDraw();
+            return;
+        }
+
+        this.oApi._fnProcessingDisplay(oSettings, true);
+        var that = this;
+        var iStart = oSettings._iDisplayStart;
+        var aData = [];
+
+        this.oApi._fnServerParams(oSettings, aData);
+
+        oSettings.fnServerData.call(oSettings.oInstance, oSettings.sAjaxSource, aData, function (json) {
+            /* Clear the old information from the table */
+            that.oApi._fnClearTable(oSettings);
+
+            /* Got the data - add it to the table */
+            var aData = (oSettings.sAjaxDataProp !== "") ?
+                that.oApi._fnGetObjectDataFn(oSettings.sAjaxDataProp)(json) : json;
+
+            for (var i = 0; i < aData.length; i++) {
+                that.oApi._fnAddData(oSettings, aData[i]);
+            }
+
+            oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
+
+            that.fnDraw();
+
+            if (bStandingRedraw === true) {
+                oSettings._iDisplayStart = iStart;
+                that.oApi._fnCalculateEnd(oSettings);
+                that.fnDraw(false);
+            }
+
+            that.oApi._fnProcessingDisplay(oSettings, false);
+
+            /* Callback user function - for event handlers etc */
+            if (typeof fnCallback == 'function' && fnCallback !== null) {
+                fnCallback(oSettings);
+            }
+        }, oSettings);
+    };
+
+    function create_gitable(elem, source_url, localislandviewerObj) {
+        return oTable = $('#' + elem).dataTable({
+            "iDisplayLength": displayLength,
+            //"sScrollX": "100%",
+            //"sScrollXInner": "90%",
+            "bProcessing": true,
+            "bAutoWidth": false,
+            "bPaginate": false,
+            "bInfo": false,
+            "bFilter": false,
+            "sAjaxSource": source_url,
+            "bServerSide": false,
+            "aoColumns": arrayColumns,
+            "aoColumnDefs": [
+                {
+                    "aTargets": [1],
+                    "mData": null,
+                    "mRender": function (data, type, full) {
+                        return (full.start).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    },
+                },
+                {
+                    "aTargets": [2],
+                    "mData": null,
+                    "mRender": function (data, type, full) {
+                        return (full.end).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    },
+                },
+                {
+                    "aTargets": [3],
+                    "mData": null,
+                    "mRender": function (data, type, full) {
+                        return (full.end - full.start).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    },
+                },
+                {
+                    "aTargets": [5],
+                    "mData": null,
+                    "mRender": function (data, type, full) {
+                        // We're going to simulate a mouse click in the circulate track to make this work
+                        return '<a href="javascript:' + localislandviewerObj + '.scrollandOpen({ start: ' + full.start + ', end:' + full.end + '})"><img src="{% static 'img/show-property-24.png' %}"></a>';
+                    },
+                },
+                {
+                    "aTargets": [6],
+                    "mData": null,
+                    "mRender": function (data, type, full) {
+                        if (full.annotations) {
+                            displayStr = full.annotations;
+                            substitutions = {
+                                'resistance': 'Resistance gene',
+                                'virulence': 'Virulence gene',
+                                'pathogen-associated': 'Pathogen Associated gene'
+                            };
+
+                            for (s in substitutions) {
+                                displayStr = displayStr.replace(s, substitutions[s]);
+                            }
+                            return displayStr;
+                        } else {
+                            return '';
+                        }
+                    },
+                },
+                {
+                    "aTargets": [7],
+                    "mData": null,
+                    "mRender": function (data, type, full) {
+                        return '<a href="{{ fetchislandsfasta }}?token={{ token }}&gi=' + full.gi + '&seq=island">Sequence</a>, <a href="{{ fetchislandsfasta }}?token={{ token }}&gi=' + full.gi + '&seq=nuc">Genes</a>, <a href="{{ fetchislandsfasta }}?token={{ token }}&gi=' + full.gi + '">Proteins</a>';
+                    },
+                },
+            ],
+            "aaSortingFixed": [[0, 'asc']],
+            "aaSorting": [[0, 'asc'], [1, 'asc']],
+            "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                $(nRow).addClass('method' + aData.group);
+            },
+
+        });
+    } // end create_gitable
 
 </script>
       

@@ -1,119 +1,223 @@
 {% extends "base.html" %}
-{% load static %} 
+{% load static %}
 
 {% block sidebar %}
-		<p class="bodyText">If you need further assistance, please feel free to email us at <a href="mailto:islandpick-mail@sfu.ca">islandpick-mail@sfu.ca</a> with your enquiries. Thank you.</p>
-		&nbsp;<br />
+    <p class="bodyText">If you need further assistance, please feel free to email us at <a
+            href="mailto:islandpick-mail@sfu.ca">islandpick-mail@sfu.ca</a> with your enquiries. Thank you.</p>
+    &nbsp;<br/>
     {% include "citation.html" %}
 {% endblock sidebar %}
 
 {% block content %}
-<script>
-function scrolltoelem(elem) {
-	$('html, body').animate({ scrollTop: $('#' + elem).offset().top }, 'slow');
-	
-}
-</script>
+    <script>
+        function scrolltoelem(elem) {
+            $('html, body').animate({scrollTop: $('#' + elem).offset().top}, 'slow');
 
-<p class="pageName">Frequently Asked Questions</p>
+        }
+    </script>
 
-<ul class="bodyText faq-q">
-  <li><a href="javascript:scrolltoelem('a1');">Which genomes are available through IslandViewer and how can I run IslandViewer on other genomes?</a></li>
-  <li><a href="javascript:scrolltoelem('a2');">Why does my input file fail to upload or run?</a></li>
-  <li><a href="javascript:scrolltoelem('a3');">Why is an expected genomic island missed from IslandViewer predictions?</a></li>
-  <li><a href="javascript:scrolltoelem('a5');">How do I change IslandPick analysis settings to compare against different genomes?</a></li>
-  <li><a href="javascript:scrolltoelem('a4');">What are the issues with running an incomplete genome through IslandViewer?</a></li>
-  <li><a href="javascript:scrolltoelem('a6');">What is the accuracy of IslandViewer GI predictions?</a></li>
-  <li><a href="javascript:scrolltoelem('a7');">What are the sources of external annotations in the scatter plot? How can I determine which resource to cite if I use any of these annotations?</a></li>
-  <li><a href="javascript:scrolltoelem('a8');">Why does my submitted genome from NCBI give different results than the pre-computed version?</a></li>
-  <li><a href="javascript:scrolltoelem('a9');">How can I check if a GI might be a pathogenicity or resistance island?</a></li>
-  <li><a href="javascript:scrolltoelem('a10');">How can I compare GI predictions across two species?</a></li>
-  <li><a href="javascript:scrolltoelem('a11');">How do I cite IslandViewer?</a></li>
-  <li><a href="javascript:scrolltoelem('a12');">Where can I find more information about GI prediction using computational methods?</a> </li>
-  <li><a href="javascript:scrolltoelem('a13');">How do I use the HTTP API?</a></li>
-</ul>
-		
-<p class="bodyText">If you are still having problems or concerns, please <a href="{% url 'contactus' %}">contact us</a> for further assistance.</p>
-<hr>
+    <p class="pageName">Frequently Asked Questions</p>
 
-<div id='a1' class="subHeader">Which genomes are available through IslandViewer and how can I run IslandViewer on other genomes?</div>
-&nbsp;<br />
-<p class="bodyText">All complete bacterial and archaeal genomes available for download on NCBI are pre-computed through IslandViewer. The genomes are updated from NCBI approximately every month. If you would like to run your own custom genome, use the &quot;Genome Upload&quot; page to upload your own GenBank or EMBL file. See <a href="http://www.ncbi.nlm.nih.gov/genbank/">here</a> for documentation about GenBank and access to sample records, or see <a href="http://www.bioperl.org/wiki/EMBL_sequence_format" target="_blank">here</a> for a description of the EMBL file format. <b>See also our hints on the <a href="{% url 'uploadform' %}">Genome Upload</a> page</b>. Unfinished genomes at the contig stage are now currently accepted by IslandViewer. Contigs must be annotated for analysis and will be ordered against a user-specified reference genome using the Mauve contig mover (<a href="http://bioinformatics.oxfordjournals.org/content/25/16/2071.full" target="_blank">Rissman et al., 2009</a>) before running through the GI prediction pipeline.</p>
+    <ul class="bodyText faq-q">
+        <li><a href="javascript:scrolltoelem('a1');">Which genomes are available through IslandViewer and how can I run
+            IslandViewer on other genomes?</a></li>
+        <li><a href="javascript:scrolltoelem('a2');">Why does my input file fail to upload or run?</a></li>
+        <li><a href="javascript:scrolltoelem('a3');">Why is an expected genomic island missed from IslandViewer
+            predictions?</a></li>
+        <li><a href="javascript:scrolltoelem('a5');">How do I change IslandPick analysis settings to compare against
+            different genomes?</a></li>
+        <li><a href="javascript:scrolltoelem('a4');">What are the issues with running an incomplete genome through
+            IslandViewer?</a></li>
+        <li><a href="javascript:scrolltoelem('a6');">What is the accuracy of IslandViewer GI predictions?</a></li>
+        <li><a href="javascript:scrolltoelem('a7');">What are the sources of external annotations in the scatter plot?
+            How can I determine which resource to cite if I use any of these annotations?</a></li>
+        <li><a href="javascript:scrolltoelem('a8');">Why does my submitted genome from NCBI give different results than
+            the pre-computed version?</a></li>
+        <li><a href="javascript:scrolltoelem('a9');">How can I check if a GI might be a pathogenicity or resistance
+            island?</a></li>
+        <li><a href="javascript:scrolltoelem('a10');">How can I compare GI predictions across two species?</a></li>
+        <li><a href="javascript:scrolltoelem('a11');">How do I cite IslandViewer?</a></li>
+        <li><a href="javascript:scrolltoelem('a12');">Where can I find more information about GI prediction using
+            computational methods?</a></li>
+        <li><a href="javascript:scrolltoelem('a13');">How do I use the HTTP API?</a></li>
+    </ul>
 
-<div align="right"><a href="#">Top</a></div>
+    <p class="bodyText">If you are still having problems or concerns, please <a href="{% url 'contactus' %}">contact
+        us</a> for further assistance.</p>
+    <hr>
 
-<div id='a2' class="subHeader">Why does my input file fail to upload or run?</div>
-&nbsp;<br />
-<p class="bodyText">The most common problem is incorrect format of input files. Please ensure your input file follows GenBank or EMBL formats with all necessary fields, including all nucleotide and coding sequences (CDSs). See examples for more details: <u><a href="http://www.pseudomonas.com/downloads/pseudomonas/pgd_r_15_3/Pseudomonas_aeruginosa_PAO1_107/Pseudomonas_aeruginosa_PAO1_107.gbk" target="_blank">GenBank</a></u>, <u><a href="http://www.pseudomonas.com/downloads/pseudomonas/pgd_r_15_3/Pseudomonas_aeruginosa_PAO1_107/Pseudomonas_aeruginosa_PAO1_107.embl" target="_blank">EMBL</a></u>. In some cases, SIGI-HMM will fail to run due to issues beyond our control (SIGI-HMM software was written by others), but we have modified the software so you should now be able to still view results for IslandPath-DIMOB and IslandPick in such cases. If you don't appear to have any such problems and you notice your jobs are taking longer than a few hours to complete, please don't hesitate to contact us and we would be happy to help identify the problem.</p>
+    <div id='a1' class="subHeader">Which genomes are available through IslandViewer and how can I run IslandViewer on
+        other genomes?
+    </div>
+    &nbsp;<br/>
+    <p class="bodyText">All complete bacterial and archaeal genomes available for download on NCBI are pre-computed
+        through IslandViewer. The genomes are updated from NCBI approximately every month. If you would like to run your
+        own custom genome, use the &quot;Genome Upload&quot; page to upload your own GenBank or EMBL file. See <a
+                href="http://www.ncbi.nlm.nih.gov/genbank/">here</a> for documentation about GenBank and access to
+        sample records, or see <a href="http://www.bioperl.org/wiki/EMBL_sequence_format" target="_blank">here</a> for a
+        description of the EMBL file format. <b>See also our hints on the <a href="{% url 'uploadform' %}">Genome
+            Upload</a> page</b>. Unfinished genomes at the contig stage are now currently accepted by IslandViewer.
+        Contigs must be annotated for analysis and will be ordered against a user-specified reference genome using the
+        Mauve contig mover (<a href="http://bioinformatics.oxfordjournals.org/content/25/16/2071.full" target="_blank">Rissman
+            et al., 2009</a>) before running through the GI prediction pipeline.</p>
 
-<div align="right"><a href="#">Top</a></div>
+    <div align="right"><a href="#">Top</a></div>
 
-<div id='a3' class="subHeader">Why is an expected genomic island missed from IslandViewer predictions?</div>
-&nbsp;<br />
-<p class="bodyText">Genomic islands that have been more anciently incorporated into a genome can ameliorate into the given genome, thus making prediction by SIGI-HMM and IslandPath-DIMOB difficult as these methods rely on the presence of sequence composition bias differences. However, IslandPick can be customized to detect these islands. By default, IslandPick detects islands with a certain phyletic distance so will not detect older islands common to some species/strains. But you can easily change your comparison genomes to identify islands associated with different time scales to run a custom IslandPick analysis (see next question).</p>
+    <div id='a2' class="subHeader">Why does my input file fail to upload or run?</div>
+    &nbsp;<br/>
+    <p class="bodyText">The most common problem is incorrect format of input files. Please ensure your input file
+        follows GenBank or EMBL formats with all necessary fields, including all nucleotide and coding sequences (CDSs).
+        See examples for more details: <u><a
+                href="http://www.pseudomonas.com/downloads/pseudomonas/pgd_r_15_3/Pseudomonas_aeruginosa_PAO1_107/Pseudomonas_aeruginosa_PAO1_107.gbk"
+                target="_blank">GenBank</a></u>, <u><a
+                href="http://www.pseudomonas.com/downloads/pseudomonas/pgd_r_15_3/Pseudomonas_aeruginosa_PAO1_107/Pseudomonas_aeruginosa_PAO1_107.embl"
+                target="_blank">EMBL</a></u>. In some cases, SIGI-HMM will fail to run due to issues beyond our control
+        (SIGI-HMM software was written by others), but we have modified the software so you should now be able to still
+        view results for IslandPath-DIMOB and IslandPick in such cases. If you don't appear to have any such problems
+        and you notice your jobs are taking longer than a few hours to complete, please don't hesitate to contact us and
+        we would be happy to help identify the problem.</p>
 
-<div align="right"><a href="#">Top</a></div>
+    <div align="right"><a href="#">Top</a></div>
 
-<div id='a5' class="subHeader">How do I change IslandPick analysis settings to compare against different genomes?</div>
-&nbsp;<br />
-<p class="bodyText">From the GI prediction results page, under &quot;Additional Tools&quot; on the left sidebar, click on IslandPick. If the genome was not processed using IslandPick, click on the link for &quot;Manual selection of IslandPick&quot; to run a custom analysis. Otherwise if IslandPick was previously run but you would like to select different genomes to compare against, click on &quot;Change&quot; on the right hand side above the listed genomes used in the original IslandPick analysis. This will take you to the page where you can select the genomes you would like to include in the analysis and you can also customize the different selection parameters. A rough measure of phyletic distance, calculated using CVTree, is available beside each species. Once you click &quot;Run IslandPick&quot;, you will be directed to the page where results will be available once the analysis is complete. You may enter your email address here to be notified when the results are accessible, or bookmark the page and check back later. An IslandPick analysis can take a few hours to run depending on the number of jobs in the queue.</p>
+    <div id='a3' class="subHeader">Why is an expected genomic island missed from IslandViewer predictions?</div>
+    &nbsp;<br/>
+    <p class="bodyText">Genomic islands that have been more anciently incorporated into a genome can ameliorate into the
+        given genome, thus making prediction by SIGI-HMM and IslandPath-DIMOB difficult as these methods rely on the
+        presence of sequence composition bias differences. However, IslandPick can be customized to detect these
+        islands. By default, IslandPick detects islands with a certain phyletic distance so will not detect older
+        islands common to some species/strains. But you can easily change your comparison genomes to identify islands
+        associated with different time scales to run a custom IslandPick analysis (see next question).</p>
 
-<div align="right"><a href="#">Top</a></div>
+    <div align="right"><a href="#">Top</a></div>
 
-<div id='a4' class="subHeader">What are the issues with running an incomplete genome through IslandViewer?</div>
-&nbsp;<br />
-<p class="bodyText">Incomplete genomes through IslandViewer's GI prediction algorithms could falsely predict GIs, and could miss real GIs. A proper assessment of the accuracy of GI prediction in incomplete genomes is being performed, and until such assessment is complete, all GI predictions in incomplete genomes through IslandViewer should be carefully evaluated for validity.</p>
+    <div id='a5' class="subHeader">How do I change IslandPick analysis settings to compare against different genomes?
+    </div>
+    &nbsp;<br/>
+    <p class="bodyText">From the GI prediction results page, under &quot;Additional Tools&quot; on the left sidebar,
+        click on IslandPick. If the genome was not processed using IslandPick, click on the link for &quot;Manual
+        selection of IslandPick&quot; to run a custom analysis. Otherwise if IslandPick was previously run but you would
+        like to select different genomes to compare against, click on &quot;Change&quot; on the right hand side above
+        the listed genomes used in the original IslandPick analysis. This will take you to the page where you can select
+        the genomes you would like to include in the analysis and you can also customize the different selection
+        parameters. A rough measure of phyletic distance, calculated using CVTree, is available beside each species.
+        Once you click &quot;Run IslandPick&quot;, you will be directed to the page where results will be available once
+        the analysis is complete. You may enter your email address here to be notified when the results are accessible,
+        or bookmark the page and check back later. An IslandPick analysis can take a few hours to run depending on the
+        number of jobs in the queue.</p>
 
-<div align="right"><a href="#">Top</a></div>
+    <div align="right"><a href="#">Top</a></div>
 
-<div id='a6' class="subHeader">What is the accuracy of IslandViewer GI predictions?</div>
-&nbsp;<br />
-<p class="bodyText">IslandViewer incorporates three of the most accurate GI prediction methods to complement each other for the best computational prediction of GIs. Note that our definition of a GI for some methods, such as IslandPath-DIMOB, only includes regions of size >8kb.  The approach used in accuracy calculation was performed at a certain range of phyletic distances that islands can be most accurately identified at. In some cases, you may want higher recall, for which we suggest using Alien_Hunter, but the number of false predictions will also increase greatly. IslandPick is the most precise/specific, if comparison genomes are available, though as mentioned the settings can be modified in IslandPick to change what/if islands are predicted by comparing genomes at a different phyletic distance. For a more detailed description of accuracy calculations, see this paper: <a href="http://www.biomedcentral.com/1471-2105/9/329" target="_blank">Langille et al, 2008 BMC Bioinformatics 9:329</a>. To learn more about detecting GIs using computational methods, you may also wish to view <a href="http://www.nature.com/nrmicro/journal/v8/n5/abs/nrmicro2350.html" target="_blank">Langille et al, 2010 Nature Reviews Microbiology 8:5</a>.</p>
+    <div id='a4' class="subHeader">What are the issues with running an incomplete genome through IslandViewer?</div>
+    &nbsp;<br/>
+    <p class="bodyText">Incomplete genomes through IslandViewer's GI prediction algorithms could falsely predict GIs,
+        and could miss real GIs. A proper assessment of the accuracy of GI prediction in incomplete genomes is being
+        performed, and until such assessment is complete, all GI predictions in incomplete genomes through IslandViewer
+        should be carefully evaluated for validity.</p>
 
-<div align="right"><a href="#">Top</a></div>
+    <div align="right"><a href="#">Top</a></div>
 
-<div id='a7' class="subHeader">What are the sources of external annotations in the scatter plot? How can I determine which resource to cite if I use any of these annotations?</div>
-&nbsp;<br />
-<p class="bodyText"><font class="circularVirulence_VFDB">Curated virulence factors</font> have been collected from the <a href="http://www.mgc.ac.cn/VFs/">Virulence Factor Database, VFDB</a> (see <a href="http://nar.oxfordjournals.org/content/40/D1/D641.full" target="_blank">Chen et al., 2012</a>), <a href="http://www.patricbrc.org" target="_blank">PATRIC</a> (see <a href="http://nar.oxfordjournals.org/content/42/D1/D581.long" target="_blank">Wattam et al., 2014</a>) and <a href="http://www.phidias.us/victors/" target="_blank">Victors</a>. <font class="circularVirulence_BLAST">Homologs of virulence factors</font> were determined as reciprocal best blast hits (RBBH's) to curated virulence factors. <font class="circularVirulence_ARDB">Curated resistance genes</font> were collected from the <a href="http://arpcard.mcmaster.ca/" target="_blank">Comprehensive Antibiotic Resistance Database (CARD)</a> (see <a href="http://aac.asm.org/content/57/7/3348.long" target="_blank">McArthur et al., 2013</a>). <font class="circularVirulence_RGI" target="_blank">Homologs of resistance genes</font> were determined using the <a href="http://arpcard.mcmaster.ca/?q=CARD/tools/RGI" target="_blank">Resistance Gene Identifier</a>. <font class="circularVirulence_PAG">Pathogen-associated genes</font> were determined using an approach as outlined by <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0008094" target="_blank">Ho Sui et al., 2009</a>, with a more recent list of genomes. In order to determine the source of any curated annotations, there are two main approaches. Firstly, the circle glyphs in the linear view provides direct links to the source database. Secondly, under the Downloads, a file of all "VF/AMR Annotations" shows the source of each annotation that should be cited and also provides hard links to the corresponding entries in the source database. For more information about any of these resources, please refer to the <a href="{% url 'about' %}">About</a> page and see our <a href="{% url 'acknowledgements' %}">Acknowledgments</a> page to correctly cite these resources.</p>
+    <div id='a6' class="subHeader">What is the accuracy of IslandViewer GI predictions?</div>
+    &nbsp;<br/>
+    <p class="bodyText">IslandViewer incorporates three of the most accurate GI prediction methods to complement each
+        other for the best computational prediction of GIs. Note that our definition of a GI for some methods, such as
+        IslandPath-DIMOB, only includes regions of size >8kb. The approach used in accuracy calculation was performed at
+        a certain range of phyletic distances that islands can be most accurately identified at. In some cases, you may
+        want higher recall, for which we suggest using Alien_Hunter, but the number of false predictions will also
+        increase greatly. IslandPick is the most precise/specific, if comparison genomes are available, though as
+        mentioned the settings can be modified in IslandPick to change what/if islands are predicted by comparing
+        genomes at a different phyletic distance. For a more detailed description of accuracy calculations, see this
+        paper: <a href="http://www.biomedcentral.com/1471-2105/9/329" target="_blank">Langille et al, 2008 BMC
+            Bioinformatics 9:329</a>. To learn more about detecting GIs using computational methods, you may also wish
+        to view <a href="http://www.nature.com/nrmicro/journal/v8/n5/abs/nrmicro2350.html" target="_blank">Langille et
+            al, 2010 Nature Reviews Microbiology 8:5</a>.</p>
 
-<div align="right"><a href="#">Top</a></div>
+    <div align="right"><a href="#">Top</a></div>
 
-<div id='a8' class="subHeader">Why does my submitted genome from NCBI give different results than the pre-computed version?</div>
-&nbsp;<br />
-<p class="bodyText">In an effort to standarize identifiers and reduce duplication, NCBI has been re-annotating it's bacterial genomes.  Part of this process involves running a new gene caller and updating identifiers.  The pre-computed genomes current in IslandViewer were run before this process was undertaken, and we do have plans to recompute all the IslandViewer results with these updated genomes in a future update.</p>
+    <div id='a7' class="subHeader">What are the sources of external annotations in the scatter plot? How can I determine
+        which resource to cite if I use any of these annotations?
+    </div>
+    &nbsp;<br/>
+    <p class="bodyText"><font class="circularVirulence_VFDB">Curated virulence factors</font> have been collected from
+        the <a href="http://www.mgc.ac.cn/VFs/">Virulence Factor Database, VFDB</a> (see <a
+                href="http://nar.oxfordjournals.org/content/40/D1/D641.full" target="_blank">Chen et al., 2012</a>), <a
+                href="http://www.patricbrc.org" target="_blank">PATRIC</a> (see <a
+                href="http://nar.oxfordjournals.org/content/42/D1/D581.long" target="_blank">Wattam et al., 2014</a>)
+        and <a href="http://www.phidias.us/victors/" target="_blank">Victors</a>. <font class="circularVirulence_BLAST">Homologs
+            of virulence factors</font> were determined as reciprocal best blast hits (RBBH's) to curated virulence
+        factors. <font class="circularVirulence_ARDB">Curated resistance genes</font> were collected from the <a
+                href="http://arpcard.mcmaster.ca/" target="_blank">Comprehensive Antibiotic Resistance Database
+            (CARD)</a> (see <a href="http://aac.asm.org/content/57/7/3348.long" target="_blank">McArthur et al.,
+            2013</a>). <font class="circularVirulence_RGI" target="_blank">Homologs of resistance genes</font> were
+        determined using the <a href="http://arpcard.mcmaster.ca/?q=CARD/tools/RGI" target="_blank">Resistance Gene
+            Identifier</a>. <font class="circularVirulence_PAG">Pathogen-associated genes</font> were determined using
+        an approach as outlined by <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0008094"
+                                      target="_blank">Ho Sui et al., 2009</a>, with a more recent list of genomes. In
+        order to determine the source of any curated annotations, there are two main approaches. Firstly, the circle
+        glyphs in the linear view provides direct links to the source database. Secondly, under the Downloads, a file of
+        all "VF/AMR Annotations" shows the source of each annotation that should be cited and also provides hard links
+        to the corresponding entries in the source database. For more information about any of these resources, please
+        refer to the <a href="{% url 'about' %}">About</a> page and see our <a href="{% url 'acknowledgements' %}">Acknowledgments</a>
+        page to correctly cite these resources.</p>
 
-<div align="right"><a href="#">Top</a></div>
+    <div align="right"><a href="#">Top</a></div>
 
-<div id='a9' class="subHeader">How can I check if a GI might be a pathogenicity or resistance island? </div>
-&nbsp;<br />
-<p class="bodyText">Within the summary table below the interactive display, any GIs containing annotated virulence genes, resistance genes or pathogen-associated genes will be indicated under the "External Annotations" column. You can alternatively determine overlap by manually checking annotations in the genome visualization when you click on a GI. Keep in mind that the annotations available here are by no means complete and are not available for every genome so if you do not see any annotated islands, there still may be a pathogenicity or resistance island in your genome of interest. Further investigation of the types of genes within the GI predictions will be crucial for classifying these types of GIs. </p>
+    <div id='a8' class="subHeader">Why does my submitted genome from NCBI give different results than the pre-computed
+        version?
+    </div>
+    &nbsp;<br/>
+    <p class="bodyText">In an effort to standarize identifiers and reduce duplication, NCBI has been re-annotating it's
+        bacterial genomes. Part of this process involves running a new gene caller and updating identifiers. The
+        pre-computed genomes current in IslandViewer were run before this process was undertaken, and we do have plans
+        to recompute all the IslandViewer results with these updated genomes in a future update.</p>
 
-<div align="right"><a href="#">Top</a></div>
+    <div align="right"><a href="#">Top</a></div>
 
-<div id='a10' class="subHeader">How can I compare GI predictions across two species?</div>
-&nbsp;<br />
-<p class="bodyText">You can compare two genomes on a single page by clicking on "Visualize two genomes" under the figure legend and choosing a genome to compare against. A pop up box should appear at the top of the page where you can select the second genome. This feature will be further improved in the future using sequence-similarity comparisons, but due to differences in criteria by users for matching up similar genomic regions, the simple visual comparison was strongly initially preferred.</p>
+    <div id='a9' class="subHeader">How can I check if a GI might be a pathogenicity or resistance island?</div>
+    &nbsp;<br/>
+    <p class="bodyText">Within the summary table below the interactive display, any GIs containing annotated virulence
+        genes, resistance genes or pathogen-associated genes will be indicated under the "External Annotations" column.
+        You can alternatively determine overlap by manually checking annotations in the genome visualization when you
+        click on a GI. Keep in mind that the annotations available here are by no means complete and are not available
+        for every genome so if you do not see any annotated islands, there still may be a pathogenicity or resistance
+        island in your genome of interest. Further investigation of the types of genes within the GI predictions will be
+        crucial for classifying these types of GIs. </p>
 
-<div align="right"><a href="#">Top</a></div>
+    <div align="right"><a href="#">Top</a></div>
 
-<div id='a11' class="subHeader">How do I cite IslandViewer?</div>
-&nbsp;<br />
-<p class="bodyText">We would appreciate anyone using IslandViewer to cite our publications, please see the <a href="{% url 'acknowledgements' %}">acknowledgements page</a> for the appropriate citations.</p>
+    <div id='a10' class="subHeader">How can I compare GI predictions across two species?</div>
+    &nbsp;<br/>
+    <p class="bodyText">You can compare two genomes on a single page by clicking on "Visualize two genomes" under the
+        figure legend and choosing a genome to compare against. A pop up box should appear at the top of the page where
+        you can select the second genome. This feature will be further improved in the future using sequence-similarity
+        comparisons, but due to differences in criteria by users for matching up similar genomic regions, the simple
+        visual comparison was strongly initially preferred.</p>
 
-<div align="right"><a href="#">Top</a></div>
+    <div align="right"><a href="#">Top</a></div>
 
-<div id='a12' class="subHeader">Where can I find more information about GI prediction using computational methods?</div>
-&nbsp;<br />
-<p class="bodyText">If you are interested in learning more about the computational prediction of GIs, please see the review article by <a href="http://www.nature.com/nrmicro/journal/v8/n5/full/nrmicro2350.html" target="_blank">Langille et al., 2010</a> in Nature Reviews Microbiology.</p>
+    <div id='a11' class="subHeader">How do I cite IslandViewer?</div>
+    &nbsp;<br/>
+    <p class="bodyText">We would appreciate anyone using IslandViewer to cite our publications, please see the <a
+            href="{% url 'acknowledgements' %}">acknowledgements page</a> for the appropriate citations.</p>
 
-<div align="right"><a href="#">Top</a></div>
+    <div align="right"><a href="#">Top</a></div>
 
-<div id='a13' class="subHeader">How to use the HTTP API?</div>
-&nbsp;<br />
-<p class="bodyText">IslandViewer 4 now integrates a HTTP API (REST API) to enable users to submit larger number of genomes and retrieved the predictions programmatically. Please check out our specific <a href="{% url 'http_api' %}">HTTP API</a> page.</p>
+    <div id='a12' class="subHeader">Where can I find more information about GI prediction using computational methods?
+    </div>
+    &nbsp;<br/>
+    <p class="bodyText">If you are interested in learning more about the computational prediction of GIs, please see the
+        review article by <a href="http://www.nature.com/nrmicro/journal/v8/n5/full/nrmicro2350.html" target="_blank">Langille
+            et al., 2010</a> in Nature Reviews Microbiology.</p>
 
-<div align="right"><a href="#">Top</a></div>
+    <div align="right"><a href="#">Top</a></div>
 
-&nbsp;<br />
+    <div id='a13' class="subHeader">How to use the HTTP API?</div>
+    &nbsp;<br/>
+    <p class="bodyText">IslandViewer 4 now integrates a HTTP API (REST API) to enable users to submit larger number of
+        genomes and retrieved the predictions programmatically. Please check out our specific <a
+                href="{% url 'http_api' %}">HTTP API</a> page.</p>
+
+    <div align="right"><a href="#">Top</a></div>
+
+    &nbsp;<br/>
 
 {% endblock content %}

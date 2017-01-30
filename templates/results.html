@@ -1,205 +1,222 @@
 {% extends "base.html" %}
-{% load static %} 
+{% load static %}
 
 {% block headextras %}
-<!--    <script src="http://d3js.org/d3.v3.min.js"></script>-->
+    <!--    <script src="http://d3js.org/d3.v3.min.js"></script>-->
     <script src="{% static 'js/d3.min.js' %}"></script>
     <script src="{% static 'js/d3-tip.js' %}"></script>
     <link href="{% static 'js/chosen/chosen.min.css' %}" rel="stylesheet">
     <script src="{% static 'js/chosen/chosen.jquery.min.js' %}"></script>
     <!--<link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" />-->
     <!--<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />-->
-    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css"/>
     <!--<script src="{% static 'js/jquery-ui.min.js' %}"></script>-->
     <!--<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>-->
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="{% static 'js/intro.js-0.7.1/introjs.css' %}" />
+    <link rel="stylesheet" href="{% static 'js/intro.js-0.7.1/introjs.css' %}"/>
     <script src="{% static 'js/intro.js-0.7.1/intro.js' %}"></script>
 
-{% if not noanalysis and status == "Running" %}
-<meta http-equiv="refresh" content="300" />
-{% endif %}
+    {% if not noanalysis and status == "Running" %}
+        <meta http-equiv="refresh" content="300"/>
+    {% endif %}
 
 {% endblock %}
 
 {% block sidebar %}
-{% if not noanalysis %}
-  {% if status == "Complete" %}
-    {% include "resultssidebar.html" %}
-  {% elif status == "Error" %}
+    {% if not noanalysis %}
+        {% if status == "Complete" %}
+            {% include "resultssidebar.html" %}
+        {% elif status == "Error" %}
 
-  {% else %}
-  &nbsp;<br />
-  <span class="bodyText">
+        {% else %}
+            &nbsp;<br/>
+            <span class="bodyText">
   The analysis is not yet complete, please check back to this page
   in a while, or you will be notified by email when the analysis is complete if you elected
-  to enter an email address.<br />
-  &nbsp;<br />
-  The graph to the right will show you the status of the Islandviewer pipeline.<br />
-  &nbsp;<br />
+  to enter an email address.<br/>
+  &nbsp;<br/>
+  The graph to the right will show you the status of the Islandviewer pipeline.<br/>
+  &nbsp;<br/>
   </span>
-  <span class="headertext">Legend:</span><br />
-  <span class="bodyText">&nbsp;<br />
-    &nbsp;&nbsp;<span class="legend Pending">&nbsp;</span>&nbsp;&nbsp;Pending<br />
-    &nbsp;&nbsp;<span class="legend Running">&nbsp;</span>&nbsp;&nbsp;Running<br />
-    &nbsp;&nbsp;<span class="legend Complete">&nbsp;</span>&nbsp;&nbsp;Complete<br />
-    &nbsp;&nbsp;<span class="legend Error">&nbsp;</span>&nbsp;&nbsp;Error<br />
+            <span class="headertext">Legend:</span><br/>
+            <span class="bodyText">&nbsp;<br/>
+    &nbsp;&nbsp;<span class="legend Pending">&nbsp;</span>&nbsp;&nbsp;Pending<br/>
+    &nbsp;&nbsp;<span class="legend Running">&nbsp;</span>&nbsp;&nbsp;Running<br/>
+    &nbsp;&nbsp;<span class="legend Complete">&nbsp;</span>&nbsp;&nbsp;Complete<br/>
+    &nbsp;&nbsp;<span class="legend Error">&nbsp;</span>&nbsp;&nbsp;Error<br/>
   </span>
-  {% endif %}
-{% endif %}
+        {% endif %}
+    {% endif %}
 {% endblock %}
 
 {% block content %}
-{% if noanalysis %}
-    {% include "noanalysis.html" %}
-{% else %}
-  {% if status == "Complete" %}
-      <script src="{% static 'js/alignervis.js' %}"></script>
-    <script src="{% static 'js/islandviewer.js' %}"></script>
-    <script src="{% static 'js/circularplot.js' %}"></script>
-    <script src="{% static 'js/linearplot.js' %}"></script>
-    <!--<script src="{% static 'js/islandplot.js' %}"></script>-->
-    <script src="{% static 'js/canvg/rgbcolor.js' %}"></script>
-    <script src="{% static 'js/canvg/StackBlur.js' %}"></script>
-    <script src="{% static 'js/canvg/canvg.js' %}"></script>
-    <script src="{% static 'js/FileSaver/FileSaver.js' %}"></script>
-    <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
-	<div id="gene_dialog"></div>
-    <div id="outer_circular">
-    <div id="circularcontainer" style="display:inline-block; ">
-      <span class="pageName">{{ genomename }}</span><br />
-      {% if ref_genome %}<span>Aligned against reference genome {{ ref_genome }}</span><br />{% endif %}
-      <div id="url_dialog" style="display:none">Copy this link to save the view:<br />
-        <img id="close_url" src="{% static 'img/close.svg' %}" height="25px">&nbsp;<input id="url_input" size="100" readonly>
-      </div>
-      <div id="genome_selector_dialog" style="display:none">Select a second genome to display:<br />
-       <img id="close_select_genome" class="closeimg" src="{% static 'img/close.svg' %}" height="22px"><div style="display: inline-block;"><select id="second_genome_select" class="extraclass" style="width:550px;" data-placeholder="Select a genome...">
-      		<option></option>
-      </select><br />
-      <span ><a href="javascript:load_second_helper();">Display genome</a></span></div><br />
-      &nbsp;<br />
-   	</div>
-   	  {% if default_analysis == False %}<span class="errortext">Note: This analysis was run using non-default parameters.  <a href="javascript:show_islandpick_genomes();">See here</a> for more details.</span><br />{% endif %}
-      <div id="circularchart" class="circularcontainer" draggable="true" style="display:inline-block"><img id="loadingimg" class="loadingimg" src="{% static 'img/loading.gif' %}"></div>
-    </div>
+    {% if noanalysis %}
+        {% include "noanalysis.html" %}
+    {% else %}
+        {% if status == "Complete" %}
+            <script src="{% static 'js/alignervis.js' %}"></script>
+            <script src="{% static 'js/islandviewer.js' %}"></script>
+            <script src="{% static 'js/circularplot.js' %}"></script>
+            <script src="{% static 'js/linearplot.js' %}"></script>
+            <!--<script src="{% static 'js/islandplot.js' %}"></script>-->
+            <script src="{% static 'js/canvg/rgbcolor.js' %}"></script>
+            <script src="{% static 'js/canvg/StackBlur.js' %}"></script>
+            <script src="{% static 'js/canvg/canvg.js' %}"></script>
+            <script src="{% static 'js/FileSaver/FileSaver.js' %}"></script>
+            <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+            <div id="gene_dialog"></div>
+            <div id="outer_circular">
+                <div id="circularcontainer" style="display:inline-block; ">
+                    <span class="pageName">{{ genomename }}</span><br/>
+                    {% if ref_genome %}<span>Aligned against reference genome {{ ref_genome }}</span><br/>{% endif %}
+                    <div id="url_dialog" style="display:none">Copy this link to save the view:<br/>
+                        <img id="close_url" src="{% static 'img/close.svg' %}" height="25px">&nbsp;<input id="url_input"
+                                                                                                          size="100"
+                                                                                                          readonly>
+                    </div>
+                    <div id="genome_selector_dialog" style="display:none">Select a second genome to display:<br/>
+                        <img id="close_select_genome" class="closeimg" src="{% static 'img/close.svg' %}" height="22px">
+                        <div style="display: inline-block;"><select id="second_genome_select" class="extraclass"
+                                                                    style="width:550px;"
+                                                                    data-placeholder="Select a genome...">
+                            <option></option>
+                        </select><br/>
+                            <span><a href="javascript:load_second_helper();">Display genome</a></span></div>
+                        <br/>
+                        &nbsp;<br/>
+                    </div>
+                    {% if default_analysis == False %}
+                        <span class="errortext">Note: This analysis was run using non-default parameters.  <a
+                                href="javascript:show_islandpick_genomes();">See here</a> for more details.</span>
+                        <br/>{% endif %}
+                    <div id="circularchart" class="circularcontainer" draggable="true" style="display:inline-block"><img
+                            id="loadingimg" class="loadingimg" src="{% static 'img/loading.gif' %}"></div>
+                </div>
 
-    <div id="secondcircularcontainer" style="display:inline-block; vertical-align: top;">
-      <span id="second_genome_title_wrapper" style="display:none;"><img onclick="javascript:hide_second();" src="{% static 'img/close.svg' %}" height="20px" style="vertical-align:top;">&nbsp;<span class="pageName" id="second_genome_title"></span></span><br />
-      <div id="rightplotcontainer" >
-      <div id="rightplot" class="circularcontainer" style="display: inline-block" ></div>
-      </div>
-    </div>
-    </div>
-      <div id="linearcharts">
-        <div id="circularchartlinearwrapper" class="visible linearchart">
-          <span id="linearname" class="linearLabel"></span>
-          <div id="circularchartlinear" style="width:600px;"></div>
-        </div>
+                <div id="secondcircularcontainer" style="display:inline-block; vertical-align: top;">
+                    <span id="second_genome_title_wrapper" style="display:none;"><img
+                            onclick="javascript:hide_second();" src="{% static 'img/close.svg' %}" height="20px"
+                            style="vertical-align:top;">&nbsp;<span class="pageName"
+                                                                    id="second_genome_title"></span></span><br/>
+                    <div id="rightplotcontainer">
+                        <div id="rightplot" class="circularcontainer" style="display: inline-block"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="linearcharts">
+                <div id="circularchartlinearwrapper" class="visible linearchart">
+                    <span id="linearname" class="linearLabel"></span>
+                    <div id="circularchartlinear" style="width:600px;"></div>
+                </div>
 
-        <div id="linearchartcomparisons" class="linearchart">
+                <div id="linearchartcomparisons" class="linearchart">
 
-        </div>
+                </div>
 
-        <div id="secondlinearwrapper" class="visible linearchart">
-          <span id="secondlinearname" class="linearLabel"></span>
-          <div id="secondchartlinear" style="width:600px;"></div>
-        </div>
-      </div>
-    <script type="text/javascript">
+                <div id="secondlinearwrapper" class="visible linearchart">
+                    <span id="secondlinearname" class="linearLabel"></span>
+                    <div id="secondchartlinear" style="width:600px;"></div>
+                </div>
+            </div>
+            <script type="text/javascript">
 
-   {% if reload %}
-   var reloadStr = '{{ reload|safe }}';
-   {% else %}
-   var reloadStr = undefined;
-  {% endif %}
+                {% if reload %}
+                    var reloadStr = '{{ reload|safe }}';
+                {% else %}
+                    var reloadStr = undefined;
+                {% endif %}
 
-    </script>
-    <script src="{% url 'circularplotjs' aid %}?token={{ token }}"></script>
+            </script>
+            <script src="{% url 'circularplotjs' aid %}?token={{ token }}"></script>
 
-    {% include "results.download.html" %}
-    
-      {% include "gitable.html" %}
-   <div id="loadingspinner" class="loading" style="display:none;"></div>                                                                                                                                                                         
-  {% elif status == "Error" %}
-  <div class="pageName">{{ genomename }}</div>
-  
-  There was an error processing your genome, please contact us to assist in investigating this issue.
-  {% else %}
-   <div class="pageName">{{ genomename }}</div>
-   {% if ref_genome %}<span>Aligned against reference genome {{ ref_genome }}</span><br />{% endif %}
-   <script src="{% static 'js/dagre-d3.min.js' %}"></script>
-  
-   <svg id="pipelinegraph" width=400 height=425>
-   <g transform="translate(20, 20)"/>
-   </svg><br />
+            {% include "results.download.html" %}
 
-   <span class="bodyText" id="email_notify">Receive email notification when job completes:<br /><input type="text" name="email" size="25" class="notify_values" id="email_box" placeholder="Enter email"> <input type="submit" value="Submit Email" onclick="return submit_notify()"><br />
+            {% include "gitable.html" %}
+            <div id="loadingspinner" class="loading" style="display:none;"></div>
+        {% elif status == "Error" %}
+            <div class="pageName">{{ genomename }}</div>
+
+            There was an error processing your genome, please contact us to assist in investigating this issue.
+        {% else %}
+            <div class="pageName">{{ genomename }}</div>
+            {% if ref_genome %}<span>Aligned against reference genome {{ ref_genome }}</span><br/>{% endif %}
+            <script src="{% static 'js/dagre-d3.min.js' %}"></script>
+
+            <svg id="pipelinegraph" width=400 height=425>
+                <g transform="translate(20, 20)"/>
+            </svg><br/>
+
+            <span class="bodyText" id="email_notify">Receive email notification when job completes:<br/><input
+                    type="text" name="email" size="25" class="notify_values" id="email_box"
+                    placeholder="Enter email"> <input type="submit" value="Submit Email"
+                                                      onclick="return submit_notify()"><br/>
    <span id="emailerror" class="errortext"></span>
-   </span><br />
-   {% if emails %}<span class="bodyText">Emails to be notified upon completion: {{ emails }}</span><br />&nbsp;<br />{% endif %}
-   &nbsp;<br />
-   <script src="{% url 'graphanalysisjs' aid %}"></script>
+   </span><br/>
+            {% if emails %}<span class="bodyText">Emails to be notified upon completion: {{ emails }}</span><br/>&nbsp;
+                <br/>{% endif %}
+            &nbsp;<br/>
+            <script src="{% url 'graphanalysisjs' aid %}"></script>
 
-   <script type="text/javascript">
-	function showError(msg) {
-		
-		errorstr = '<span id="errormsg" class="errortext">' + msg + "</span>";
-		
-		$(errorstr).insertAfter('#email_notify');
-	}
-	
-	function clearError() {
-		$('#errormsg').remove();
-	}
+            <script type="text/javascript">
+                function showError(msg) {
 
-   
-	function submit_notify() {
-	    clearError();
-		
-		if($("#email_box").length <= 0) {
-			showError("Error, you must enter an email address");
-			return;
-		}
-		
-		post_params = $("#email_box").serializeArray();
+                    errorstr = '<span id="errormsg" class="errortext">' + msg + "</span>";
+
+                    $(errorstr).insertAfter('#email_notify');
+                }
+
+                function clearError() {
+                    $('#errormsg').remove();
+                }
+
+
+                function submit_notify() {
+                    clearError();
+
+                    if ($("#email_box").length <= 0) {
+                        showError("Error, you must enter an email address");
+                        return;
+                    }
+
+                    post_params = $("#email_box").serializeArray();
 //		post_params = JSON.stringify($(".islandpick_selection").serialize());
 //		params = JSON.stringify($(".islandpick_selection, input[name='csrfmiddlewaretoken']").serializeArray());
 
 //		console.log(post_params);
-		
-		url = '{% url 'add_notify' aid %}';
 
-		$.ajax({
-			  type: "POST",
-			  url: url,
-			  data: post_params,
-			  success: function (json, status, jqXHR) {
-				//console.log(json);
-				//console.log(status);
-				//console.log(jqXHR);
-				
-				if('status' in json && json['status'] == 'success') {
-					showError("Email successfully submitted, you should be hearing from us shortly when your analysis is complete.")
-					$("#email_box").val('');
-					location.reload();
-				} else {
-					  showError("There was a problem submitting your email address, please try again later or contact us for further assistance.");
-				}
+                    url = '{% url 'add_notify' aid %}';
 
-			  },
-			  dataType: 'json',
-			  error: function(status) {
-				  console.log("failed");
-				  console.log(status);
-				  showError("There was a problem submitting your email address, please try again later or contact us for further assistance.");
-			  }
-				  
-			});
-	}
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: post_params,
+                        success: function (json, status, jqXHR) {
+                            //console.log(json);
+                            //console.log(status);
+                            //console.log(jqXHR);
 
-   
-   </script>
-   
-  {% endif %}
-{% endif %}
+                            if ('status' in json && json['status'] == 'success') {
+                                showError("Email successfully submitted, you should be hearing from us shortly when your analysis is complete.")
+                                $("#email_box").val('');
+                                location.reload();
+                            } else {
+                                showError("There was a problem submitting your email address, please try again later or contact us for further assistance.");
+                            }
+
+                        },
+                        dataType: 'json',
+                        error: function (status) {
+                            console.log("failed");
+                            console.log(status);
+                            showError("There was a problem submitting your email address, please try again later or contact us for further assistance.");
+                        }
+
+                    });
+                }
+
+
+            </script>
+
+        {% endif %}
+    {% endif %}
 {% endblock content %}

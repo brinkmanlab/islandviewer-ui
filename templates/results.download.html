@@ -1,25 +1,28 @@
 {% load charfilter %}
-{% load static %} 
+{% load static %}
 
 <div id="download_container" style="width: 600px; display: none;">
-<div id="download_inner"><img id="close_download" class="closeimg" src="{% static 'img/close.svg' %}" height="17px">Download</div>
-<div id="download_dialog" class="expanded_content">
-&nbsp;<br />
-<span>&nbsp;Please select the formatting of the download:</span><br />
-<table>
-<tr>
-  <td class="downloadtable">Select download type:<br />
-	  <select id="downloadtype" name="downloadtype" onchange="onChangeDownloadType()" class="chosen-select download-select">
-	    <option value="coordinates">Genomic Islands</option>
-	    <option value="annotations">VF/AMR Annotations</option>
-	    <option value="sequence">Sequence</option>
-	    <option value="image">Image</option>
-	  </select>
-  </td>
-  <td class="downloadtable">
+    <div id="download_inner"><img id="close_download" class="closeimg" src="{% static 'img/close.svg' %}" height="17px">Download
+    </div>
+    <div id="download_dialog" class="expanded_content">
+        &nbsp;<br/>
+        <span>&nbsp;Please select the formatting of the download:</span><br/>
+        <table>
+            <tr>
+                <td class="downloadtable">Select download type:<br/>
+                    <select id="downloadtype" name="downloadtype" onchange="onChangeDownloadType()"
+                            class="chosen-select download-select">
+                        <option value="coordinates">Genomic Islands</option>
+                        <option value="annotations">VF/AMR Annotations</option>
+                        <option value="sequence">Sequence</option>
+                        <option value="image">Image</option>
+                    </select>
+                </td>
+                <td class="downloadtable">
   	<span id="resultstypecontainer">
-  	  Select results type(s):<br />
-  	  <select id="resultstype" name="methods" class="chosen-select download-select" onchange="updateDownloadLink()" multiple>
+  	  Select results type(s):<br/>
+  	  <select id="resultstype" name="methods" class="chosen-select download-select" onchange="updateDownloadLink()"
+              multiple>
   	    <option value="integrated">Integrated results</option>
   	    <option value="sigi">All SIGI-HMM</option>
   	    <option value="dimob">All Dimob</option>
@@ -27,118 +30,117 @@
         <option value="islander">All Islander</option>
       </select>
 	</span>
-  	<span id="imageformatcontainer" class="hidden">
-	  Select results type(s):<br />
+                    <span id="imageformatcontainer" class="hidden">
+	  Select results type(s):<br/>
 	  <select id="plottype" name="methods" class="chosen-select download-select" onchange="updateDownloadLink()">
 	    <option value="circular">Circular plot</option>
 	    <option value="linear">Horizontal plot</option>
     </select>
 	</span>
-  </td>
-  <td class="downloadtable">
+                </td>
+                <td class="downloadtable">
 	<span id="downloadformatcontainer">
-  	  Select download format:<br />
+  	  Select download format:<br/>
   	  <select id="downloadformat" name="format" class="chosen-select download-select" onchange="updateDownloadLink()">
   	    <option value="tab">Tab delimited</option>
   	    <option value="csv">CSV</option>
   	    <option value="excel">Excel</option>
       </select>
 	</span>
-  </td>
-  <td class="downloadtable">&nbsp;<br />
-	  <a href="#" id="downloadResultsButton">Download</a>
-  </tr>
-</tr>
-</table>
-</div>
+                </td>
+                <td class="downloadtable">&nbsp;<br/>
+                    <a href="#" id="downloadResultsButton">Download</a>
+            </tr>
+            </tr>
+        </table>
+    </div>
 </div>
 
 <script type="text/javascript">
-  function show_download() {
+    function show_download() {
 
-      if($('#download_inner').is(':visible')) {
+        if ($('#download_inner').is(':visible')) {
+            hide_download();
+            return;
+        }
+
+        $('#download_container').slideToggle('fast');
+        $('#show_download_link').html("Close downloads");
+    }
+
+    function hide_download() {
+        $('#download_container').slideToggle('fast');
+        $('#show_download_link').html("Download");
+    }
+
+    $('#close_download').on('click', function () {
         hide_download();
-        return;
-      }
-
-      $('#download_container').slideToggle('fast');
-      $('#show_download_link').html("Close downloads");
-  }
-
-  function hide_download() {
-      $('#download_container').slideToggle('fast');
-      $('#show_download_link').html("Download");
-  }
-
-  $('#close_download').on('click', function() {
-    hide_download();
-  });
+    });
 
 
+    $(".toggle").on("click", function (e) {
+        $(this).toggleClass("expanded");
+        $(this).next().toggleClass("hidden");
+    });
 
-	$(".toggle").on("click", function(e){
-	  $(this).toggleClass("expanded");
-	  $(this).next().toggleClass("hidden");
-	});
-	
-	$(window).ready(function() {
-		$(".chosen-select").chosen({disable_search_threshold: 10, width: "150px"});
-		updateDownloadLink();
-	});
-	
-	var coordinateformats = {tab:'Tab delimited', csv:'CSV', excel:'Excel'};
-	var sequenceformats = {genbank:'Genbank', fasta:'Fasta'};
-	var imageformats = {png:'High-Res PNG', svg:'SVG'};
-	
-	function onChangeDownloadType() {
-		var downloadtype = $('#downloadtype').find(":selected").val();
-		$('#downloadformat').empty();
-		if(downloadtype == 'coordinates' || downloadtype == 'annotations') {
-			for (format in coordinateformats) {
-				$('#downloadformat').append("<option value=\"" + format + "\">" + coordinateformats[format] + "</option>"); 
-			}
-		} else if (downloadtype == 'sequence'){
-			for (format in sequenceformats) {
-				$('#downloadformat').append("<option value=\"" + format + "\">" + sequenceformats[format] + "</option>"); 
-			}		
-		} else {
-			for (format in imageformats) {
-				$('#downloadformat').append("<option value=\"" + format + "\">" + imageformats[format] + "</option>"); 
-			}
-		}
-		$('#downloadformat').trigger("chosen:updated");
-		updateDownloadLink();
-	}
-	
-	function updateDownloadLink() {
-		var downloadtype = $('#downloadtype').find(":selected").val();
-		var params = $("#downloadtype, #resultstype, #downloadformat").serialize();
-		if(downloadtype == 'coordinates') {
+    $(window).ready(function () {
+        $(".chosen-select").chosen({disable_search_threshold: 10, width: "150px"});
+        updateDownloadLink();
+    });
+
+    var coordinateformats = {tab: 'Tab delimited', csv: 'CSV', excel: 'Excel'};
+    var sequenceformats = {genbank: 'Genbank', fasta: 'Fasta'};
+    var imageformats = {png: 'High-Res PNG', svg: 'SVG'};
+
+    function onChangeDownloadType() {
+        var downloadtype = $('#downloadtype').find(":selected").val();
+        $('#downloadformat').empty();
+        if (downloadtype == 'coordinates' || downloadtype == 'annotations') {
+            for (format in coordinateformats) {
+                $('#downloadformat').append("<option value=\"" + format + "\">" + coordinateformats[format] + "</option>");
+            }
+        } else if (downloadtype == 'sequence') {
+            for (format in sequenceformats) {
+                $('#downloadformat').append("<option value=\"" + format + "\">" + sequenceformats[format] + "</option>");
+            }
+        } else {
+            for (format in imageformats) {
+                $('#downloadformat').append("<option value=\"" + format + "\">" + imageformats[format] + "</option>");
+            }
+        }
+        $('#downloadformat').trigger("chosen:updated");
+        updateDownloadLink();
+    }
+
+    function updateDownloadLink() {
+        var downloadtype = $('#downloadtype').find(":selected").val();
+        var params = $("#downloadtype, #resultstype, #downloadformat").serialize();
+        if (downloadtype == 'coordinates') {
 //			console.log("{% url "downloadcoordinates" %}?"+params);
-			$("#downloadResultsButton").attr("href", "{% url "downloadcoordinates" %}?aid={{ aid }}&token={{ token }}&"+params);
-			$('#resultstypecontainer').toggleClass('hidden', false);
-			$('#imageformatcontainer').toggleClass('hidden', true);
-		} else if(downloadtype == 'annotations') {
-			$("#downloadResultsButton").attr("href", "{% url "downloadannotations" %}?aid={{ aid }}&token={{ token }}&"+params);
-			$('#resultstypecontainer').toggleClass('hidden', true);
-			$('#imageformatcontainer').toggleClass('hidden', true);
-		} else if(downloadtype == 'sequence') {
-			$("#downloadResultsButton").attr("href", "{% url "downloadsequences" %}?aid={{ aid }}&token={{ token }}&"+params);
-			$('#resultstypecontainer').toggleClass('hidden', false);
-			$('#imageformatcontainer').toggleClass('hidden', true);
-		} else {
-			$('#resultstypecontainer').toggleClass('hidden', true);
-			$('#imageformatcontainer').toggleClass('hidden', false);
-			var imageformat = $('#downloadformat').find(":selected").val();
-			var plottype = $('#plottype').find(":selected").val();
-			if(plottype == 'circular') {
-			//			$("#downloadResultsButton").attr("href", "javascript:submit_download_form(\"" + imageformat + "\", \"{{ genomename|cleanfilename }}\");"); 
-				$("#downloadResultsButton").attr("href", "javascript:{{ plotName|default:"circular" }}TrackObj.savePlot(1, \"{{ genomename|cleanfilename }}\", \"islandplot.css\", \"" + imageformat + "\");");
-			} else {
-			$	("#downloadResultsButton").attr("href", "javascript:{{ plotName|default:"circular" }}LinearTrack.savePlot(1, \"{{ genomename|cleanfilename }}\", \"islandplot.css\", \"" + imageformat + "\");"); 
-			}
-			//			submit_download_form("svg", $("#downloadResultsButton"));
-		}
-	}
-	
+            $("#downloadResultsButton").attr("href", "{% url "downloadcoordinates" %}?aid={{ aid }}&token={{ token }}&" + params);
+            $('#resultstypecontainer').toggleClass('hidden', false);
+            $('#imageformatcontainer').toggleClass('hidden', true);
+        } else if (downloadtype == 'annotations') {
+            $("#downloadResultsButton").attr("href", "{% url "downloadannotations" %}?aid={{ aid }}&token={{ token }}&" + params);
+            $('#resultstypecontainer').toggleClass('hidden', true);
+            $('#imageformatcontainer').toggleClass('hidden', true);
+        } else if (downloadtype == 'sequence') {
+            $("#downloadResultsButton").attr("href", "{% url "downloadsequences" %}?aid={{ aid }}&token={{ token }}&" + params);
+            $('#resultstypecontainer').toggleClass('hidden', false);
+            $('#imageformatcontainer').toggleClass('hidden', true);
+        } else {
+            $('#resultstypecontainer').toggleClass('hidden', true);
+            $('#imageformatcontainer').toggleClass('hidden', false);
+            var imageformat = $('#downloadformat').find(":selected").val();
+            var plottype = $('#plottype').find(":selected").val();
+            if (plottype == 'circular') {
+                //			$("#downloadResultsButton").attr("href", "javascript:submit_download_form(\"" + imageformat + "\", \"{{ genomename|cleanfilename }}\");");
+                $("#downloadResultsButton").attr("href", "javascript:{{ plotName|default:"circular" }}TrackObj.savePlot(1, \"{{ genomename|cleanfilename }}\", \"islandplot.css\", \"" + imageformat + "\");");
+            } else {
+                $("#downloadResultsButton").attr("href", "javascript:{{ plotName|default:"circular" }}LinearTrack.savePlot(1, \"{{ genomename|cleanfilename }}\", \"islandplot.css\", \"" + imageformat + "\");");
+            }
+            //			submit_download_form("svg", $("#downloadResultsButton"));
+        }
+    }
+
 </script>

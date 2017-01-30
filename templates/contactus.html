@@ -1,15 +1,19 @@
 {% extends "base.html" %}
-{% load static %} 
+{% load static %}
 
 {% block content %}
-<p class="pageName">Contact Us</p>
+    <p class="pageName">Contact Us</p>
 
-<p class="bodyText">Questions or comments can be emailed to <a href="mailto:islandpick-mail@sfu.ca">islandpick-mail@sfu.ca</a>. Please also see our <a href="{% url 'faq' %}">FAQs</a>.</p>
+    <p class="bodyText">Questions or comments can be emailed to <a href="mailto:islandpick-mail@sfu.ca">islandpick-mail@sfu.ca</a>.
+        Please also see our <a href="{% url 'faq' %}">FAQs</a>.</p>
 
-<p class="pageName">Mailing List</p>
+    <p class="pageName">Mailing List</p>
 
-<p class="bodyText">Interested in hearing about the latest IslandViewer updates? </p>
-<p class="bodyText"> To <strong>subscribe</strong> to IslandViewer update mailing list, email <a href="mailto:maillist@sfu.ca">maillist@sfu.ca</a> with "subscribe islandviewer-update" in the subject or body of the message.</p>
-<p class="bodyText"> To <strong>unsubscribe</strong>, email <a href="mailto:maillist@sfu.ca">maillist@sfu.ca</a> with "unsubscribe islandviewer-update" in the subject or body the message </p>
+    <p class="bodyText">Interested in hearing about the latest IslandViewer updates? </p>
+    <p class="bodyText"> To <strong>subscribe</strong> to IslandViewer update mailing list, email <a
+            href="mailto:maillist@sfu.ca">maillist@sfu.ca</a> with "subscribe islandviewer-update" in the subject or
+        body of the message.</p>
+    <p class="bodyText"> To <strong>unsubscribe</strong>, email <a href="mailto:maillist@sfu.ca">maillist@sfu.ca</a>
+        with "unsubscribe islandviewer-update" in the subject or body the message </p>
 
 {% endblock content %}

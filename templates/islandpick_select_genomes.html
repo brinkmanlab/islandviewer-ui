@@ -1,346 +1,354 @@
 {% extends "base.html" %}
-{% load static %} 
+{% load static %}
 
 {% block headextras %}
     <!--<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />-->
-    <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}"/>
     <!--<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>-->
     <script src="{% static 'js/jquery-ui.min.js' %>"></script>
     <script src="{% static 'js/jsphylosvg/jsphylosvg-min.js' %}"></script>
     <script src="{% static 'js/jsphylosvg/raphael-min.js' %}"></script>
 
     <script type="text/javascript">
-	window.onload=function() { 
-		console.log("loaded");
-		
-		updatePickerList();
-		showPreviousRuns();
-		
-		$.ajaxSetup({ 
-		     beforeSend: function(xhr, settings) {
-		         if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-		             // Only send the token to relative URLs i.e. locally.
-		             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-		         }
-		     } 
-		});
+        window.onload = function () {
+            console.log("loaded");
 
-		//$("#loadingspinner").hide("fast");
-	}; // onload end
+            updatePickerList();
+            showPreviousRuns();
 
-	function getCookie(name)
-	{
-	    var cookieValue = null;
-	    if (document.cookie && document.cookie != '') {
-	        var cookies = document.cookie.split(';');
-	        for (var i = 0; i < cookies.length; i++) {
-	            var cookie = jQuery.trim(cookies[i]);
-	            // Does this cookie string begin with the name we want?
-	 
-	            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-	                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-	                break;
-	            }
-	        }
-	    }
-	    return cookieValue;
-	}
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                        // Only send the token to relative URLs i.e. locally.
+                        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                    }
+                }
+            });
 
-	
-	function updatePickerList(params) {
-	    clearError();
+            //$("#loadingspinner").hide("fast");
+        }; // onload end
 
-		url = '{% url 'islandpick_genomes' aid %}';
-		
-		if(params) {
-			url += '?' + params;
-		}
-		
-		console.log("calling " + url)
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
 
-	    $.ajax({
-	        type: "get",
-	        //async: false,
-	        url: url,
-	        dataType: "json",
-	        beforeSend: function () { 
-	    		$("#loadingspinner").show("fast");
-	    	},
-	        success: function (json) {
-	    		$("#loadingspinner").hide("fast");
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
 
-	    		if('genomes' in json) {
-	    			genomes = json['genomes'];
-	    			listcontainer = $('#genome_selection');
 
-	    			$(listcontainer).html('');
-	    			console.log(Object.keys(genomes).length);
-	    			
-	    			for(g in genomes) {
-	    				genome = genomes[g]
-	    				$(listcontainer).append('<div class="chkLabel"><input id="' + g + '" name="' + g + '" class="islandpick_selection" type="checkbox" ' + ($.parseJSON(genome['picked']) ? 'checked' : '') + '> <span class="smalltext ' + ($.parseJSON(genome['used']) ? 'bodyText_heavy' : ' ') + '">' + genome['dist'] + ', ' + genome['name'] + ' (' + g + ')</span><br /></div>');
-	    			}
-	    			
-	    		}
-	    		
-	    		if('parameters' in json && ('undefined' === typeof params)) {
-	    			parameters = json['parameters'];
-	    			
-	    			for(p in parameters) {
-	    				if($('#' + p.toLocaleLowerCase()).length) {
-	    					$('#' + p.toLocaleLowerCase()).val(parameters[p]);
-	    				}
-	    			}
-	    		}
-	    	
-	    		if('picker' in json && json['picker']['code'] != 200) {
-		    		communicationError();
-	    		}
-	    		
-	    		return;
-	    		console.log(json['tree']);
-	    		tree = json['tree'];
-	    		phylocanvas = new Smits.PhyloCanvas(
-	    				{ 
-	    					newick: tree
-	    				},
-	    				'svgCanvas',
-	    				800, 1200//, 'circular'
-	    			);			
-	    	},
-	    	error: function () {
-	    		$("#loadingspinner").hide("fast");
-	    		communicationError();
-	    	}
-	    });
-		
-	}
-	
-	function communicationError () {
-		listcontainer = $('#genome_selection');
-		
-		if(! $("#communicationerror").length) {
-			$(listcontainer).prepend("<p id=\"communicationerror\" class=\"errortext\">I'm sorry, there was a failure communicating with the server, please try again in a while or contact us.</p>");
-		}
-	}
-	
-	function showError(msg) {
-		
-		errorstr = '<span id="errormsg" class="errortext">' + msg + "</span>";
-		
-		$(errorstr).insertBefore('#genome_selection');
-	}
-	
-	function clearError() {
-		$('#errormsg').remove();
-	}
-	
-	function updatePicker() {
-		params = $(".selection_parameters").serialize();
-		
-		params += '&reselect=1';
-		
-		updatePickerList(params);
-	}
+        function updatePickerList(params) {
+            clearError();
 
-	function resetPicker() {
-		
-		updatePickerList();
-	}
+            url = '{% url 'islandpick_genomes' aid %}';
 
-	function runIslandpick() {
-	    clearError();
-		
-		if($(".islandpick_selection:checked").length <= 0) {
-			showError("Error, you must pick at least one comparison genome");
-			return;
-		}
-		
-		post_params = $(".islandpick_selection").serializeArray();
+            if (params) {
+                url += '?' + params;
+            }
+
+            console.log("calling " + url)
+
+            $.ajax({
+                type: "get",
+                //async: false,
+                url: url,
+                dataType: "json",
+                beforeSend: function () {
+                    $("#loadingspinner").show("fast");
+                },
+                success: function (json) {
+                    $("#loadingspinner").hide("fast");
+
+                    if ('genomes' in json) {
+                        genomes = json['genomes'];
+                        listcontainer = $('#genome_selection');
+
+                        $(listcontainer).html('');
+                        console.log(Object.keys(genomes).length);
+
+                        for (g in genomes) {
+                            genome = genomes[g]
+                            $(listcontainer).append('<div class="chkLabel"><input id="' + g + '" name="' + g + '" class="islandpick_selection" type="checkbox" ' + ($.parseJSON(genome['picked']) ? 'checked' : '') + '> <span class="smalltext ' + ($.parseJSON(genome['used']) ? 'bodyText_heavy' : ' ') + '">' + genome['dist'] + ', ' + genome['name'] + ' (' + g + ')</span><br /></div>');
+                        }
+
+                    }
+
+                    if ('parameters' in json && ('undefined' === typeof params)) {
+                        parameters = json['parameters'];
+
+                        for (p in parameters) {
+                            if ($('#' + p.toLocaleLowerCase()).length) {
+                                $('#' + p.toLocaleLowerCase()).val(parameters[p]);
+                            }
+                        }
+                    }
+
+                    if ('picker' in json && json['picker']['code'] != 200) {
+                        communicationError();
+                    }
+
+                    return;
+                    console.log(json['tree']);
+                    tree = json['tree'];
+                    phylocanvas = new Smits.PhyloCanvas(
+                        {
+                            newick: tree
+                        },
+                        'svgCanvas',
+                        800, 1200//, 'circular'
+                    );
+                },
+                error: function () {
+                    $("#loadingspinner").hide("fast");
+                    communicationError();
+                }
+            });
+
+        }
+
+        function communicationError() {
+            listcontainer = $('#genome_selection');
+
+            if (!$("#communicationerror").length) {
+                $(listcontainer).prepend("<p id=\"communicationerror\" class=\"errortext\">I'm sorry, there was a failure communicating with the server, please try again in a while or contact us.</p>");
+            }
+        }
+
+        function showError(msg) {
+
+            errorstr = '<span id="errormsg" class="errortext">' + msg + "</span>";
+
+            $(errorstr).insertBefore('#genome_selection');
+        }
+
+        function clearError() {
+            $('#errormsg').remove();
+        }
+
+        function updatePicker() {
+            params = $(".selection_parameters").serialize();
+
+            params += '&reselect=1';
+
+            updatePickerList(params);
+        }
+
+        function resetPicker() {
+
+            updatePickerList();
+        }
+
+        function runIslandpick() {
+            clearError();
+
+            if ($(".islandpick_selection:checked").length <= 0) {
+                showError("Error, you must pick at least one comparison genome");
+                return;
+            }
+
+            post_params = $(".islandpick_selection").serializeArray();
 //		post_params = JSON.stringify($(".islandpick_selection").serialize());
 //		params = JSON.stringify($(".islandpick_selection, input[name='csrfmiddlewaretoken']").serializeArray());
 
 //		console.log(post_params);
-		
-		url_params = $(".selection_parameters").serialize();
 
-		url = '{% url 'islandpick_genomes' aid %}';
+            url_params = $(".selection_parameters").serialize();
 
-		if(url_params) {
-			url += '?' + url_params;
-		}
+            url = '{% url 'islandpick_genomes' aid %}';
 
-		$.ajax({
-			  type: "POST",
-			  url: url,
-			  data: post_params,
-		      beforeSend: function () { 
-		    		$("#loadingspinner").show("fast");
-		    	},
-			  success: function (json, status, jqXHR) {
+            if (url_params) {
+                url += '?' + url_params;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: post_params,
+                beforeSend: function () {
+                    $("#loadingspinner").show("fast");
+                },
+                success: function (json, status, jqXHR) {
 //				console.log(json);
 //				console.log(status);
 //				console.log(jqXHR);
-				
-				if('status' in json && json['status'] == 'success') {
-					var redirect_url = '{% url 'results' '9999' %}'.replace('9999', json['aid']);
-					
-					if(json['token']) {
-						redirect_url += "?token=" + json['token'];
-					}
-					
-					window.location = redirect_url;
-					
-				} else {
-					communicationError();
-				}
 
-				$("#loadingspinner").hide("fast");
-			  },
-			  dataType: 'json',
-			  error: function(status) {
-				  $("#loadingspinner").hide("fast");
-				  console.log("failed");
-				  console.log(status);
-				  communicationError();
-			  }
-				  
-			});
-	}
-	
-	function showPreviousRuns() {
-		var prevRuns = {};
-		{% for item in related_analysis %}
-		prevRuns['{{item.complete_date|date:"d M Y"}}'] = '{{item.aid}}';
-		{% endfor %}
-		
-		for(runDate in prevRuns) {
-			var str = "<option value=\"" + prevRuns[runDate] + "\">Analysis " + prevRuns[runDate] + " (" + runDate + ")";
-			
-			if(prevRuns[runDate] == {{ aid }}) {
-				str += " (this analysis)";
-			}
-			
-			str += "</option>";
-			
-			$('#previousRunsSelect').append(str);	
-		}
-	}
-	
-    function goto_analysis()
-    {
-    	if(!($("#previousRunsSelect").val())) {
-    		return;
-    	}
- 
-    	var url = "{% url "results" '9999' %}".replace('9999', $("#previousRunsSelect").val());
-    	window.location = url;
-    	
-    }
-	</script>
+                    if ('status' in json && json['status'] == 'success') {
+                        var redirect_url = '{% url 'results' '9999' %}'.replace('9999', json['aid']);
+
+                        if (json['token']) {
+                            redirect_url += "?token=" + json['token'];
+                        }
+
+                        window.location = redirect_url;
+
+                    } else {
+                        communicationError();
+                    }
+
+                    $("#loadingspinner").hide("fast");
+                },
+                dataType: 'json',
+                error: function (status) {
+                    $("#loadingspinner").hide("fast");
+                    console.log("failed");
+                    console.log(status);
+                    communicationError();
+                }
+
+            });
+        }
+
+        function showPreviousRuns() {
+            var prevRuns = {};
+            {% for item in related_analysis %}
+                prevRuns['{{item.complete_date|date:"d M Y"}}'] = '{{item.aid}}';
+            {% endfor %}
+
+            for (runDate in prevRuns) {
+                var str = "<option value=\"" + prevRuns[runDate] + "\">Analysis " + prevRuns[runDate] + " (" + runDate + ")";
+
+                if (prevRuns[runDate] == {{ aid }}) {
+                    str += " (this analysis)";
+                }
+
+                str += "</option>";
+
+                $('#previousRunsSelect').append(str);
+            }
+        }
+
+        function goto_analysis() {
+            if (!($("#previousRunsSelect").val())) {
+                return;
+            }
+
+            var url = "{% url "results" '9999' %}".replace('9999', $("#previousRunsSelect").val());
+            window.location = url;
+
+        }
+    </script>
 
 {% endblock %}
 
 {% block sidebar %}
-<p class="bodyText">Depending on the genomes selected for comparison, IslandPick will predict genomic islands of varying insertion ages.</p>
+    <p class="bodyText">Depending on the genomes selected for comparison, IslandPick will predict genomic islands of
+        varying insertion ages.</p>
 
-<p class="bodyText">If you don't see a genome, try changing the genome distance range.</p>
+    <p class="bodyText">If you don't see a genome, try changing the genome distance range.</p>
 
-<p><span class="subHeader">IslandPick Selection Parameters</span></p>
+    <p><span class="subHeader">IslandPick Selection Parameters</span></p>
 
-<p class="bodyText">Changing the IslandPick paremeters will change the genomes that are picked for comparison.</p> 
+    <p class="bodyText">Changing the IslandPick paremeters will change the genomes that are picked for comparison.</p>
 
-<p class="bodyText"><select name="min_cutoff" id="min_cutoff" class="selection_parameters">
-	<option value="0.005">0.005</option>
-	<option value="0.01">0.01</option>
-	<option value="0.015">0.015</option>
-	<option value="0.02" selected="selected">0.02</option>
-	<option value="0.025">0.025</option>
-	<option value="0.03">0.03</option>
-	<option value="0.04">0.04</option>
-</select><a href="#"> Minimum Distance</a></p>
+    <p class="bodyText"><select name="min_cutoff" id="min_cutoff" class="selection_parameters">
+        <option value="0.005">0.005</option>
+        <option value="0.01">0.01</option>
+        <option value="0.015">0.015</option>
+        <option value="0.02" selected="selected">0.02</option>
+        <option value="0.025">0.025</option>
+        <option value="0.03">0.03</option>
+        <option value="0.04">0.04</option>
+    </select><a href="#"> Minimum Distance</a></p>
 
-<p class="bodyText"><select name="max_dist_single_cutoff" id="max_dist_single_cutoff" class="selection_parameters">
-<option value="0.10">0.10</option>
-<option value="0.12">0.12</option>
-<option value="0.14">0.14</option>
-<option value="0.15" selected="selected">0.15</option>
-<option value="0.16">0.16</option>
-<option value="0.18">0.18</option>
-<option value="0.20">0.20</option>
-</select><a href="#"> Maximum Single Distance</a></p>
+    <p class="bodyText"><select name="max_dist_single_cutoff" id="max_dist_single_cutoff" class="selection_parameters">
+        <option value="0.10">0.10</option>
+        <option value="0.12">0.12</option>
+        <option value="0.14">0.14</option>
+        <option value="0.15" selected="selected">0.15</option>
+        <option value="0.16">0.16</option>
+        <option value="0.18">0.18</option>
+        <option value="0.20">0.20</option>
+    </select><a href="#"> Maximum Single Distance</a></p>
 
-<p class="bodyText"><select name="max_cutoff" id="max_cutoff" class="selection_parameters">
-<option value="0.15">0.15</option>
-<option value="0.19">0.19</option>
-<option value="0.20">0.20</option>
-<option value="0.21" selected="selected">0.21</option>
-<option value="0.22">0.22</option>
-<option value="0.23">0.23</option>
-<option value="0.27">0.27</option>
-</select><a href="#"> Maximum Distance</a></p>
+    <p class="bodyText"><select name="max_cutoff" id="max_cutoff" class="selection_parameters">
+        <option value="0.15">0.15</option>
+        <option value="0.19">0.19</option>
+        <option value="0.20">0.20</option>
+        <option value="0.21" selected="selected">0.21</option>
+        <option value="0.22">0.22</option>
+        <option value="0.23">0.23</option>
+        <option value="0.27">0.27</option>
+    </select><a href="#"> Maximum Distance</a></p>
 
-<p class="bodyText"><select name="min_compare_cutoff"  id="min_compare_cutoff" class="selection_parameters">
-<option value="1">1</option>
-<option value="2">2</option>
-<option value="3" selected="selected">3</option>
-<option value="4">4</option>
-<option value="5">5</option>
-</select><a href="#"> Minimum Genomes Picked</a></p>
+    <p class="bodyText"><select name="min_compare_cutoff" id="min_compare_cutoff" class="selection_parameters">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3" selected="selected">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select><a href="#"> Minimum Genomes Picked</a></p>
 
-<p class="bodyText"><select name="max_compare_cutoff" id="max_compare_cutoff" class="selection_parameters">
-<option value="4">4</option>
-<option value="6" selected="selected">6</option>
-<option value="8">8</option>
-<option value="10">10</option>
-<option value="12">12</option>
-</select><a href="#"> Maximum Genomes Picked</a></p>
+    <p class="bodyText"><select name="max_compare_cutoff" id="max_compare_cutoff" class="selection_parameters">
+        <option value="4">4</option>
+        <option value="6" selected="selected">6</option>
+        <option value="8">8</option>
+        <option value="10">10</option>
+        <option value="12">12</option>
+    </select><a href="#"> Maximum Genomes Picked</a></p>
 
-<p><input type="button" onclick="updatePicker()" id="updatepicker" value="Update">&nbsp;<input type="button" onclick="resetPicker()" id="resetpicker" value="Default"></p>
+    <p><input type="button" onclick="updatePicker()" id="updatepicker" value="Update">&nbsp;<input type="button"
+                                                                                                   onclick="resetPicker()"
+                                                                                                   id="resetpicker"
+                                                                                                   value="Default"></p>
 {% endblock %}
 
 {% block content %}
 
 
-	<div class="pageName">{{ genomename }}</div>
-	&nbsp;<br />
-	<table border="0" cellspacing="0" cellpadding="0" width="800">
-	<tr style="vertical-align: top;">
-	<td width="440" class="bodyText islandpickTable">
-		<p><span class="subHeader">Reference Genome Selection</span></p>
-		<p class="smalltext">Genomes indicated in bold were selected in the default run of IslandPick. You can manually add or remove genomes below, or you can adjust the IslandPick Selection Parameters (left).</p>
-		<div id="genome_selection">
-		</div>
-	</td>
-	<td width="360" valign="top"  class="islandpickTable">
-		<p><span class="subHeader">Start IslandPick </span></p>
-		<p class="bodyText">Once you are satisfied with the genome selection please select your minimum island size and click "Run IslandPick".</p>
-		<p class="bodyText"><select name="min_gi_size" id="min_gi_size" class="selection_parameters">
-		<option value="4000">4000</option>
-		<option value="6000">6000</option>
-		<option value="8000" selected="selected">8000</option>
-		<option value="10000">10000</option>
-		<option value="12000">12000</option>
-		<option value="16000">16000</option>
-		<option value="20000">20000</option>
-		</select> Minimum Genomic Island Size</p>
-        {% if nouploads %}<p class="bodyText">We're sorry, custom analysis are currently disabled due to maintenance, please check back later.{% if message %}</p><p class="smalltext">{{ message }}{% endif %}</p>{% else %}
-		<p><input type="button" onclick="runIslandpick()" id="runislandpick" value="Run IslandPick"></p>
-        {% endif %}
+    <div class="pageName">{{ genomename }}</div>
+    &nbsp;<br/>
+    <table border="0" cellspacing="0" cellpadding="0" width="800">
+        <tr style="vertical-align: top;">
+            <td width="440" class="bodyText islandpickTable">
+                <p><span class="subHeader">Reference Genome Selection</span></p>
+                <p class="smalltext">Genomes indicated in bold were selected in the default run of IslandPick. You can
+                    manually add or remove genomes below, or you can adjust the IslandPick Selection Parameters
+                    (left).</p>
+                <div id="genome_selection">
+                </div>
+            </td>
+            <td width="360" valign="top" class="islandpickTable">
+                <p><span class="subHeader">Start IslandPick </span></p>
+                <p class="bodyText">Once you are satisfied with the genome selection please select your minimum island
+                    size and click "Run IslandPick".</p>
+                <p class="bodyText"><select name="min_gi_size" id="min_gi_size" class="selection_parameters">
+                    <option value="4000">4000</option>
+                    <option value="6000">6000</option>
+                    <option value="8000" selected="selected">8000</option>
+                    <option value="10000">10000</option>
+                    <option value="12000">12000</option>
+                    <option value="16000">16000</option>
+                    <option value="20000">20000</option>
+                </select> Minimum Genomic Island Size
+                </p>
+                {% if nouploads %}
+                    <p class="bodyText">We're sorry, custom analysis are currently disabled due to maintenance, please
+                        check back later.{% if message %}</p><p class="smalltext">{{ message }}{% endif %}</p>{% else %}
+                    <p><input type="button" onclick="runIslandpick()" id="runislandpick" value="Run IslandPick"></p>
+                {% endif %}
 
-        {% if related_analysis %}
-        &nbsp;<br />
-        <p class="subHeader">Previous runs of this genome:</p>
-        <div id="previousRuns"><select id="previousRunsSelect"></select></div>
-        &nbsp;<br />
-        <input type="button" value="Show Analysis" onclick="goto_analysis()">
-        {% endif %}
-	</td>
-	</tr>
-	</table>
-	   <svg id="svgCanvas" width=800 height=1200>
-	   </svg>
-   {% csrf_token %}
-   <div id="loadingspinner" class="loading" ></div>                                                                                                                                                                         
+                {% if related_analysis %}
+                    &nbsp;<br/>
+                    <p class="subHeader">Previous runs of this genome:</p>
+                    <div id="previousRuns"><select id="previousRunsSelect"></select></div>
+                    &nbsp;<br/>
+                    <input type="button" value="Show Analysis" onclick="goto_analysis()">
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+    <svg id="svgCanvas" width=800 height=1200>
+    </svg>
+    {% csrf_token %}
+    <div id="loadingspinner" class="loading"></div>
 
 {% endblock content %}

@@ -1,25 +1,25 @@
 {% extends "base.html" %}
-{% load static %} 
+{% load static %}
 
 {% block headextras %}
 
-<link href="{% static 'js/chosen/chosen.min.css' %}" rel="stylesheet">
-<script src="{% static 'js/chosen/chosen.jquery.min.js' %}"></script>
+    <link href="{% static 'js/chosen/chosen.min.css' %}" rel="stylesheet">
+    <script src="{% static 'js/chosen/chosen.jquery.min.js' %}"></script>
 {% endblock headextras %}
 
 {% block sidebar %}
-{% include "uploadsidebar.html" %}
+    {% include "uploadsidebar.html" %}
 {% endblock %}
 
 {% block content %}
-<span class="pageName">Genome Upload</span>
-<span class="bodyText">
-<p>Genomic island predictions can be calculated for your genome using IslandPick, IslandPath-DIMOB, and SIGI-HMM. <a href="{% url 'about' %}">More Information</a>. <a href="{% url 'faq' %}">See our FAQs</a></p>
-<p class="bodyText">We're sorry, uploads are currently disabled due to maintenance, please check back later.
+    <span class="pageName">Genome Upload</span>
+    <span class="bodyText">
+        <p>Genomic island predictions can be calculated for your genome using IslandPick, IslandPath-DIMOB, and SIGI-HMM. <a
+        href="{% url 'about' %}">More Information</a>. <a href="{% url 'faq' %}">See our FAQs</a></p>
+        <p class="bodyText">We're sorry, uploads are currently disabled due to maintenance, please check back later.
 
-{% if message %}</p><p class="bodyText">{{ message }}{% endif %}
-</p>
+    {% if message %}</p><p class="bodyText">{{ message }}{% endif %}
+    </p>
 
-
-</span>
+    </span>
 {% endblock content %}

@@ -1,48 +1,51 @@
 {% extends "base.html" %}
-{% load static %} 
+{% load static %}
 
 {% block headextras %}
-<link href="{% static 'js/chosen/chosen.min.css' %}" rel="stylesheet">
-<script src="{% static 'js/chosen/chosen.jquery.min.js' %}"></script>
+    <link href="{% static 'js/chosen/chosen.min.css' %}" rel="stylesheet">
+    <script src="{% static 'js/chosen/chosen.jquery.min.js' %}"></script>
 {% endblock headextras %}
 
 {% block sidebar %}
-{% include "uploadsidebar.html" %}
+    {% include "uploadsidebar.html" %}
 {% endblock %}
 
 {% block content %}
-<script type="text/javascript">
-function submitGenome() {
-		document.getElementById('Upload').style.display = 'none';
-		document.getElementById('submitted').style.display = '';
-		
-}
+    <script type="text/javascript">
+        function submitGenome() {
+            document.getElementById('Upload').style.display = 'none';
+            document.getElementById('submitted').style.display = '';
+
+        }
 
 
-function prepareSubmit() {
-	// Hide the submit button and show the spinner
-	console.log("Preparing to submit");
-	
-	$('#error_message').hide();
-	$('#Upload').hide();
-	$('#submitted').show();
+        function prepareSubmit() {
+            // Hide the submit button and show the spinner
+            console.log("Preparing to submit");
 
-}
+            $('#error_message').hide();
+            $('#Upload').hide();
+            $('#submitted').show();
 
-function postSubmit() {
-	console.log("Finished submitting");
-	
-	$('#Upload').show();
-	$('#submitted').hide();
+        }
 
-}
-</script>
-<span class="pageName">Genome Upload</span>
-<span class="bodyText">
-<p>Genomic island predictions can be calculated for your genome using IslandPick, IslandPath-DIMOB, and SIGI-HMM. <a href="{% url 'about' %}">More Information</a>. <a href="{% url 'faq' %}">See our FAQs</a></p>
+        function postSubmit() {
+            console.log("Finished submitting");
+
+            $('#Upload').show();
+            $('#submitted').hide();
+
+        }
+    </script>
+    <span class="pageName">Genome Upload</span>
+    <span class="bodyText">
+<p>Genomic island predictions can be calculated for your genome using IslandPick, IslandPath-DIMOB, and SIGI-HMM. <a
+        href="{% url 'about' %}">More Information</a>. <a href="{% url 'faq' %}">See our FAQs</a></p>
 <p class="bodyText">Examples of genome files you should submit:
-			<a href="http://www.pseudomonas.com/downloads/pseudomonas/pgd_r_15_3/Pseudomonas_aeruginosa_PAO1_107/Pseudomonas_aeruginosa_PAO1_107.gbk" target="_blank">GENBANK</a>,
-			<a href="http://www.pseudomonas.com/downloads/pseudomonas/pgd_r_15_3/Pseudomonas_aeruginosa_PAO1_107/Pseudomonas_aeruginosa_PAO1_107.embl" target="_blank">EMBL</a>.
+			<a href="http://www.pseudomonas.com/downloads/pseudomonas/pgd_r_15_3/Pseudomonas_aeruginosa_PAO1_107/Pseudomonas_aeruginosa_PAO1_107.gbk"
+               target="_blank">GENBANK</a>,
+			<a href="http://www.pseudomonas.com/downloads/pseudomonas/pgd_r_15_3/Pseudomonas_aeruginosa_PAO1_107/Pseudomonas_aeruginosa_PAO1_107.embl"
+               target="_blank">EMBL</a>.
 </p>
 
 <div id="error_message" class="errortext" style="display: none;"></div>
@@ -50,46 +53,48 @@ function postSubmit() {
 {% csrf_token %}
 {% if error %}{{ error|safe }}{% endif %}
 <div id="genomeselector_div" style="display: none;">
-  <select id="genomeselector" name="genomeselector" class="chosen-select extraclass" style="width:550px;" data-placeholder="Select or start typing a species name, strain name or genome accession...">
+  <select id="genomeselector" name="genomeselector" class="chosen-select extraclass" style="width:550px;"
+          data-placeholder="Select or start typing a species name, strain name or genome accession...">
   <option></option>
   </select>
 </div>
-<p>{{ form.format_type }}<span id="fileselect_msg" style="display: none;">Please provide an fna file with the missing sequence information:<br /></span><span id="fileselect_spacer">&nbsp;&nbsp;&nbsp;</span>{{ form.genome_file }}</p>
+<p>{{ form.format_type }}<span id="fileselect_msg" style="display: none;">Please provide an fna file with the missing sequence information:<br/></span><span
+        id="fileselect_spacer">&nbsp;&nbsp;&nbsp;</span>{{ form.genome_file }}</p>
               
 	                  
 <div id="inputfield_div">
 <span class="upload_input_span">
-   {{ form.genome_name.label_tag }}<br /> {{ form.genome_name }}
+   {{ form.genome_name.label_tag }}<br/> {{ form.genome_name }}
 </span>
 <span class="upload_input_span">
-   {{ form.email_addr.label_tag }}<br /> {{ form.email_addr }}
+   {{ form.email_addr.label_tag }}<br/> {{ form.email_addr }}
 </span>
 </div>
 {{ form.cid }}{{ form.ref_accnum }}
-<p><div id="submitted" style="display: none;"><img  src="{% static 'img/spinning_wheel.gif' %}" /></div>
-<input name="Upload" type="submit" id="Upload" value="Upload" form="genome_upload" />
+<p><div id="submitted" style="display: none;"><img src="{% static 'img/spinning_wheel.gif' %}"/></div>
+<input name="Upload" type="submit" id="Upload" value="Upload" form="genome_upload"/>
 		    (this may take several minutes) </p>
-</form>	
+</form>
 
 
-{% comment %}Help hints section{% endcomment %}
-<hr>
+        {% comment %}Help hints section{% endcomment %}
+        <hr>
 
 <script type="text/javascript">
 //	window.onload=function() { 
-$(document).ready( function() {	
-	//initPage(); 
+$(document).ready(function () {
+    //initPage();
 
-	$("#genome_upload").submit( function(e) {
-		e.preventDefault();
-		
-		// Fetch the form elements
+    $("#genome_upload").submit(function (e) {
+        e.preventDefault();
+
+        // Fetch the form elements
 //		var data = new FormData($('#genome_upload')[0]);
-		var data = new FormData(this);
+        var data = new FormData(this);
 
 //		var genome_file = $('#id_genome_file')[0];
 //		data.append(genome_file.name, genome_file.files[0]);
-		//		var file_data = $('input[type="file"]')[0].files;
+        //		var file_data = $('input[type="file"]')[0].files;
 //		for(var i = 0;i<file_data.length;i++){
 //			console.log(i);
 //			console.log(file_data[i]);
@@ -107,251 +112,258 @@ $(document).ready( function() {
 //			data.append($(this).attr("name"), $(this).val())
 //		});
 
-		var url = '{% url 'uploadcustomajax' %}';
-		
-		$.ajax({
-			url: url,
-			type: 'POST',
-			data: data,
-			cache: false,
-			beforeSend: prepareSubmit,
-			complete: postSubmit,
-			processData: false,
-		    contentType: false,
-			success: function(data) {
-				console.log(data);
-				processResponse(data);
-				
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				showError("We have a communication error with the server, sorry for the inconvenience, please try again later or contact us if the problem persists");
-			}
-		});
+        var url = '{% url 'uploadcustomajax' %}';
 
-		return false;
-	});	
-	
-	$('#genomeselector').on('change', function() {
-		$('#id_ref_accnum').val( this.value );
-	});
-	
-	}); // document ready
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+            cache: false,
+            beforeSend: prepareSubmit,
+            complete: postSubmit,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log(data);
+                processResponse(data);
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                showError("We have a communication error with the server, sorry for the inconvenience, please try again later or contact us if the problem persists");
+            }
+        });
+
+        return false;
+    });
+
+    $('#genomeselector').on('change', function () {
+        $('#id_ref_accnum').val(this.value);
+    });
+
+}); // document ready
 
 
-	function processResponse(data) {
-		if('undefined' !== typeof data['status']) {
-		// We have a valid status code
-			if(data['status'] == 200) {
-				if('undefined' !== typeof data['aid']) {
-					// We have an aid, redirect!
-					url = '{% url 'results' '9999' %}'.replace(9999, data['aid']);
-					
-					if('undefined' !== typeof data['token']) {
-						url += "?token=" + data['token'];			
-					}
-					
-					window.location = url;
-				}
-				$('#error_message').hide();
+function processResponse(data) {
+    if ('undefined' !== typeof data['status']) {
+        // We have a valid status code
+        if (data['status'] == 200) {
+            if ('undefined' !== typeof data['aid']) {
+                // We have an aid, redirect!
+                url = '{% url 'results' '9999' %}'.replace(9999, data['aid']);
 
-			} else if(data['status'] == 500) {
-				// Now we're in to the various error types...
-				if('undefined' !== data['cid']) {
-					$('#id_cid').val( data['cid'] );
-				}
-				
-				if('undefined' !== typeof data['code']) {
-					// If we've reached this far we're going to do something, so we can return
-					// at the end of it, all other cases fall through to
-					// the default error message
+                if ('undefined' !== typeof data['token']) {
+                    url += "?token=" + data['token'];
+                }
 
-					if(data['code'] == 'FILEFORMATERROR') {
-						showError("The file you uploaded doesn't appear to be valid, please check the file or contact us for more assistance.");
-					} else if(data['code'] == 'NOSEQFNA') {
-						// This is thrown when we've uploaded a second FNA file but still
-						// don't have any sequence information, a complete, non-recoverable failure
-						showError("Sorry, we still can't seem to find sequence information for one or more contigs. Please check your files try your submission again, or contact us for more assistance.");
-						// Hide all file form elements here
-						$('#id_genome_file').hide();
-						$('#fileselect_msg').hide();
-						$('#genome_upload').hide();
-					} else if(data['code'] == 'NOSEQNOFNA') {
-						// This is thrown if we seem to have a valid embl or genbank file, but no sequence information,
-						// give the user the opportunity to upload an fna file
-						showFNAUpload(data);
-						
-					} else if(data['code'] == 'NOCDSRECORDS') {
-						// This is if the embl or genbank files don't have any CDS records, this
-						// is a non recoverable error.
-						showError("The file you uploaded doesn't appear to be valid (missing CDS records), please check the file or contact us for more assistance.");
-					} else if(data['code'] == 'NOREFSEQUENCE') {
-						// This is if we have multiple contigs but no genome to align them against, show the genome picker
-						showIncompletePicker(data);
-					} else {
-						showError("Sorry, there was an unknown error submitting genome, please try again later.");
-					}
-					
-					return;
-				}
-				
-			}
-			
-		} 
-			
-		if('undefined' !== typeof data['error']) {
-			showError(data['error']);
-		} else {
-			// An unknown error, why didn't we receive a status code?
-			showError("Sorry, there was an unknown error submitting genome, please try again later");
-		}
-	
-	}
-	
-	function showFNAUpload(data) {
-		// First we need to set the cid element to the one we were given
-		if('undefined' !== data['cid']) {
-			$('#id_cid').val( data['cid'] );
+                window.location = url;
+            }
+            $('#error_message').hide();
 
-			// We need to hide the file type picker
-			$('#id_format_type').hide();
-			$('#fileselect_msg').show();
-			$('#fileselect_spacer').hide();
-			
-			// And because of IE 8.0-10.0 security issues we
-			// have to clone and replace the file selector element
-			// in order to clear it.
-			var file = $('#id_genome_file');
-			file.replaceWith(file.val('').clone(true));
-			
-			replaceGenomeName();
-			
-			showError("The file you uploaded doesn't appear to have any sequence information, please select an fna file with the corresponding sequence for all contigs to upload.")
-			
-		} else {
-			// We didn't get a cid? This isn't good!
-			showError("We couldn't find any sequence information in the file you uploaded, however something worse and unknown also occured. Please try again later or contact us for more assistance.")
-		}
-	}
-		
-	function showIncompletePicker(data) {
-		// First we need to set the cid element to the one we were given
-		if('undefined' !== data['cid']) {
-			var url = '{% url 'fetchgenomesjson' %}';
-			$('#id_cid').val( data['cid'] );
+        } else if (data['status'] == 500) {
+            // Now we're in to the various error types...
+            if ('undefined' !== data['cid']) {
+                $('#id_cid').val(data['cid']);
+            }
 
-			$('#id_format_type').hide();
-			$('#id_genome_file').hide();
-			$('#fileselect_msg').hide();
+            if ('undefined' !== typeof data['code']) {
+                // If we've reached this far we're going to do something, so we can return
+                // at the end of it, all other cases fall through to
+                // the default error message
 
-			$.ajax({
-				url: url,
-				type: 'GET',
-				cache: false,
-				beforeSend: function() {
-				    $('#submitted').show();
-			},
-				complete: function () {
-				    $('#submitted').hide();
-			},
-				success: function(data) {
-					console.log(data);
+                if (data['code'] == 'FILEFORMATERROR') {
+                    showError("The file you uploaded doesn't appear to be valid, please check the file or contact us for more assistance.");
+                } else if (data['code'] == 'NOSEQFNA') {
+                    // This is thrown when we've uploaded a second FNA file but still
+                    // don't have any sequence information, a complete, non-recoverable failure
+                    showError("Sorry, we still can't seem to find sequence information for one or more contigs. Please check your files try your submission again, or contact us for more assistance.");
+                    // Hide all file form elements here
+                    $('#id_genome_file').hide();
+                    $('#fileselect_msg').hide();
+                    $('#genome_upload').hide();
+                } else if (data['code'] == 'NOSEQNOFNA') {
+                    // This is thrown if we seem to have a valid embl or genbank file, but no sequence information,
+                    // give the user the opportunity to upload an fna file
+                    showFNAUpload(data);
 
-					for(var i = 0; i < data.length; i++) {
-						entry = data[i];
-						$('#genomeselector')
-							.append($('<option></option>')
-									.attr('value', entry['cid'])
-									.text(entry['name'])
-									);
-						
-					}
-					$('#genomeselector_div').show();
-					$("#genomeselector").chosen({disable_search_threshold: 10, no_results_text: "Oops, no genomes matching that name!", search_contains: true});
-					$('#Upload').val('Start Analysis');
-					showError("Please select a reference genome to align your genome against.");
-				},
-				error: function(jqXHR, textStatus, errorThrown) {
-					showError("We have a communication error with the server, sorry for the inconvenience, please try again later or contact us if the problem persists");
-				}
-			});
+                } else if (data['code'] == 'NOCDSRECORDS') {
+                    // This is if the embl or genbank files don't have any CDS records, this
+                    // is a non recoverable error.
+                    showError("The file you uploaded doesn't appear to be valid (missing CDS records), please check the file or contact us for more assistance.");
+                } else if (data['code'] == 'NOREFSEQUENCE') {
+                    // This is if we have multiple contigs but no genome to align them against, show the genome picker
+                    showIncompletePicker(data);
+                } else {
+                    showError("Sorry, there was an unknown error submitting genome, please try again later.");
+                }
 
-			//showError("Sorry, we don't quite allow incomplete genomes yet, but soon!");
-			
-		} else {
-			// We didn't get a cid? This isn't good!
-			showError("We couldn't find any sequence information in the file you uploaded, however something worse and unknown also occured. Please try again later or contact us for more assistance.")			
-		}
-	}
-	
-	function replaceGenomeName() {
-		// We've successfully saved an initial genome, we won't allow editing of the genome any longer
-		if(! $('#id_genome_name').val()) {
-			$('#id_genome_name').val('User Genome');
-		}
-		
-		$('#id_genome_name').prop("readonly", true);
-		
-	}
-	
-	function showError(errmsg) {
-		$('#error_message').html('<pre>' + errmsg + '</pre>');
-		
-		$('#error_message').show();
+                return;
+            }
 
-	}
-	
-	function initPage() {
-		document.getElementById('hint').style.display = 'none';
-		document.getElementById('hideHint').style.display = 'none';
-		document.getElementById('submitted').style.display = 'none';
-	}
-	function showHint() {
-		document.getElementById('showHint').style.display = 'none';
-		document.getElementById('hideHint').style.display = '';
-		document.getElementById('hint').style.display = '';
-	}
-	function hideHint() {
-		document.getElementById('showHint').style.display = '';
-		document.getElementById('hideHint').style.display = 'none';
-		document.getElementById('hint').style.display = 'none';
-	}
-	function changeFileType() {
-		var fileType = document.getElementById('id_format_type');
-		if (fileType.options[fileType.selectedIndex].value == "GENBANK") {
-			document.getElementById('gbk').style.display = '';
-			document.getElementById('embl').style.display = 'none';
-		} else if (fileType.options[fileType.selectedIndex].value == "EMBL") {
-			document.getElementById('gbk').style.display = 'none';
-			document.getElementById('embl').style.display = '';
-		}
-	}
-	function submitGenome() {
-		document.getElementById('Upload').style.display = 'none';
-		document.getElementById('submitted').style.display = '';
-	}
+        }
+
+    }
+
+    if ('undefined' !== typeof data['error']) {
+        showError(data['error']);
+    } else {
+        // An unknown error, why didn't we receive a status code?
+        showError("Sorry, there was an unknown error submitting genome, please try again later");
+    }
+
+}
+
+function showFNAUpload(data) {
+    // First we need to set the cid element to the one we were given
+    if ('undefined' !== data['cid']) {
+        $('#id_cid').val(data['cid']);
+
+        // We need to hide the file type picker
+        $('#id_format_type').hide();
+        $('#fileselect_msg').show();
+        $('#fileselect_spacer').hide();
+
+        // And because of IE 8.0-10.0 security issues we
+        // have to clone and replace the file selector element
+        // in order to clear it.
+        var file = $('#id_genome_file');
+        file.replaceWith(file.val('').clone(true));
+
+        replaceGenomeName();
+
+        showError("The file you uploaded doesn't appear to have any sequence information, please select an fna file with the corresponding sequence for all contigs to upload.")
+
+    } else {
+        // We didn't get a cid? This isn't good!
+        showError("We couldn't find any sequence information in the file you uploaded, however something worse and unknown also occured. Please try again later or contact us for more assistance.")
+    }
+}
+
+function showIncompletePicker(data) {
+    // First we need to set the cid element to the one we were given
+    if ('undefined' !== data['cid']) {
+        var url = '{% url 'fetchgenomesjson' %}';
+        $('#id_cid').val(data['cid']);
+
+        $('#id_format_type').hide();
+        $('#id_genome_file').hide();
+        $('#fileselect_msg').hide();
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            cache: false,
+            beforeSend: function () {
+                $('#submitted').show();
+            },
+            complete: function () {
+                $('#submitted').hide();
+            },
+            success: function (data) {
+                console.log(data);
+
+                for (var i = 0; i < data.length; i++) {
+                    entry = data[i];
+                    $('#genomeselector')
+                        .append($('<option></option>')
+                            .attr('value', entry['cid'])
+                            .text(entry['name'])
+                        );
+
+                }
+                $('#genomeselector_div').show();
+                $("#genomeselector").chosen({
+                    disable_search_threshold: 10,
+                    no_results_text: "Oops, no genomes matching that name!",
+                    search_contains: true
+                });
+                $('#Upload').val('Start Analysis');
+                showError("Please select a reference genome to align your genome against.");
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                showError("We have a communication error with the server, sorry for the inconvenience, please try again later or contact us if the problem persists");
+            }
+        });
+
+        //showError("Sorry, we don't quite allow incomplete genomes yet, but soon!");
+
+    } else {
+        // We didn't get a cid? This isn't good!
+        showError("We couldn't find any sequence information in the file you uploaded, however something worse and unknown also occured. Please try again later or contact us for more assistance.")
+    }
+}
+
+function replaceGenomeName() {
+    // We've successfully saved an initial genome, we won't allow editing of the genome any longer
+    if (!$('#id_genome_name').val()) {
+        $('#id_genome_name').val('User Genome');
+    }
+
+    $('#id_genome_name').prop("readonly", true);
+
+}
+
+function showError(errmsg) {
+    $('#error_message').html('<pre>' + errmsg + '</pre>');
+
+    $('#error_message').show();
+
+}
+
+function initPage() {
+    document.getElementById('hint').style.display = 'none';
+    document.getElementById('hideHint').style.display = 'none';
+    document.getElementById('submitted').style.display = 'none';
+}
+function showHint() {
+    document.getElementById('showHint').style.display = 'none';
+    document.getElementById('hideHint').style.display = '';
+    document.getElementById('hint').style.display = '';
+}
+function hideHint() {
+    document.getElementById('showHint').style.display = '';
+    document.getElementById('hideHint').style.display = 'none';
+    document.getElementById('hint').style.display = 'none';
+}
+function changeFileType() {
+    var fileType = document.getElementById('id_format_type');
+    if (fileType.options[fileType.selectedIndex].value == "GENBANK") {
+        document.getElementById('gbk').style.display = '';
+        document.getElementById('embl').style.display = 'none';
+    } else if (fileType.options[fileType.selectedIndex].value == "EMBL") {
+        document.getElementById('gbk').style.display = 'none';
+        document.getElementById('embl').style.display = '';
+    }
+}
+function submitGenome() {
+    document.getElementById('Upload').style.display = 'none';
+    document.getElementById('submitted').style.display = '';
+}
 </script>
 
 		
 		<p id="noteIncomplete"><b>Note for incomplete genomes</b></p>
 		<div id="noteIncomplete1">
-		<p>Incomplete genomes are now accepted as input due to popular demand. However, whole genome analysis is still preferred to reduce false predictions and missing GIs. Please use at your own risk. We suggest to minimize the number of contigs before performing GI analysis and carefully evaluate all results from such custom jobs. Contigs will be ordered against a user-selected reference genome using the Mauve contig orderer (<a href="http://bioinformatics.oxfordjournals.org/content/25/16/2071.full" target="_blank">Rissman et al., 2009</a>). Please note that annotation of the contigs is still required.</p>
+		<p>Incomplete genomes are now accepted as input due to popular demand. However, whole genome analysis is still preferred to reduce false predictions and missing GIs. Please use at your own risk. We suggest to minimize the number of contigs before performing GI analysis and carefully evaluate all results from such custom jobs. Contigs will be ordered against a user-selected reference genome using the Mauve contig orderer (<a
+                href="http://bioinformatics.oxfordjournals.org/content/25/16/2071.full" target="_blank">Rissman et al., 2009</a>). Please note that annotation of the contigs is still required.</p>
 		</div>
-		&nbsp;<br />
+		&nbsp;<br/>
 		
 		<p id="hideHint"><b>Hints for a successful analysis</b></p>
 		<div id="hint2">
 		  <p>Check and see if your genome file contains protein sequences for all CDSs <u>AND</u> the complete nucleotide sequence. A valid genome file should have full protein sequence data (under "\translation" tag within "CDS" primary tag) and nucleotide sequence data under ORIGIN or blank header in GENBANK or EMBL format, respectively. For example:</p>
 		    <span id="gbk">
 		      <p>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CDS&nbsp;&nbsp;&nbsp;complement(4043..4849)<br />
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;............................<br />
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="red">/translation</span>="MTATFTAIPAEALRLTDLIDAVAERQRKDFGH....
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;............................<br />
-			<span class="red">ORIGIN</span><br />
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="red">1 aaacaaacca aatatggatt ttattgtagc </span>.......................<br />
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CDS&nbsp;&nbsp;&nbsp;complement(4043..4849)<br/>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;............................<br/>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                      class="red">/translation</span>="MTATFTAIPAEALRLTDLIDAVAERQRKDFGH....
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;............................<br/>
+			<span class="red">ORIGIN</span><br/>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="red">1 aaacaaacca aatatggatt ttattgtagc </span>.......................<br/>
 		      </p>
 		      <p>
-			Please refer to the official <a href="http://www.ncbi.nlm.nih.gov/Sitemap/samplerecord.html" target="_blank">GenBank</a> documentation for more details.
+			Please refer to the official <a href="http://www.ncbi.nlm.nih.gov/Sitemap/samplerecord.html"
+                                            target="_blank">GenBank</a> documentation for more details.
 		      </p>
 		      <p>
 			If you are still having problems, see our <a href="{% url 'faq' %}">FAQs</a>.
@@ -359,14 +371,17 @@ $(document).ready( function() {
 		    </span>
 		    <span id="embl" style="display:none">
 		      <p>
-			FT&nbsp;&nbsp;&nbsp;CDS&nbsp;&nbsp;&nbsp;complement(4043..4849)<br />
-			FT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;............................<br />
-			FT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="red">/translation</span>="MTATFTAIPAEALRLTDLIDAVAERQRKDFGH....
-			....&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;............................<br />
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="red">aaacaaacca aatatggatt ttattgtagc </span> .......... .... .... .... .... .... .......... <span class="red"> 60</span><br />
+			FT&nbsp;&nbsp;&nbsp;CDS&nbsp;&nbsp;&nbsp;complement(4043..4849)<br/>
+			FT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;............................<br/>
+			FT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                      class="red">/translation</span>="MTATFTAIPAEALRLTDLIDAVAERQRKDFGH....
+			....&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;............................<br/>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="red">aaacaaacca aatatggatt ttattgtagc </span> .......... .... .... .... .... .... .......... <span
+                      class="red"> 60</span><br/>
 		      </p>
 		      <p>
-			Please refer to the official <a href="http://www.ebi.ac.uk/embl/Documentation/User_manual/usrman.html">EMBL</a> documentation for more details.
+			Please refer to the official <a
+                      href="http://www.ebi.ac.uk/embl/Documentation/User_manual/usrman.html">EMBL</a> documentation for more details.
 		      </p>
 		      <p>
 			If you are still having problems, see our <a href="{% url 'faq' %}">FAQs</a>.
@@ -378,16 +393,16 @@ $(document).ready( function() {
 		  <p>&nbsp;</p>
 		  <p>&nbsp;</p>
 		  <p>&nbsp;</p>
-		  <p><br />
+		  <p><br/>
 		    </p></td>
-		</tr>
-	</table>	</td>
-	<td width="40">&nbsp;</td>
+        </tr>
+        </table>    </td>
+        <td width="40">&nbsp;</td>
 	<td width="100%">&nbsp;</td>
-	</tr>
+        </tr>
 
-	<tr bgcolor="#ffffff">
-	<td colspan="6"><img src="{% static 'img/spacer.gif' %}" alt="" width="1" height="1" border="0" /></td>
+        <tr bgcolor="#ffffff">
+	<td colspan="6"><img src="{% static 'img/spacer.gif' %}" alt="" width="1" height="1" border="0"/></td>
 	</tr>
 
 	<tr>
@@ -396,15 +411,15 @@ $(document).ready( function() {
 
 
 	<tr bgcolor="#003399">
-	<td colspan="6"><img src="{% static 'img/spacer.gif' %}" alt="" width="1" height="1" border="0" /></td>
+	<td colspan="6"><img src="{% static 'img/spacer.gif' %}" alt="" width="1" height="1" border="0"/></td>
 	</tr>
 
 	<tr>
-	<td colspan="6"><img src="{% static 'img/spacer.gif' %}" alt="" width="1" height="2" border="0" /></td>
+	<td colspan="6"><img src="{% static 'img/spacer.gif' %}" alt="" width="1" height="2" border="0"/></td>
 	</tr>
 
 	<tr bgcolor="#003399">
-	<td colspan="6"><img src="{% static 'img/spacer.gif' %}" alt="" width="1" height="1" border="0" /></td>
+	<td colspan="6"><img src="{% static 'img/spacer.gif' %}" alt="" width="1" height="1" border="0"/></td>
 	</tr>
 
 
@@ -416,6 +431,6 @@ $(document).ready( function() {
 	<td width="40">&nbsp;</td>
 	<td width="100%">&nbsp;</td>
 	</tr>
-</table>
+        </table>
 </span>
 {% endblock content %}
