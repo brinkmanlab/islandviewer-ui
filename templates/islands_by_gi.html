@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>{% block title %}Islandviewer{% endblock %}</title>
+    <title>{% block title %}Islandviewer{% endblock %}</title>
 </head>
 
 <body>
 <table width="599" border="1">
-	<thead>
-		<tr>
-			<th>Protein ID</th>
-			<th>Coordinates</th>
-			<th>Locus ID</th>
-			<th>Gene Name</th>
-			<th>Product</th>
-		</tr>
-	</thead>
-	{% for coords, values in islands %}
-	<tr>
-		<td>{% if values.protein_id %}<a href="http://www.ncbi.nlm.nih.gov/entrez/viewer.fcgi?db=protein&id={{ values.protein_id }}" >{{ values.protein_id|default:'' }}</a>{% endif %}</td>
-		<td>{{ coords }}({{ values.strand }})</td>
-		<td>{{ values.locus|default:'' }}</td>
-		<td>{{ values.gene|default:'' }}</td>
-		<td>{{ values.product|default:'' }}</td>
-	{% endfor %}
+    <thead>
+    <tr>
+        <th>Protein ID</th>
+        <th>Coordinates</th>
+        <th>Locus ID</th>
+        <th>Gene Name</th>
+        <th>Product</th>
+    </tr>
+    </thead>
+    {% for coords, values in islands %}
+        <tr>
+        <td>{% if values.protein_id %}
+            <a href="http://www.ncbi.nlm.nih.gov/entrez/viewer.fcgi?db=protein&id={{ values.protein_id }}">
+                {{ values.protein_id|default:'' }}</a>{% endif %}</td>
+        <td>{{ coords }}({{ values.strand }})</td>
+        <td>{{ values.locus|default:'' }}</td>
+        <td>{{ values.gene|default:'' }}</td>
+        <td>{{ values.product|default:'' }}</td>
+    {% endfor %}
 </table>
 </body>
 </html>

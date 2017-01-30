@@ -8,271 +8,273 @@
 {% endblock %}
 
 {% block content %}
-<table id="{{ summarytablename|default:"summarytable" }}" class="summarytable table table-striped table-condensed table-hover idb-table" style="font-size: 90%">
-<thead>
-<tr>
-<th></th>
-<th>aid</th>
-<th>ext_id</th>
-<th>Status</th>
-<th>Prepare</th>
-<th>Distance</th>
-<th>Sigi</th>
-<th>Dimob</th>
-<th>Islandpick</th>
-<th>Virulence</th>
-<th>Summary</th>
-</tr>
-</thead>
-<tbody>
-</tbody>
-</table>
-<script type="text/javascript">
-var displayLength = 30;
-var anOpen = [];
+    <table id="{{ summarytablename|default:"summarytable" }}"
+           class="summarytable table table-striped table-condensed table-hover idb-table" style="font-size: 90%">
+        <thead>
+        <tr>
+            <th></th>
+            <th>aid</th>
+            <th>ext_id</th>
+            <th>Status</th>
+            <th>Prepare</th>
+            <th>Distance</th>
+            <th>Sigi</th>
+            <th>Dimob</th>
+            <th>Islandpick</th>
+            <th>Virulence</th>
+            <th>Summary</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <script type="text/javascript">
+        var displayLength = 30;
+        var anOpen = [];
 
-var arrayColumns = [
-                    {"mDataProp": null,"sClass": "control center",
-                    	"sDefaultContent": '<img src="{% static 'img/details_open.png' %}">'},
-                    {"mData": "aid", "bVisible": true, "sSortDataType": "dom-text"},
-                    {"mData": "ext_id", "bVisible": true},
-                    {"mData": "status", "bVisible": true},                    
-                ];
+        var arrayColumns = [
+            {
+                "mDataProp": null, "sClass": "control center",
+                "sDefaultContent": '<img src="{% static 'img/details_open.png' %}">'
+            },
+            {"mData": "aid", "bVisible": true, "sSortDataType": "dom-text"},
+            {"mData": "ext_id", "bVisible": true},
+            {"mData": "status", "bVisible": true},
+        ];
 
-function fnFormatDetails ( oTable, nTr )
-{
-	var oData = oTable.fnGetData( nTr );
-	var url = '{% url 'runstatusdetailsjson' '9999' %}'.replace('9999', oData.aid);
-   	var ret_str = '';
-   	var header = '';
-	$.ajax({
-		url: url,
-		dataType: 'json',
-		async: false,
-		success: function(data) {
-			console.log(data);
-			header = data['genomename'];
-			if('undefined' !== typeof(data['emails'])) {
-				header += "<br />Emails: " + data['emails'];
-			}
-	    	for (var task in data["tasks"]) {
-	    		var status = data["tasks"][task]
-	    			//reload_url = {% url 'restartmodule' '9999' %}.replace('9999', oData.aid) + '?pa';
-	    		
-	    			ret_str += "<tr><td>" + task + ":</td><td><span class=\"" + status + "\">" + status + "</span></td>";
-	    			ret_str += '<td>';
-					if('undefined' !== typeof data['taskcount'][task]) {
-						ret_str += data['taskcount'][task];
-					} else {
-						ret_str += '&nbsp;';
-					}
-	    			ret_str += '</td>';
-	    			ret_str += "<td><span id=\"restart_" + oData.aid + "_" + task + "\" class=\"restart_" + oData.aid + "\"><a href=\"javascript:restartModule(" + oData.aid + ", '" + task +"');\">[Restart]</a></span></td><td><a href=\"javascript:logsModule(" + oData.aid + ", '" + task +"');\">[Logs]</a></td></tr>";
-	    	}
-	    }
+        function fnFormatDetails(oTable, nTr) {
+            var oData = oTable.fnGetData(nTr);
+            var url = '{% url 'runstatusdetailsjson' '9999' %}'.replace('9999', oData.aid);
+            var ret_str = '';
+            var header = '';
+            $.ajax({
+                url: url,
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    console.log(data);
+                    header = data['genomename'];
+                    if ('undefined' !== typeof(data['emails'])) {
+                        header += "<br />Emails: " + data['emails'];
+                    }
+                    for (var task in data["tasks"]) {
+                        var status = data["tasks"][task]
+                        //reload_url = {% url 'restartmodule' '9999' %}.replace('9999', oData.aid) + '?pa';
 
-	});
+                        ret_str += "<tr><td>" + task + ":</td><td><span class=\"" + status + "\">" + status + "</span></td>";
+                        ret_str += '<td>';
+                        if ('undefined' !== typeof data['taskcount'][task]) {
+                            ret_str += data['taskcount'][task];
+                        } else {
+                            ret_str += '&nbsp;';
+                        }
+                        ret_str += '</td>';
+                        ret_str += "<td><span id=\"restart_" + oData.aid + "_" + task + "\" class=\"restart_" + oData.aid + "\"><a href=\"javascript:restartModule(" + oData.aid + ", '" + task + "');\">[Restart]</a></span></td><td><a href=\"javascript:logsModule(" + oData.aid + ", '" + task + "');\">[Logs]</a></td></tr>";
+                    }
+                }
 
-	return header + "<br/>Details <a href=\"javascript:logsModule(" + oData.aid + ", 'All');\">[Logs]</a><br /><table>" + ret_str + "</table><span id=\"message_" + oData.aid + "\"><span>";	
-}
+            });
 
-var  oTable = $('#{{ summarytablename|default:"summarytable" }}').dataTable({
-	"iDisplayLength": displayLength,
-    "sScrollX": "100%",
-    "sScrollXInner": "100%",
-    "bProcessing": true,
-    "bAutoWidth": false,
-    "bPaginate": true,
-    "sPaginationType": "input",
-    "bInfo": true,
-    //"bFilter": true,
-    "sAjaxSource": "{% url 'runstatusjson' %}",
-    "bServerSide": true,
-    "aoColumns": arrayColumns,
-    "aaSorting": [[ 0, 'asc' ]],
-    "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-    	  $(nRow).addClass('method' + aData.group);
-    },
-    "aoColumnDefs": [
- 					{
- 	    				"aTargets": [2],
- 	    				"mData": null,
- 	    				"mRender": function(data, type, full) {
- 							var url = '{%url 'results' '9999' %}'.replace(9999, full.aid);
- 							if('undefined' !== typeof full.token) {
- 								url += '?token=' + full.token;
- 							}
- 	        				return '<a href="' + url + '">' + full.ext_id + '</a>';
- 	    					},
- 						},
-					{
-    					"aTargets": [3],
-    					"mData": null,
-    					"mRender": function(data, type, full) {
-        					return '<span class="' + full.status + '">' + full.status + '</span>';
-    					},
-					},
-					{
-	    				"aTargets": [4],
-	    				"mData": null,
-	    				"defaultContent": "Unknown",
-	    				"mRender": function(data, type, full) {
-                                                if('undefined' === typeof full.Prepare) {
-                                                   return 'Unknown';
-                                                }
-	        				return '<span class="' + full.Prepare + '">' + full.Prepare + '</span>';
-	    					},
-					},
-					{
-	    				"aTargets": [5],
-	    				"mData": null,
-	    				"defaultContent": "Unknown",
-	    				"mRender": function(data, type, full) {
-                                                if('undefined' === typeof full.Distance) {
-                                                   return 'Unknown';
-                                                }
-	        				return '<span class="' + full.Distance + '">' + full.Distance + '</span>';
-	    					},
-					},
-					{
-	    				"aTargets": [6],
-	    				"mData": null,
-	    				"defaultContent": "Unknown",
-	    				"mRender": function(data, type, full) {
-                                                if('undefined' === typeof full.Sigi) {
-                                                   return 'Unknown';
-                                                }
-	        				return '<span class="' + full.Sigi + '">' + full.Sigi + '</span>';
-	    					},
-					},
-					{
-		    			"aTargets": [7],
-		    			"mData": null,
-	    				"defaultContent": "Unknown",
-		    			"mRender": function(data, type, full) {
-                                                if('undefined' === typeof full.Dimob) {
-                                                   return 'Unknown';
-                                                }
-		        			return '<span class="' + full.Dimob + '">' + full.Dimob + '</span>';
-		    				},
-					},
-					{
-		    			"aTargets": [8],
-		    			"mData": null,
-	    				"defaultContent": "Unknown",
-		    			"mRender": function(data, type, full) {
-                                                if('undefined' === typeof full.Islandpick) {
-                                                   return 'Unknown';
-                                                }
-		        			return '<span class="' + full.Islandpick + '">' + full.Islandpick + '</span>';
-		    				},
-					},
-					{
-		    			"aTargets": [9],
-		    			"mData": null,
-	    				"defaultContent": "Unknown",
-		    			"mRender": function(data, type, full) {
-                                                if('undefined' === typeof full.Virulence) {
-                                                   return 'Unknown';
-                                                }
-		        			return '<span class="' + full.Virulence + '">' + full.Virulence + '</span>';
-		    				},
-					},
-					{
-		    			"aTargets": [10],
-		    			"mData": null,
-	    				"defaultContent": "Unknown",
-		    			"mRender": function(data, type, full) {
-                                                if('undefined' === typeof full.Summary) {
-                                                   return 'Unknown';
-                                                }
-		        			return '<span class="' + full.Summary + '">' + full.Summary + '</span>';
-		    				},
-					},
-					]
-});
+            return header + "<br/>Details <a href=\"javascript:logsModule(" + oData.aid + ", 'All');\">[Logs]</a><br /><table>" + ret_str + "</table><span id=\"message_" + oData.aid + "\"><span>";
+        }
 
-/* Add event listener for opening and closing details
- * Note that the indicator for showing which row is open is not controlled by DataTables,
- * rather it is done here
- */
-$(document).on('click', '#{{ summarytablename|default:"summarytable" }} td.control', function () {
-	var nTr = this.parentNode;
-	   var i = $.inArray( nTr, anOpen );
-	    
-	   if ( i === -1 ) {
-	      $('img', this).attr( 'src', '{% static 'img/details_close.png' %}' );
-	      oTable.fnOpen( nTr, fnFormatDetails(oTable, nTr), 'details' );
-	      anOpen.push( nTr );
-	    }
-	    else {
-	      $('img', this).attr( 'src', '{% static 'img/details_open.png' %}' );
-	      oTable.fnClose( nTr );
-	      anOpen.splice( i, 1 );
-	    }
-	} );
-	
-function restartModule(aid, task) {
+        var oTable = $('#{{ summarytablename|default:"summarytable" }}').dataTable({
+            "iDisplayLength": displayLength,
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "bProcessing": true,
+            "bAutoWidth": false,
+            "bPaginate": true,
+            "sPaginationType": "input",
+            "bInfo": true,
+            //"bFilter": true,
+            "sAjaxSource": "{% url 'runstatusjson' %}",
+            "bServerSide": true,
+            "aoColumns": arrayColumns,
+            "aaSorting": [[0, 'asc']],
+            "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                $(nRow).addClass('method' + aData.group);
+            },
+            "aoColumnDefs": [
+                {
+                    "aTargets": [2],
+                    "mData": null,
+                    "mRender": function (data, type, full) {
+                        var url = '{%url 'results' '9999' %}'.replace(9999, full.aid);
+                        if ('undefined' !== typeof full.token) {
+                            url += '?token=' + full.token;
+                        }
+                        return '<a href="' + url + '">' + full.ext_id + '</a>';
+                    },
+                },
+                {
+                    "aTargets": [3],
+                    "mData": null,
+                    "mRender": function (data, type, full) {
+                        return '<span class="' + full.status + '">' + full.status + '</span>';
+                    },
+                },
+                {
+                    "aTargets": [4],
+                    "mData": null,
+                    "defaultContent": "Unknown",
+                    "mRender": function (data, type, full) {
+                        if ('undefined' === typeof full.Prepare) {
+                            return 'Unknown';
+                        }
+                        return '<span class="' + full.Prepare + '">' + full.Prepare + '</span>';
+                    },
+                },
+                {
+                    "aTargets": [5],
+                    "mData": null,
+                    "defaultContent": "Unknown",
+                    "mRender": function (data, type, full) {
+                        if ('undefined' === typeof full.Distance) {
+                            return 'Unknown';
+                        }
+                        return '<span class="' + full.Distance + '">' + full.Distance + '</span>';
+                    },
+                },
+                {
+                    "aTargets": [6],
+                    "mData": null,
+                    "defaultContent": "Unknown",
+                    "mRender": function (data, type, full) {
+                        if ('undefined' === typeof full.Sigi) {
+                            return 'Unknown';
+                        }
+                        return '<span class="' + full.Sigi + '">' + full.Sigi + '</span>';
+                    },
+                },
+                {
+                    "aTargets": [7],
+                    "mData": null,
+                    "defaultContent": "Unknown",
+                    "mRender": function (data, type, full) {
+                        if ('undefined' === typeof full.Dimob) {
+                            return 'Unknown';
+                        }
+                        return '<span class="' + full.Dimob + '">' + full.Dimob + '</span>';
+                    },
+                },
+                {
+                    "aTargets": [8],
+                    "mData": null,
+                    "defaultContent": "Unknown",
+                    "mRender": function (data, type, full) {
+                        if ('undefined' === typeof full.Islandpick) {
+                            return 'Unknown';
+                        }
+                        return '<span class="' + full.Islandpick + '">' + full.Islandpick + '</span>';
+                    },
+                },
+                {
+                    "aTargets": [9],
+                    "mData": null,
+                    "defaultContent": "Unknown",
+                    "mRender": function (data, type, full) {
+                        if ('undefined' === typeof full.Virulence) {
+                            return 'Unknown';
+                        }
+                        return '<span class="' + full.Virulence + '">' + full.Virulence + '</span>';
+                    },
+                },
+                {
+                    "aTargets": [10],
+                    "mData": null,
+                    "defaultContent": "Unknown",
+                    "mRender": function (data, type, full) {
+                        if ('undefined' === typeof full.Summary) {
+                            return 'Unknown';
+                        }
+                        return '<span class="' + full.Summary + '">' + full.Summary + '</span>';
+                    },
+                },
+            ]
+        });
 
-	var url = '{% url 'restartmodule' '9999' %}'.replace('9999', aid);
-	url += '?module=' + task
-   	var ret_str = '';
-	$.ajax({
-		url: url,
-		dataType: 'json',
+        /* Add event listener for opening and closing details
+         * Note that the indicator for showing which row is open is not controlled by DataTables,
+         * rather it is done here
+         */
+        $(document).on('click', '#{{ summarytablename|default:"summarytable" }} td.control', function () {
+            var nTr = this.parentNode;
+            var i = $.inArray(nTr, anOpen);
+
+            if (i === -1) {
+                $('img', this).attr('src', '{% static 'img/details_close.png' %}');
+                oTable.fnOpen(nTr, fnFormatDetails(oTable, nTr), 'details');
+                anOpen.push(nTr);
+            }
+            else {
+                $('img', this).attr('src', '{% static 'img/details_open.png' %}');
+                oTable.fnClose(nTr);
+                anOpen.splice(i, 1);
+            }
+        });
+
+        function restartModule(aid, task) {
+
+            var url = '{% url 'restartmodule' '9999' %}'.replace('9999', aid);
+            url += '?module=' + task
+            var ret_str = '';
+            $.ajax({
+                url: url,
+                dataType: 'json',
 //		async: false,
-		success: function(data) {
-			console.log(data);
-			$('.restart_' + aid).html("[Disabled]");
-			
-			if('undefined' !== typeof data['status'] && data['status'] == 'success') {
-				$('#restart_' + aid + '_' + task).html("[Running]");
-				
-			} else {
-				$('#restart_' + aid + '_' + task).html("[Error]");
-			}
-			
-			$('#message_' + aid).html(data['msg']);
-	    },
-	    error: function(data) {
-			$('.restart_' + aid).html("[Disabled]");
-			$('#restart_' + aid + '_' + task).html("[Error]");
-			
-		
-			$('#message_' + aid).html(data['msg']);
-	    	
-	    }
-	});
-	
-}
+                success: function (data) {
+                    console.log(data);
+                    $('.restart_' + aid).html("[Disabled]");
 
-function logsModule(aid, task) {
+                    if ('undefined' !== typeof data['status'] && data['status'] == 'success') {
+                        $('#restart_' + aid + '_' + task).html("[Running]");
 
-	var url = '{% url 'logsmodule' '9999' %}'.replace('9999', aid);
-	url += '?module=' + task
-   	var ret_str = '';
-	$.ajax({
-		url: url,
-		dataType: 'json',
+                    } else {
+                        $('#restart_' + aid + '_' + task).html("[Error]");
+                    }
+
+                    $('#message_' + aid).html(data['msg']);
+                },
+                error: function (data) {
+                    $('.restart_' + aid).html("[Disabled]");
+                    $('#restart_' + aid + '_' + task).html("[Error]");
+
+
+                    $('#message_' + aid).html(data['msg']);
+
+                }
+            });
+
+        }
+
+        function logsModule(aid, task) {
+
+            var url = '{% url 'logsmodule' '9999' %}'.replace('9999', aid);
+            url += '?module=' + task
+            var ret_str = '';
+            $.ajax({
+                url: url,
+                dataType: 'json',
 //		async: false,
-		success: function(data) {
-			console.log(data);
-			if('undefined' !== typeof data['status'] && data['status'] == 'success') {
-				$('#message_' + aid).html("");
-				var w = window.open(url+'&show=1', '_blank');
-				w.focus();
-			} else {
-				$('#message_' + aid).html("Error opening log");
-			}
-	    },
-	    error: function(data) {
-			$('#message_' + aid).html("Error opening log");
-	    	
-	    }
-	});
-	
-}
+                success: function (data) {
+                    console.log(data);
+                    if ('undefined' !== typeof data['status'] && data['status'] == 'success') {
+                        $('#message_' + aid).html("");
+                        var w = window.open(url + '&show=1', '_blank');
+                        w.focus();
+                    } else {
+                        $('#message_' + aid).html("Error opening log");
+                    }
+                },
+                error: function (data) {
+                    $('#message_' + aid).html("Error opening log");
 
-</script>
+                }
+            });
+
+        }
+
+    </script>
 
 {% endblock content %}
