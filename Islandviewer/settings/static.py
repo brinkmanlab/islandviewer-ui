@@ -11,11 +11,11 @@ STATIC_ROOT = ''
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
 if env.TEST_ENV:
-    STATIC_URL = '/islandviewer_dev/static/'
-    PIPELINE = 'islandviewer_dev'
+    STATIC_URL = '/islandviewer4_dev/static/'
+    PIPELINE = 'islandviewer4_dev'
 else:
-    STATIC_URL = '/islandviewer/static/'
-    PIPELINE = 'islandviewer'
+    STATIC_URL = '/islandviewer4/static/'
+    PIPELINE = 'islandviewer4'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
