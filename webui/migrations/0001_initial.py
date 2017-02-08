@@ -189,19 +189,6 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='DistanceAttempts',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('rep_accnum1', models.CharField(max_length=24)),
-                ('rep_accnum2', models.CharField(max_length=24)),
-                ('status', models.IntegerField()),
-                ('run_date', models.DateTimeField(auto_now_add=True)),
-            ],
-            options={
-                'db_table': 'DistanceAttempts',
-            },
-        ),
-        migrations.CreateModel(
             name='GC',
             fields=[
                 ('ext_id', models.CharField(max_length=24, primary_key=True, serialize=False)),
@@ -387,10 +374,6 @@ class Migration(migrations.Migration):
         migrations.AlterUniqueTogether(
             name='genes',
             unique_together=set([('ext_id', 'start', 'end')]),
-        ),
-        migrations.AlterIndexTogether(
-            name='distanceattempts',
-            index_together=set([('rep_accnum1', 'rep_accnum2'), ('rep_accnum2', 'rep_accnum1')]),
         ),
         migrations.AlterIndexTogether(
             name='distance',

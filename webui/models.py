@@ -481,19 +481,6 @@ class Distance(models.Model):
             ['rep_accnum2', 'rep_accnum1'],
         ]
 
-class DistanceAttempts(models.Model):
-    rep_accnum1 = models.CharField(max_length=24)
-    rep_accnum2 = models.CharField(max_length=24)
-    status = models.IntegerField()
-    run_date = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        db_table = "DistanceAttempts"
-        index_together = [
-            ['rep_accnum1', 'rep_accnum2'],
-            ['rep_accnum2', 'rep_accnum1'],
-        ]
-        
 class UploadGenome(models.Model):
     id = models.AutoField(primary_key=True)
     filename = models.CharField(max_length=120, blank=True, null=True)
