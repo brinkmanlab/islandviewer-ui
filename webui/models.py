@@ -40,8 +40,8 @@ GI_MODULES = ['Sigi', 'Dimob', 'Islandpick']
 
 PICKER_DEFAULTS = {
     'min_gi_size': 4000,
-    'min_cutoff': 0.02,
-    'max_cutoff': 0.21,
+    'min_cutoff': 0.00,
+    'max_cutoff': 0.215,
 }
 
 class CustomGenome(models.Model):
