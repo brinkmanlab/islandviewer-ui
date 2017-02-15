@@ -61,13 +61,14 @@ def results(request, aid):
     # our variables for rending to
     context = {}
     try:
-        analysis = Analysis.objects.get(pk=aid)
-        context['noanalysis'] = False
+        analysis = Analysis.fetch_by_aid_or_token(aid)
     except Analysis.DoesNotExist:
         context['noanalysis'] = True;
 
+    context['noanalysis'] = False if analysis else True
+
     if context['noanalysis'] != True:
-        context['aid'] = aid
+        context['aid'] = analysis.aid
         context['default_analysis'] = (True if analysis.default_analysis == 1 else False)
 
         # Check for a security token 

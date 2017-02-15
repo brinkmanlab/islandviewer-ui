@@ -144,6 +144,44 @@ class Analysis(models.Model):
     start_date = models.DateTimeField('date started', null=True)
     complete_date = models.DateTimeField('date completed', null=True)
 
+    @classmethod
+    def fetch_by_aid_or_token(cls, id):
+
+        try:
+            int(id)
+            analysis = cls.objects.get(pk=id)
+            return analysis
+        except Analysis.DoesNotExist:
+            '''
+            If we get a DoesNotExist exception, it was obviously an aid but we couldn't find it,
+            anything else fall through and try to look up as a token
+            '''
+            return None
+        except Exception as e:
+            if settings.DEBUG:
+                print e
+            pass
+        
+        try:
+            analysis = cls.objects.get(token=id)
+            return analysis
+        except Analysis.DoesNotExist:
+            '''
+            If we get a DoesNotExist exception, it was obviously an aid but we couldn't find it,
+            anything else fall through and try to look up as a token
+            '''
+            pass
+        except Exception as e:
+            '''
+            If we get some other exception here, something really bad has gone wrong,
+            let's try to log something if we're debugging
+            '''
+            if settings.DEBUG:
+                print e
+            pass
+
+        return None
+
     @property
     def is_complete(self):
         return self.status == STATUS['COMPLETE']

@@ -33,7 +33,7 @@ def user_jobs(request, **kwargs):
         genome = CustomGenome.objects.get(pk=a.ext_id)
 
         analysis_set.append({'aid': a.aid,
-                             'results': request.build_absolute_uri( reverse('results', kwargs={'aid': a.aid}) ) + ("?token={}".format(a.token) if a.token else ''),
+                             'results': request.build_absolute_uri( reverse('results', kwargs={'aid': a.token}) ),
 
                             'genome_name': genome.name,
                             'status': CHOICES[a.status],
@@ -49,17 +49,21 @@ def user_jobs(request, **kwargs):
 @ratelimit_warning
 def user_job(request, aid, **kwargs):
     user = request.user
-    analysis = Analysis.objects.select_related().get(pk=aid)
+    analysis = Analysis.fetch_by_aid_or_token(aid)
+
+    if not analysis:
+        return HttpResponse(status = 403)
+
     CHOICES = dict(STATUS_CHOICES)
     context = {}
 
     if not analysis.is_owner(user.id):
         return HttpResponse(status=401)
     
-    context['aid'] = analysis.aid
+    context['token'] = analysis.token
     context['status'] = CHOICES[analysis.status]
-    context['results'] = request.build_absolute_uri( reverse('results', kwargs={'aid': analysis.aid}) ) + ("?token={}".format(analysis.token) if analysis.token else '')
-
+    context['results'] = request.build_absolute_uri( reverse('results', kwargs={'aid': analysis.token}) )
+    
     # Fetch the genome name and such
     if(analysis.atype == Analysis.CUSTOM):
         genome = CustomGenome.objects.get(pk=analysis.ext_id)
@@ -103,7 +107,10 @@ def user_job_islandpick(request, aid, **kwargs):
     """
 
     user = request.user
-    analysis = Analysis.objects.select_related().get(pk=aid)
+    analysis = Analysis.fetch_by_aid_or_token(aid)
+
+    if not analysis:
+        return HttpResponse(status = 403)
 
     if not analysis.is_owner(user.id):
         return HttpResponse(status=401)
@@ -127,7 +134,10 @@ def user_job_islandpick(request, aid, **kwargs):
 @scrub_picker(remove_keys=['genomes'])
 def user_job_picker(request, aid, **kwargs):
     user = request.user
-    analysis = Analysis.objects.select_related().get(pk=aid)
+    analysis = Analysis.fetch_by_aid_or_token(aid)
+
+    if not analysis:
+        return HttpResponse(status = 403)
 
     if not analysis.is_owner(user.id):
         return HttpResponse(status=401)
@@ -167,10 +177,14 @@ def user_job_picker(request, aid, **kwargs):
 def user_job_islandpick_rerun(request, aid, **kwargs):
     context = {}
     user = request.user
-    analysis = Analysis.objects.select_related().get(pk=aid)
+    analysis = Analysis.fetch_by_aid_or_token(aid)
 
-    import pprint
-    pprint.pprint(kwargs)
+    if not analysis:
+        return HttpResponse(status = 403)
+
+    if settings.DEBUG:
+        import pprint
+        pprint.pprint(kwargs)
 
     if not (analysis.is_owner(user.id) and analysis.is_complete):
         return HttpResponse(status=401)
@@ -200,9 +214,11 @@ def user_job_islandpick_rerun(request, aid, **kwargs):
             new_analysis = Analysis.objects.get(pk=match_aid[0])
             if new_analysis.is_owner(user.id):
                 context['status'] = 'success'
-                context['aid'], token = match_aid
+                new_aid, token = match_aid
                 if token:
                     context['token'] = token
+                else:
+                    context['aid'] = new_aid
             
         else:
             if analysis.is_precomputed:
@@ -241,7 +257,10 @@ def user_job_islandpick_rerun(request, aid, **kwargs):
 def user_job_download(request, aid, format, **kwargs):
     user = request.user
     args = []
-    analysis = Analysis.objects.select_related().get(pk=aid)
+    analysis = Analysis.fetch_by_aid_or_token(aid)
+
+    if not analysis:
+        return HttpResponse(status = 403)
     
     if not analysis.is_owner(user.id):
         return HttpResponse(status=401)

@@ -53,10 +53,7 @@ var  oTable = $('#{{ summarytablename|default:"summarytable" }}').dataTable({
  	    				"aTargets": [0],
  	    				"mData": null,
  	    				"mRender": function(data, type, full) {
- 							var url = '{%url 'results' '9999' %}'.replace(9999, full.aid);
- 							if('undefined' !== typeof full.token) {
- 								url += '?token=' + full.token;
- 							}
+ 							var url = '{%url 'results' '9999' %}'.replace(9999, full.token);
  	        				return '<a href="' + url + '">' + full.aid + '</a>';
  	    					},
  						},
