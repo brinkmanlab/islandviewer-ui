@@ -156,6 +156,8 @@ class Analysis(models.Model):
             If we get a DoesNotExist exception, it was obviously an aid but we couldn't find it,
             anything else fall through and try to look up as a token
             '''
+            if settings.DEBUG:                
+                print "Analysis does not exist, int type"
             return None
         except Exception as e:
             if settings.DEBUG:
@@ -170,6 +172,8 @@ class Analysis(models.Model):
             If we get a DoesNotExist exception, it was obviously an aid but we couldn't find it,
             anything else fall through and try to look up as a token
             '''
+            if settings.DEBUG:                
+                print "Analysis does not exist, token type"
             pass
         except Exception as e:
             '''

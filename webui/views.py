@@ -72,7 +72,8 @@ def results(request, aid):
         context['default_analysis'] = (True if analysis.default_analysis == 1 else False)
 
         # Check for a security token 
-        if not analysis.valid_token(request.GET.get('token')):
+        token = request.GET.get('token') if request.GET.get('token') else aid
+        if not analysis.valid_token(token):
             return HttpResponse(status=403)
 
         # Fetch the genome name and such
@@ -87,7 +88,7 @@ def results(request, aid):
         CHOICES = dict(STATUS_CHOICES)
         context['status'] = CHOICES[analysis.status]
         
-        context['token'] = request.GET.get('token')
+        context['token'] = token
 
         if analysis.status == STATUS['PENDING'] or analysis.status == STATUS['RUNNING']:
             try:    
