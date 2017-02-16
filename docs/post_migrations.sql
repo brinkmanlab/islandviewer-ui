@@ -40,6 +40,8 @@ ALTER TABLE virulence CHANGE source source enum('VFDB','ARDB','PAG','CARD','RGI'
 
 ALTER TABLE virulence CHANGE type type enum('resistance','virulence','pathogen-associated') NOT NULL;
 
+ALTER TABLE virulence DROP PRIMARY KEY, ADD PRIMARY KEY (protein_accnum, external_id);
+
 ALTER TABLE virulence_mapped CHANGE source source enum('VFDB','ARDB','PAG','CARD','RGI','Victors','PATRIC_VF','BLAST',',') DEFAULT NULL;
 
 ALTER TABLE virulence_mapped CHANGE type type enum('resistance','virulence','pathogen-associated') NOT NULL;
