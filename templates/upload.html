@@ -147,18 +147,14 @@ function processResponse(data) {
     if ('undefined' !== typeof data['status']) {
         // We have a valid status code
         if (data['status'] == 200) {
-        	if ('undefined' !== typeof data['token']) {
-                // We have a token, redirect!
-                url = '{% url 'results' '9999' %}'.replace(9999, data['token']);
-
-                window.location = url;			
-            }
             if ('undefined' !== typeof data['aid']) {
-                // We have an aid, redirect!
-                url = '{% url 'results' '9999' %}'.replace(9999, data['aid']);
-
+                url = '{% url 'results' '9999' %}'
                 if ('undefined' !== typeof data['token']) {
-                    url += "?token=" + data['token'];
+                    // We have a token, redirect!
+                    url = url.replace('9999', data['token']);
+                } else {
+                    // We have an aid, redirect!
+                    url = url.replace('9999', data['aid']);
                 }
 
                 window.location = url;
