@@ -20,7 +20,7 @@ elif env.TEST_ENV:
     ANALYSIS_PATH = "/data/Modules/iv-backendV4/islandviewer_dev/analysis/"
 else:
     CUSTOM_GENOMES = "/data/Modules/iv-backendV4/islandviewer_dev/custom_genomes/"
-    GENOME_UPLOAD_PATH = "//data/Modules/iv-backendV4/islandviewer_dev/custom_genomes/tmp/"
+    GENOME_UPLOAD_PATH = "/data/Modules/iv-backendV4/islandviewer_dev/custom_genomes/tmp/"
     GENOME_SUBMISSION_SCRIPT = "/data/Modules/iv-backendV4/islandviewer_dev/bin/submit_uploaded_genome.pl -c /data/Modules/iv-backendV4/islandviewer_dev/etc/islandviewer.config -f {filename} -n \"{genome_name}\""
     PIPELINE_PATH = "/home/lairdm/workspace/metascheduler/pipelines"
     ANALYSIS_PATH = "/data/Modules/iv-backendV4/islandviewer_dev/analysis/"
