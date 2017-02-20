@@ -39,7 +39,8 @@
         <li><a href="javascript:scrolltoelem('a11');">How do I cite IslandViewer?</a></li>
         <li><a href="javascript:scrolltoelem('a12');">Where can I find more information about GI prediction using
             computational methods?</a></li>
-        <li><a href="javascript:scrolltoelem('a13');">How do I use the HTTP API?</a></li>
+        <li><a href="javascript:scrolltoelem('a13');">What is the purpose of the login?</a></li>
+        <li><a href="javascript:scrolltoelem('a14');">How do I use the HTTP API?</a></li>
     </ul>
 
     <p class="bodyText">If you are still having problems or concerns, please <a href="{% url 'contactus' %}">contact
@@ -210,14 +211,22 @@
 
     <div align="right"><a href="#">Top</a></div>
 
-    <div id='a13' class="subHeader">How to use the HTTP API?</div>
+
+    <div id='a13' class="subHeader">What is the purpose of the login?</div>
     &nbsp;<br/>
-    <p class="bodyText">IslandViewer 4 now integrates a HTTP API (REST API) to enable users to submit larger number of
-        genomes and retrieved the predictions programmatically. Please check out our specific <a
+    <p class="bodyText">The login gives you access to a user management interface that lists previously submitted genomes with 
+         direct links to their results. It also enables you to generate an authentication token to use the HTTP API (see below and <a
+                href="{% url 'http_api' %}">here</a>).</p>
+
+    <div align="right"><a href="#">Top</a></div>
+    
+    <div id='a14' class="subHeader">How to use the HTTP API?</div>
+    &nbsp;<br/>
+    <p class="bodyText">IslandViewer 4 now integrates a HTTP API (REST API) that enable users to submit larger number of
+        genomes and retrieve predictions automatically using various programming languages. Please check out our specific <a
                 href="{% url 'http_api' %}">HTTP API</a> page.</p>
 
     <div align="right"><a href="#">Top</a></div>
-
     &nbsp;<br/>
 
 {% endblock content %}
