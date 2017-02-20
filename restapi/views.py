@@ -32,12 +32,11 @@ def user_jobs(request, **kwargs):
            abstracted out at some point."""
         genome = CustomGenome.objects.get(pk=a.ext_id)
 
-        analysis_set.append({'aid': a.aid,
+        analysis_set.append({'token': a.token,
                              'results': request.build_absolute_uri( reverse('results', kwargs={'aid': a.token}) ),
-
-                            'genome_name': genome.name,
-                            'status': CHOICES[a.status],
-                            })
+                             'genome_name': genome.name,
+                             'status': CHOICES[a.status],
+                             })
 
     data = json.dumps(analysis_set, indent=4, sort_keys=False)
 
@@ -116,7 +115,7 @@ def user_job_islandpick(request, aid, **kwargs):
         return HttpResponse(status=401)
 
     try:
-        results = islandpick_genomes(aid)
+        results = islandpick_genomes(analysis.aid)
         
     except Exception as e:
         if settings.DEBUG:
@@ -159,7 +158,7 @@ def user_job_picker(request, aid, **kwargs):
             for name in request.POST:
                 picked_genomes.append(name)
 
-        results = islandpick_genomes(aid, reselect=True, **kwargs)
+        results = islandpick_genomes(analysis.aid, reselect=True, **kwargs)
         
     except Exception as e:
         if settings.DEBUG:
@@ -226,7 +225,7 @@ def user_job_islandpick_rerun(request, aid, **kwargs):
             else:
                 user_id = analysis.owner_id
 
-            clone_ret = send_clone(aid, user_id=user_id, **clone_kwargs)
+            clone_ret = send_clone(analysis.aid, user_id=user_id, **clone_kwargs)
             
             if 'code' in clone_ret and clone_ret['code'] == 200:
                 if settings.DEBUG:
@@ -273,13 +272,13 @@ def user_job_download(request, aid, format, **kwargs):
         return HttpResponse(status=400)
 
     if format == 'genbank':
-        islandset = GenomicIsland.objects.filter(aid_id=aid).order_by('start').all()
+        islandset = GenomicIsland.objects.filter(aid_id=analysis.aid).order_by('start').all()
     else:
-        islandset = GenomicIsland.island_gene_set(aid)
+        islandset = GenomicIsland.island_gene_set(analysis.aid)
 
     args.append(islandset)
     if format == 'genbank' or format == 'fasta':
-        p = fetcher.GenbankParser(aid)
+        p = fetcher.GenbankParser(analysis.aid)
         args.append(p)
 
     args.append(['integrated'] + formatter.allowedmethods)
@@ -309,7 +308,7 @@ def ref_genomes(request, **kwargs):
 @ratelimit_warning
 def user_job_submit(request, **kwargs):
     user = request.user
-    
+
     if request.method != 'POST':
         return HttpResponse(status=403)
 

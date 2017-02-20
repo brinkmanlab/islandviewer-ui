@@ -289,6 +289,10 @@ class GenbankParser():
             pass
         
         gpv_id = replicon.gpv_id
+        try:
+            int(gpv_id)
+        except:
+            gpv_id = gpv_id.gpv_id
 
         self.fname = os.path.join(Genomeproject.objects.using('microbedb').get(pk=gpv_id).gpv_directory, replicon.file_name) + ".gbk"
         

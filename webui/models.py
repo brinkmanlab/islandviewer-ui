@@ -605,7 +605,7 @@ class Genomeproject(models.Model):
     assembly_accession = models.CharField(max_length=20)
     asm_name = models.CharField(max_length=24)
     genome_name = models.TextField()
-    version_id = models.ForeignKey('Version')
+    version = models.ForeignKey('Version')
     bioproject = models.CharField(max_length=14)
     biosample = models.CharField(max_length=14)
     taxid = models.IntegerField(blank=True, null=True)
