@@ -36,55 +36,56 @@
 
     <p class="subHeader">Curl examples</p>
     <p class="bodyText">We provide here examples of the syntax to use the various HTTP API functionalities of
-        IslandViewer 4 using cURL, a command line tool for getting or sending files using URL syntax.
+        IslandViewer 4 using cURL, a command line tool for getting or sending files using URL syntax. Please place your authentication token where indicated and replace the job token by the appropriate value.
         </br>
     <p class="bodyText">- Submission of custom genomes (draft or complete) to IslandViewer 4</p>
     <pre>
-curl -X POST -H 'x-authtoken:<your_authentication_token>' -Fgenome_file=@tiny.gbk -Fgenome_name="my genome" -Femail_addr="me@email.addr.com" -Fformat_type="GENBANK" http://www.pathogenomics.sfu.ca/islandviewer4_dev/rest/job/submit/
-        </br>
-        curl -X POST -H 'x-authtoken:<your_authentication_token>' -Fref_accnum="NC_022792.1" -Fgenome_file=@tiny.gbk -Fgenome_name="my test" -Femail_addr="me@email.addr.com" -Fformat_type="GENBANK" http://www.pathogenomics.sfu.ca/islandviewer4_dev/rest/job/submit/
+curl -X POST -H 'x-authtoken:<your_authentication_token>' -Fgenome_file=@tiny.gbk -Fgenome_name="my genome" -Femail_addr="me@email.addr.com" -Fformat_type="GENBANK" http://www.pathogenomics.sfu.ca/islandviewer4/rest/submit/
+</br>
+curl -X POST -H 'x-authtoken:<your_authentication_token>' -Fref_accnum="NC_022792.1" -Fgenome_file=@tiny.gbk -Fgenome_name="my test" -Femail_addr="me@email.addr.com" -Fformat_type="GENBANK" http://www.pathogenomics.sfu.ca/islandviewer4/rest/submit/
 </pre>
     <p class="bodyText">- Query already submitted genomes</p>
     <pre>
-curl http://www.pathogenomics.sfu.ca/islandviewer4_dev/rest/jobs/ -H 'X-authtoken:<your_authentication_token>'
+curl http://www.pathogenomics.sfu.ca/islandviewer4/rest/jobs/ -H 'X-authtoken:your_authentication_token'
 </pre>
     <p class="bodyText">- Query the status of already submitted genomes</p>
     <pre>
-curl http://www.pathogenomics.sfu.ca/islandviewer4_dev/rest/job/2886/ -H 'X-authtoken:<your_authentication_token>'
+curl http://www.pathogenomics.sfu.ca/islandviewer4/rest/job/job_token/ -H 'X-authtoken:your_authentication_token'
 </pre>
     <p class="bodyText">- Query the availability of reference and precomputed genomes</p>
     <pre>
-curl http://www.pathogenomics.sfu.ca/islandviewer4_dev/rest/genomes/ -H 'x-authtoken:<your_authentication_token>'
+curl http://www.pathogenomics.sfu.ca/islandviewer4/rest/genomes/ -H 'x-authtoken:your_authentication_token'
 </pre>
     <p class="bodyText">- Download the Genbank including genomic island predictions, and the reordered concatenated
         contigs for draft genomes</p>
     <pre>
-curl http://www.pathogenomics.sfu.ca/islandviewer4_dev/rest/job/14/download/genbank/ -H 'x-authtoken:<your_authentication_token>
+curl http://www.pathogenomics.sfu.ca/islandviewer4/rest/job/job_token/download/genbank/ -H 'x-authtoken:your_authentication_token
 </pre>
     <p class="bodyText">- Download the table summarizing genomic island predictions</p>
     <pre>
-curl http://www.pathogenomics.sfu.ca/islandviewer4_dev/rest/job/14/download/tab/ -H 'x-authtoken:<your_authentication_token>
+curl http://www.pathogenomics.sfu.ca/islandviewer4/rest/job/job_token/download/tab/ -H 'x-authtoken:your_authentication_token
 </pre>
     <p class="bodyText">- Download genomic island predictions for each method: possible methods are islandpick, sigi,
         dimob, islander</p>
     <pre>
-curl http://www.pathogenomics.sfu.ca/islandviewer4_dev/rest/job/26/islandpick/ -H 'x-authtoken:<your_authentication_token>'
+curl http://www.pathogenomics.sfu.ca/islandviewer4/rest/job/job_token/islandpick/ -H 'x-authtoken:your_authentication_token'
 </pre>
     <p class="bodyText">- Query possible genomes to use in IslandPick comparative genomics predictions comparison using
-        standard or custom cutoffs for distance, and resubmit an IslandPick analysis</p>
+        standard or custom cutoffs for distance<!--, and resubmit an IslandPick analysis--></p>
     <pre>
-curl http://www.pathogenomics.sfu.ca/islandviewer4_dev/rest/job/26/islandpick/picker/ -H 'x-authtoken:<your_authentication_token>'
-        </br>
-        curl "http://www.pathogenomics.sfu.ca/islandviewer4_dev/rest/job/26/islandpick/picker/?min_cutoff=0.02&max_dist_single_cutoff=0.15&max_cutoff=0.21&min_compare_cutoff=3&max_compare_cutoff=6&min_gi_size=4000" -H 'x-authtoken:<your_authentication_token>'
+curl http://www.pathogenomics.sfu.ca/islandviewer4/rest/job/job_token/islandpick/picker/ -H 'x-authtoken:your_authentication_token'
+<!--        </br>
+        curl "http://www.pathogenomics.sfu.ca/islandviewer4/rest/job/job_token/islandpick/picker/?min_cutoff=0.02&max_dist_single_cutoff=0.15&max_cutoff=0.21&min_compare_cutoff=3&max_compare_cutoff=6&min_gi_size=4000" -H 'x-authtoken:your_authentication_token'
             </br>
-            curl http://www.pathogenomics.sfu.ca/islandviewer4_dev/rest/job/26/islandpick/picker/ -H 'x-authtoken:<your_authentication_token>' -X POST -d '{ "min_cutoff": 0.02, "max_dist_single_cutoff": 0.15, "max_cutoff": 0.21 }'
+            curl http://www.pathogenomics.sfu.ca/islandviewer4/rest/job/job_token/islandpick/picker/ -H 'x-authtoken:your_authentication_token' -X POST -d '{ "min_cutoff": 0.02, "max_dist_single_cutoff": 0.15, "max_cutoff": 0.21 }'
                 </br>
-                curl http://www.pathogenomics.sfu.ca/islandviewer4_dev/rest/job/26/islandpick/rerun/ -H 'x-authtoken:<your_authentication_token>' -X POST -d '{ "genomes": ["NZ_CP008896.1", "NZ_CP012400.1", "NZ_CP011317.1"], "min_gi_size": 8000 }'
+                curl http://www.pathogenomics.sfu.ca/islandviewer4/rest/job/job_token/islandpick/rerun/ -H 'x-authtoken:your_authentication_token' -X POST -d '{ "genomes": ["NZ_CP008896.1", "NZ_CP012400.1", "NZ_CP011317.1"], "min_gi_size": 8000 }'
+-->
 </pre>
     </br>
     </br>
     <p class="subHeader">Perl script example</p>
-    <p class="bodyText">We provide here an example of perl script to submit a genome to IslandViewer 4. Further
+    <p class="bodyText">We provide here an example of perl script to submit a genome to IslandViewer 4. Please place your authentication token where indicated. Further
         functions can be built by changing the code to reflect the syntax provided above.</p>
     <pre>
 #!/usr/bin/perl
@@ -101,9 +102,9 @@ my ($file, $result, $message);
 $file = "tiny.gbk";
  
 my $ua = LWP::UserAgent->new;
-my $req = $ua->request(POST 'http://www.pathogenomics.sfu.ca/islandviewer4_dev/rest/job/submit/',
+my $req = $ua->request(POST 'http://www.pathogenomics.sfu.ca/islandviewer4/rest/submit/',
           (Content_Type => 'form-data',
-	   'x-authtoken' => '<your_authentication_token>' ),
+	   'x-authtoken' => 'your_authentication_token' ),
           Content => [
         email_addr => 'my@email.address.com',
         format_type => "GENBANK",
@@ -127,7 +128,7 @@ else {
     </br>
     </br>
     <p class="subHeader">Python script example</p>
-    <p class="bodyText">We provide here an example of python script to submit a genome to IslandViewer 4. To build
+    <p class="bodyText">We provide here an example of python script to submit a genome to IslandViewer 4. Please place your authentication token where indicated. To build
         further functions, please change the code to reflect the syntax provided above.</p>
 
     <pre>
@@ -135,8 +136,8 @@ import requests, sys
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
  
-server = "http://www.pathogenomics.sfu.ca/islandviewer4_dev"
-ext = "/rest/job/submit/"
+server = "http://www.pathogenomics.sfu.ca/islandviewer4"
+ext = "/rest/submit/"
 
 genome_file="mygenome.gbk"
 
@@ -148,7 +149,7 @@ multipart_data = MultipartEncoder(
              'genome_file': ('filename', open(mygenome, 'rb'), 'text/plain')}
 )
 headers={'Content-Type': multipart_data.content_type,
-         'x-authtoken': '<your_authentication_token>'}
+         'x-authtoken': 'your_authentication_token'}
 
 r = requests.post(server+ext, headers=headers, data=multipart_data)
  
