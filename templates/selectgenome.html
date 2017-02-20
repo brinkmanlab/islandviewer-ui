@@ -18,9 +18,9 @@
     <span class="pageName">IslandViewer</span><br />
     &nbsp;<br />
     <div class="bodyText">
-        <p>IslandViewer is a computational tool that integrates four different genomic island prediction methods: IslandPick, IslandPath-DIMOB, SIGI-HMM, and Islander (<a href="{% url 'about' %}">more information</a>). See our <a href="{% url 'faq' %}">FAQs</a></p>
+        <p>IslandViewer is a computational tool that integrates four different genomic island prediction methods: IslandPick, IslandPath-DIMOB, SIGI-HMM, and Islander. For more information about methods and analyses see <a href="{% url 'about' %}">here</a> and in the <a href="{% url 'faq' %}">FAQs</a>.</p>
         <p>Submit <a href="{% url "uploadform" %}">here</a> your custom genome to predict genomic islands using IslandPick, IslandPath-DIMOB, and SIGI-HMM. </p>
-        <p>Or browse the precomputed genomic island predictions for publicly available genomes, including Islander predictions as well:</p>
+        <p>Or browse the pre-computed genomic island predictions for publicly available genomes, including Islander predictions as well:</p>
     </div>
     <select id="genomelist" class="chosen-select extraclass" style="width:550px;" data-placeholder="Select or start typing a species name, strain name or genome accession...">
         <option></option>
@@ -29,7 +29,7 @@
         {% endfor %}
     </select><br />
     &nbsp;<br />
-    <input id="gotoresults" type="button" value="Go to Genome" onclick="return goto_results()" />&nbsp;&nbsp; <a href="{% url "demo" %}">Example</a>, <a href="http://www.pathogenomics.sfu.ca/islandviewer4_dev/results/8740/?token=SdoayjsS31qx3UQr4IeRoC">Example (incomplete genome)</a>
+    <input id="gotoresults" type="button" value="Go to Genome" onclick="return goto_results()" />&nbsp;&nbsp; <a href="{% url "demo" %}">Example</a>, <a href="http://www.pathogenomics.sfu.ca/islandviewer4/results/lAOwTx4QCbFb6xyhcoKeB6/">Example (incomplete genome)</a>
     <span class="bodyText">
         <br />
         <br />
@@ -38,7 +38,9 @@
         &nbsp;<br />
         <div>
 
-            <p><strong> 2017/01/01 - A new version of IslandViewer will soon be available: IslandViewer 4 will feature improved predictive capabilities for larger datasets while retaining its flexible visualization interface. For users wishing to finalize an analysis, IslandViewer 3 will remain available with an alternative url. Please check the latest news or subscribe to our <a href="{% url 'contactus' %}">mailing list</a> to be notified of new releases.</strong></p>
+            <p><strong> 2017/02/19 - IslandViewer 4 has been released. Login to check out the new user management interface to easily access previous results, and obtain credentials to use the HTTP API to submit many genomes and retrieve their results. Get expanded genomic island predictions by the latest IslandPath-DIMOB version in a shorter time thanks to the integration of MASH for distance calculation. Browse interactively newly pre-computed predictions by SIGI-HMM, IslandPath-DIMOB, IslandPick and Islander in one of the 6586 publicly available genomes in a streamlined visualization that still highlights antimicrobial resistance genes, virulence factors and pathogen-associated genes. </strong></p>
+
+            <p> 2017/01/01 - A new version of IslandViewer will soon be available: IslandViewer 4 will feature improved predictive capabilities for larger datasets while retaining its flexible visualization interface. For users wishing to finalize an analysis, IslandViewer 3 will remain available with an alternative url. Please check the latest news or subscribe to our <a href="{% url 'contactus' %}">mailing list</a> to be notified of new releases.</p>
 
             <p> 2016/09/06 - IslandViewer 3 has been updated to include all 5306 complete genomes available in public databases as pre-computed results and as a reference for contig reordering.</p>
 
