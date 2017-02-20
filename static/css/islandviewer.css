@@ -152,7 +152,7 @@ input#gene_search_input{
 
 .faq-q {
 	font:14px Garamond;
-	color: #336600;
+	color: #003800;
 	font-weight:bold;
 	line-height:20px;
 	letter-spacing:0.1em;
@@ -212,14 +212,12 @@ div.outline {
 	font-weight:bold;
 	}   
 .alignment_label {
-    color: #336600;
-	font-size:14px;
-	font-weight:bold;
+        color: #336600;
+	font-size:12px;
 }
 .contig_label {
 	color: #848484;
-	font-size:14px;
-	font-weight:bold;
+	font-size:12px;
 }
 
 .pageName {
@@ -289,7 +287,7 @@ input[type=file] {
 /* Gene popup window section */
 
 .ui-widget-header {
-	background: #006600 !important;
+	background: #003800 !important;
 	font:12px arial;
 	font-weight:bold;
 	color: white !important;
