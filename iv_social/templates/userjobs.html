@@ -11,7 +11,7 @@
 <table id="{{ summarytablename|default:"summarytable" }}" class="summarytable table table-striped table-condensed table-hover idb-table" style="font-size: 90%">
 <thead>
 <tr>
-<th>Analysis id</th>
+<th>Token id</th>
 <th>Genome Name</th>
 <th>Status</th>
 </tr>
@@ -24,7 +24,7 @@ var displayLength = 30;
 var anOpen = [];
 
 var arrayColumns = [
-                    {"mData": "aid", "bVisible": true, "sSortDataType": "dom-text"},
+                    {"mData": "token", "bVisible": true, "sSortDataType": "dom-text"},
                     {"mData": "genome_name", "bVisible": true},
                     {"mData": "status", "bVisible": true},                    
                 ];
@@ -54,7 +54,7 @@ var  oTable = $('#{{ summarytablename|default:"summarytable" }}').dataTable({
  	    				"mData": null,
  	    				"mRender": function(data, type, full) {
  							var url = '{%url 'results' '9999' %}'.replace(9999, full.token);
- 	        				return '<a href="' + url + '">' + full.aid + '</a>';
+ 	        				return '<a href="' + url + '">' + full.token + '</a>';
  	    					},
  						},
 					{
