@@ -1020,9 +1020,16 @@ def islandpick_genomes(aid, picked=None, reselect=False, **kwargs):
 
         if reselect:
             try:
+                if settings.DEBUG:
+                    print "Sending to picker: {}".format(analysis.ext_id)
+                    pprint.pprint(kwargs)
                 # If we're re-selecting the candidates, make the call to the backend
                 picker = send_picker(analysis.ext_id, **kwargs)
-                
+
+                if settings.DEBUG:
+                    print "From picker"
+                    pprint.pprint(picker)
+
                 if 'code' in picker and picker['code'] == 200:
                     for acc in picker['data']:
                         if "picked" in picker['data'][acc] and acc in genome_list:
@@ -1038,6 +1045,8 @@ def islandpick_genomes(aid, picked=None, reselect=False, **kwargs):
         context['genomes'] = genome_list
         context['status'] = "OK"            
         
+        if settings.DEBUG:
+            pprint.pprint(context)
         return context
 
     else:
@@ -1092,6 +1101,8 @@ def islandpick_genomes(aid, picked=None, reselect=False, **kwargs):
                 print str(e)
             return HttpResponse(status = 403)
 
+        if settings.DEBUG:
+            pprint.pprint(context)
         return context
 
 def downloadCoordinates(request):

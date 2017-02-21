@@ -232,13 +232,16 @@ def user_job_islandpick_rerun(request, aid, **kwargs):
                     print "Job submitted, new aid: " + clone_ret['data']
                     
                 context['status'] = 'success'
-                aid = clone_ret['data']
+                aid = int(clone_ret['data'])
                 context['aid'] = aid
                 try:
                     new_analysis = Analysis.objects.get(pk=aid)
                     if new_analysis.token:
                         context['token'] = new_analysis.token
-                except:
+                except Exception as e:
+                    if settings.DEBUG:
+                        print "Can't find new analysis {}, that's bad bad bad".format(aid)
+                        print str(e)
                     pass               
         
     except Exception as e:
