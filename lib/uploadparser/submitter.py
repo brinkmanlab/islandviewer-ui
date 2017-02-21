@@ -105,10 +105,18 @@ def send_picker(accnum, host=default_host, port=default_port, **kwargs):
     json_obj = {'action': 'picker', 'accnum': accnum}
     json_obj.update(kwargs)
 
-    json_str = json.dumps(json_obj)
+    json_str = json.dumps(json_obj, ensure_ascii=False)
     json_str += "\nEOF\n"
 
+    if settings.DEBUG:
+        print "Sending to picker socket:"
+        print json_str
+
     ret = send_message(s, json_str)
+
+    if settings.DEBUG:
+        print "Received:"
+        print ret
 
     decoded_json = json.loads(ret)
 
