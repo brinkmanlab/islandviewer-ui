@@ -230,9 +230,15 @@ def makeAnnotationStr(ext_id, source):
     elif source == 'Victors':
         return 'http://www.phidias.us/victors/gene_detail.php?c_mc_victor_id=' + ext_id
     elif source == 'CARD':
-        return 'http://arpcard.mcmaster.ca/?q=CARD/ontology/' + ext_id
+        if len(ext_id) == 7:
+            return 'https://card.mcmaster.ca/aro/' + ext_id
+        elif len(ext_id) == 5:
+            return 'https://card.mcmaster.ca/ontology/' + ext_id
     elif source == 'RGI':
-        return 'http://arpcard.mcmaster.ca/?q=CARD/ontology/' + ext_id
+        if len(ext_id) == 7:
+            return 'https://card.mcmaster.ca/aro/' + ext_id
+        elif len(ext_id) == 5:
+            return 'https://card.mcmaster.ca/ontology/' + ext_id
     elif source == 'PAG':
         return 'Pathogen-associated genes analysis (2014)'
     elif source == 'BLAST':

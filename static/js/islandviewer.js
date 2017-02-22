@@ -61,10 +61,18 @@ Islandviewer.prototype.onclick = function(trackname, d, plotid, skip_half_range)
 		} else if(d.name == 'Victors') {
 		  url = 'http://www.phidias.us/victors/gene_detail.php?c_mc_victor_id=' + d.ext_id;
 		} else if(d.name == 'CARD') {
-		  url = 'http://arpcard.mcmaster.ca/?q=CARD/ontology/' + d.ext_id
-		} else if(d.name == 'RGI') {
-		  url = 'http://arpcard.mcmaster.ca/?q=CARD/ontology/' + d.ext_id
-		}
+			if(d.ext_id.length == 7) {
+				url = 'https://card.mcmaster.ca/aro/' + d.ext_id
+			} else if(d.ext_id.length == 5) {
+				url = 'https://card.mcmaster.ca/ontology/' + d.ext_id
+			}
+        } else if(d.name == 'RGI') {
+            if(d.ext_id.length == 7) {
+                url = 'https://card.mcmaster.ca/aro/' + d.ext_id
+            } else if(d.ext_id.length == 5) {
+                url = 'https://card.mcmaster.ca/ontology/' + d.ext_id
+            }
+        }
 
 		// Open the link if we've found something
 		if(url) {
