@@ -336,27 +336,27 @@ input[type=file] {
 
 .virulencecircle_VFDB, .virulencecircle_Victors, .virulencecircle_PATRIC_VF {
 	stroke: none;
-	background: purple;
+	background: #460b80;
 }
 
 .virulencecircle_ARDB, .virulencecircle_CARD {
 	stroke: none;
-	background: #D6639A;
+	background: #d6235f;
 }
 
 .virulencecircle_PAG {
 	stroke: none;
-	background: orange;
+	background: #ff5b07;
 }
 
 .virulencecircle_BLAST {
         stroke: none;
-        background: #d1ace9;
+        background: #a684ea;
 }
 
 .virulencecircle_RGI {
         stroke: none;
-        background: #FFC2E0;
+        background: #ff9cc1;
 }
 
 .highlight_row {

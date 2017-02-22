@@ -62,24 +62,24 @@
 
 .circularVirulence_VFDB, .circularVirulence_Victors, .circularVirulence_PATRIC_VF {
 	stroke: black;
-	fill: purple;
-	color:purple;
+	fill: #460b80;
+	color:#460b80;
 #	font-size:14px;
 #	font-weight:bold;
 }
 
 .circularVirulence_ARDB, .circularVirulence_CARD {
 	stroke: black;
-	fill: #D6639A;
-	color:#D6639A;
+	fill: #d6235f;
+	color:#d6235f;
 #	font-size:14px;
 #	font-weight:bold;
 }
 
 .circularVirulence_PAG {
 	stroke: black;
-	fill: orange;
-	color: orange;
+	fill: #ff5b07;
+	color: #ff5b07;
 #	font-size:14px;
 #	font-weight:bold;
 	
@@ -87,16 +87,16 @@
 
 .circularVirulence_BLAST {
 	stroke: black;
-	fill: #d1ace9;
-	color: #d1ace9;
+	fill: #a684ea;
+	color: #a684ea;
 #	font-size:14px;
 #	font-weight:bold;
 }
 
 .circularVirulence_RGI {
 	stroke: black;
-	fill: #FFC2E0;
-	color: #FFC2E0;
+	fill: #ff9cc1;
+	color: #ff9cc1;
 #	font-size:14px;
 #	font-weight:bold;
 }
