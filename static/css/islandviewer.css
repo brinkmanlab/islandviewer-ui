@@ -29,17 +29,17 @@ body {
 }
 
 .navbar {
-	min-height:20px !important;
+	min-height:30px !important;
 	margin-bottom: 1px;
 }
 
-.navbar-nav > li > a {padding-top:5px !important; padding-bottom:5px !important;}
+.navbar-nav > li > a {padding-top:10px !important; padding-bottom:5px !important;}
 
 .navbar-iv .nav > li > a {
 	color: #ffffff;
 	font: 10px Helvetica;
     text-transform: uppercase;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.07em;
 	padding-top:7px; padding-bottom:7px;
 }
 
