@@ -52,30 +52,32 @@
             href="datasets/original_chromosomes.xls">118 bacterial chromosomes</a> (in <a
             href="http://www.biomedcentral.com/1471-2105/9/329" target="_blank">Langille et al., 2008</a>) may be used
         for evaluating sequence composition based GI predictors. </p>
-
+    </br>
     <p class="subHeader">Source Code<a name="source"></a></p>
 
-    <p class="bodyText"><em>Please note that the following three methods are integrated into
-        <strong>IslandViewer</strong>.</em></p>
+    <p class="bodyText">Please note that the following three methods are integrated into
+        <strong>IslandViewer</strong>: IslandPick, IslandPath-DIMOB and SIGI-HMM. Moreover, Islander predictions are
+        available for some pre-computed genomes.</p>
 
-    <p class="bodyText"><strong>IslandPick</strong> is currently very dependent on an in-house MySQL database of all
-        published genomes, and is optimized for use on our computer cluster. Although it would require a significant
-        amount of effort for a casual user to install, we still believe in open access to our software. Therefore, those
-        researchers with sophisticated bioinformatics backgrounds are welcome to view and use our source code, which is
-        available under a GPL license <a href="datasets/IslandPick_0.2.tar.gz">here</a>.</p>
+    <ol class="bodyText">
+        <li><strong>IslandPick</strong> is currently very dependent on an in-house MySQL database of all
+            published genomes, and is optimized for use on our computer cluster. Although it would require a significant
+            amount of effort for a casual user to install, we still believe in open access to our software. Therefore, those
+            researchers with sophisticated bioinformatics backgrounds are welcome to view and use our source code, which is
+            available under a GPL license <a href="datasets/IslandPick_0.2.tar.gz">here</a>.</li>
 
-    <p class="bodyText"><strong>IslandPath-DIMOB</strong> source code is available under a GPL license <a
-            href="datasets/islandpath_dimob_v1.0.0.tar.gz">here</a> or in the <a href="https://github.com/brinkmanlab/islandpath">
-        Brinkman lab github</a>. IslandPath-DIMOB requires that <a href="http://www.bioperl.org/" target="_blank">Perl,
-        BioPerl, and other perl libraries </a> and <a href="http://hmmer.janelia.org/" target="_blank">HMMER</a> be
-        installed on the user's computer. </p>
+        <li><strong>IslandPath-DIMOB</strong> source code is available under a GPL license <a
+                href="datasets/islandpath_dimob_v1.0.0.tar.gz">here</a> or in the <a href="https://github.com/brinkmanlab/islandpath">
+            Brinkman lab github</a>. IslandPath-DIMOB requires that <a href="http://www.bioperl.org/" target="_blank">Perl,
+            BioPerl, and other perl libraries </a> and <a href="http://hmmer.janelia.org/" target="_blank">HMMER</a> be
+            installed on the user's computer. </li>
 
-    <p class="bodyText"><strong>SIGI-HMM</strong> is available for download <a
-            href="http://www.uni-goettingen.de/en/research/185810.html" target="_blank">here</a>. </p>
+        <li><strong>SIGI-HMM</strong> is available for download <a
+                href="http://www.uni-goettingen.de/en/research/185810.html" target="_blank">here</a>. </li>
 
-    <p class="bodyText"><strong>Islander</strong> is available for download <a
-            href="http://bioinformatics.sandia.gov/software/index.html" target="_blank">here</a>. </p>
-
+        <li><strong>Islander</strong> is available for download <a
+                href="http://bioinformatics.sandia.gov/software/index.html" target="_blank">here</a>. </li>
+    </ol>
 
     <p class="bodyText">We would encourage users to <a href="{% url 'contactus' %}">contact us</a> with any special
         requests or concerns. <br/></p>

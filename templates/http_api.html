@@ -26,13 +26,12 @@
             genomes
         </li>
         <li>Download the table summarizing genomic island predictions</li>
-        <li>Download genomic island predictions for each method: possible methods are islandpick, sigi, dimob,
-            islander
         </li>
-        <li>Query possible genomes to use in IslandPick comparative genomics predictions comparison using standard or
-            custom cutoffs for distance, and resubmit an IslandPick analysis.
+        <li>Query the reference genomes used for IslandPick predictions by comparative genomics, query possible genomes to
+            use for IslandPick predictions using standard or custom cutoffs for distance, and resubmit an IslandPick analysis.
         </li>
     </ul>
+    </br>
 
     <p class="subHeader">Curl examples</p>
     <p class="bodyText">We provide here examples of the syntax to use the various HTTP API functionalities of
@@ -65,22 +64,19 @@ curl http://www.pathogenomics.sfu.ca/islandviewer4/rest/job/job_token/download/g
     <pre>
 curl http://www.pathogenomics.sfu.ca/islandviewer4/rest/job/job_token/download/tab/ -H 'x-authtoken:your_authentication_token
 </pre>
-    <p class="bodyText">- Download genomic island predictions for each method: possible methods are islandpick, sigi,
-        dimob, islander</p>
+    <p class="bodyText">- Query possible genomes to use in IslandPick comparative genomics predictions comparison using
+        standard or custom cutoffs for distance, and resubmit an IslandPick analysis. Please note that, as the number of reference genomes grows,
+        choosing very broad distance cutoffs might results in too many genomes to be returned. </p>
     <pre>
 curl http://www.pathogenomics.sfu.ca/islandviewer4/rest/job/job_token/islandpick/ -H 'x-authtoken:your_authentication_token'
-</pre>
-    <p class="bodyText">- Query possible genomes to use in IslandPick comparative genomics predictions comparison using
-        standard or custom cutoffs for distance<!--, and resubmit an IslandPick analysis--></p>
-    <pre>
+</br>
 curl http://www.pathogenomics.sfu.ca/islandviewer4/rest/job/job_token/islandpick/picker/ -H 'x-authtoken:your_authentication_token'
-<!--        </br>
-        curl "http://www.pathogenomics.sfu.ca/islandviewer4/rest/job/job_token/islandpick/picker/?min_cutoff=0.02&max_dist_single_cutoff=0.15&max_cutoff=0.21&min_compare_cutoff=3&max_compare_cutoff=6&min_gi_size=4000" -H 'x-authtoken:your_authentication_token'
-            </br>
-            curl http://www.pathogenomics.sfu.ca/islandviewer4/rest/job/job_token/islandpick/picker/ -H 'x-authtoken:your_authentication_token' -X POST -d '{ "min_cutoff": 0.02, "max_dist_single_cutoff": 0.15, "max_cutoff": 0.21 }'
-                </br>
-                curl http://www.pathogenomics.sfu.ca/islandviewer4/rest/job/job_token/islandpick/rerun/ -H 'x-authtoken:your_authentication_token' -X POST -d '{ "genomes": ["NZ_CP008896.1", "NZ_CP012400.1", "NZ_CP011317.1"], "min_gi_size": 8000 }'
--->
+</br>
+curl "http://www.pathogenomics.sfu.ca/islandviewer4/rest/job/job_token/islandpick/picker/?min_cutoff=0.02&max_dist_single_cutoff=0.15&max_cutoff=0.21&min_compare_cutoff=3&max_compare_cutoff=6&min_gi_size=4000" -H 'x-authtoken:your_authentication_token'
+</br>
+curl http://www.pathogenomics.sfu.ca/islandviewer4/rest/job/job_token/islandpick/picker/ -H 'x-authtoken:your_authentication_token' -X POST -d '{ "min_cutoff": 0.02, "max_dist_single_cutoff": 0.15, "max_cutoff": 0.21 }'
+</br>
+curl http://www.pathogenomics.sfu.ca/islandviewer4/rest/job/job_token/islandpick/rerun/ -H 'x-authtoken:your_authentication_token' -X POST -d '{ "genomes": ["NZ_CP008896.1", "NZ_CP012400.1", "NZ_CP011317.1"], "min_gi_size": 8000 }'
 </pre>
     </br>
     </br>
