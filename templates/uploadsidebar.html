@@ -1,8 +1,12 @@
-<span class="bodyText">
+<b class="bodyText">
 <p>We only accept user genomes that are formatted in EMBL or GENBANK format.</p> 
 <p>For published genomes please see <a href="{% url 'browse' %}">pre-computed results</a>. </p>
 <p>Uploaded genomes and GI predictions will not be visible to other users of IslandViewer and will be available for at least 1 month. </p>
-</span>
+    <div id="cite" class="outline"><span class="bodyText"></span>
+        IslandViewer 4 enables users to log in to a new <span class="green">user management interface</span> (see
+        <span class="green">LOGIN </span> menu) using Github, Google and Twitter credentials to facilitate the access to their results.
+        This further enables to use the HTTP API to submit genomes and retrieve results programmatically using curl, python or perl.
+    </div>
 <br/>
 {% include "citation.html" %}
                                              

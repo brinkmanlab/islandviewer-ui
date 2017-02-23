@@ -49,7 +49,7 @@
         been predicted using the the currently most accurate GI prediction methods. Users can also <a
                 href="{% url 'uploadform' %}">upload</a> their own unpublished genomes for analysis. The source code and
         entire GI data sets are available for <a href="{% url 'download' %}">download</a> and <a
-                href="{% url 'acknowledgements' %}">acknowledgment</a> information is available for those who use our
+                href="{% url 'acknowledgements' %}">acknowledgement</a> information is available for those who use our
         resources. This software and website is developed and maintained by the <a
                 href="http://www.brinkman.mbb.sfu.ca/" target="_blank">Brinkman lab</a> at Simon Fraser University,
         Canada. Please <a href="{% url 'contactus' %}">contact us</a> with any questions or comments. Note, this is
@@ -64,7 +64,7 @@
         to evaluate several <em>sequence composition GI prediction methods</em> and showed that SIGI-HMM and
         IslandPath-DIMOB were shown to have the highest overall accuracy. In addition, IslandPick had the most agreement
         with an independent data set of previously published genomes indicating that it was a highly precise method for
-        GI prediction. IslandPick requires several phylogentically related genomes to be sequenced to be able to make a
+        GI prediction. IslandPick requires several phylogenetically related genomes to be sequenced to be able to make a
         prediction; therefore, predictions will not be available for many genomes. IslandPick results are highly
         dependent on the comparison genomes selected and can be customized to include or exclude particular genomes.
         This is useful in cases where IslandPick doesn't provide any results or you would like to compare genomes with a
@@ -79,7 +79,7 @@
     <p class="bodyText"><a href="http://www.uni-goettingen.de/en/research/185810.html" target="_blank">SIGI-HMM</a> (see
         <a href="http://www.biomedcentral.com/1471-2105/7/142" target="_blank">Waack et al., 2006</a>) is a <em>sequence
             composition GI prediction method</em> that is part of the Columbo package. This method uses a Hidden Markov
-        Model (HMM) and measures codon usage to identify possible GIs. In a recent study, SIGI-HMM was shown to have the
+        Model (HMM) and measures codon usage to identify possible GIs. In a former study, SIGI-HMM was shown to have the
         highest precision and overall accuracy, out of six tested <em>sequence composition GI prediction methods</em>
         (<a href="http://www.biomedcentral.com/1471-2105/9/329" target="_blank">Langille et al., 2008</a>). </p>
 
@@ -96,6 +96,13 @@
         dinucleotide sequence composition bias and the presence of <em>mobility genes </em>were good indicators for
         identifying GIs. In fact, it was tied with SIGI-HMM for having the highest overall accuracy and traded a
         slightly lower precision for higher recall. </p>
+
+    <p class="bodyText">More recently, IslandPath-DIMOB has been improved to include more recent Pfam profiles for the
+        identification of mobility genes while using more stringent cutoffs to avoid false positives. A more sensitive
+        dinucleotide score for the identification of potential GIs and the merging of closely-positioned regions with
+        dinucleotide biases have also been implemented. Overall, IslandPath-DIMOB features a 15% increase in recall and
+        a 0.6 % increase in precision when assessed using the same <a href="http://www.biomedcentral.com/1471-2105/9/329"
+                                                                      target="_blank">dataset</a>.</p>
 
     <p class="subHeader">Islander<a name="islander" id="islander"></a></p>
 
@@ -115,27 +122,27 @@
             href="http://www.patricbrc.org" target="_blank">PATRIC</a> (see <a
             href="http://nar.oxfordjournals.org/content/42/D1/D581.long" target="_blank">Wattam et al., 2014</a>) and <a
             href="http://www.phidias.us/victors/" target="_blank">Victors</a>. Antibiotic resistance gene
-        classifications were downloaded from the <a href="http://arpcard.mcmaster.ca/" target="_blank">Comprehensive
-            Antibiotic Resistance Database (CARD)</a> (see <a href="http://aac.asm.org/content/57/7/3348.long"
-                                                              target="_blank">McArthur et al., 2013</a>). These curated
-        annotations are available for visualization on genome images within the scatter plot, as well as for download in
-        the various downloadable files. Within the linear genome view, links are provided links to the respective
-        entries from the annotation source for more information. In downloadable files, the source of each annotation is
-        denoted using its acronym.</p>
+        were identified using Resistance Gene Identifier (RGI) and the <a href="https://card.mcmaster.ca/" target="_blank">
+            Comprehensive Antibiotic Resistance Database (CARD)</a> (see <a
+                href="https://academic.oup.com/nar/article-lookup/doi/10.1093/nar/gkw1004" target="_blank">Jia et
+            al., 2017</a>) as those with perfect matches. These curated annotations are available for visualization on
+        genome images within the scatter plot, as well as for download in the various downloadable files. Within the
+        linear genome view, links are provided to the respective entries from the annotation source for more information.
+        In downloadable files, the source of each annotation is denoted using its acronym.</p>
 
     <p class="subHeader">Homologs of Virulence Factors and Antibiotic Resistance Genes</p>
 
     <p class="bodyText">Homologs of curated virulence factor genes and resistance genes have been provided for genomes
         missing such curated data. Resistance gene homologs were determined using the <a
-                href="http://arpcard.mcmaster.ca/?q=CARD/tools/RGI" target="_blank">Resistance Gene Identifier</a> tool
-        available through the CARD database. Virulence factor homologs were identified in close relatives of genomes
+                href="https://card.mcmaster.ca/" target="_blank">Resistance Gene Identifier</a> tool
+        available through the CARD database using the strict cutoff. Virulence factor homologs were identified in close relatives of genomes
         with curated data based on a reciprocal best blast hit (RBBH) approach with very stringent cutoff values:
         e-value cutoff of 1e-10, >90% sequence similarity, and >80% coverage. Note that virulence factor homologs are
         predictions and indicate genes of potential interest to check for presence or absence between isolates.
         Virulence is very contextual and further manual investigation of predictions is needed. All homologs of curated
         annotations are indicated within the scatter plot in lighter shades and are also available for download. In
         downloadable files, the source for these homologs may be indicated by "RGI" for resistance genes and "BLAST" for
-        virulence factors. </p>
+        virulence factors.</p>
 
     <p class="subHeader">Pathogen-Associated Genes<a name="pag" id="pag"></a></p>
 

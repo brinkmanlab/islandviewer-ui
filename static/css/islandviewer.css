@@ -151,11 +151,11 @@ input#gene_search_input{
 }
 
 .faq-q {
-	font:14px Garamond;
+	font:12px Arial;
 	color: #003800;
 	font-weight:bold;
 	line-height:20px;
-	letter-spacing:0.1em;
+	letter-spacing:0.05em;
 }
 
 .toolbox_item {
@@ -188,18 +188,18 @@ a:hover {
 .dropdown-menu {
 	border: none;
 }
-	
+
 div.outline {
   border: 1px solid #808080;
   padding: 5px;
   background: white;
 }
 
-.red {color:red;
+.red {color:firebrick;
 	font-size:14px;
 	font-weight:bold;
 } 
-.green {color:green;
+.green {color: #003800;
 	font-size:14px;
 	font-weight:bold;
 }

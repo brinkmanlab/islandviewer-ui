@@ -52,7 +52,7 @@
     </div>
     &nbsp;<br/>
     <p class="bodyText">All complete bacterial and archaeal genomes available for download on NCBI are pre-computed
-        through IslandViewer. The genomes are updated from NCBI approximately every month. If you would like to run your
+        through IslandViewer. The genomes are updated from NCBI approximately semiannually. If you would like to run your
         own custom genome, use the &quot;Genome Upload&quot; page to upload your own GenBank or EMBL file. See <a
                 href="http://www.ncbi.nlm.nih.gov/genbank/">here</a> for documentation about GenBank and access to
         sample records, or see <a href="http://www.bioperl.org/wiki/EMBL_sequence_format" target="_blank">here</a> for a
@@ -146,10 +146,10 @@
         and <a href="http://www.phidias.us/victors/" target="_blank">Victors</a>. <font class="circularVirulence_BLAST">Homologs
             of virulence factors</font> were determined as reciprocal best blast hits (RBBH's) to curated virulence
         factors. <font class="circularVirulence_ARDB">Curated resistance genes</font> were collected from the <a
-                href="http://arpcard.mcmaster.ca/" target="_blank">Comprehensive Antibiotic Resistance Database
-            (CARD)</a> (see <a href="http://aac.asm.org/content/57/7/3348.long" target="_blank">McArthur et al.,
-            2013</a>). <font class="circularVirulence_RGI" target="_blank">Homologs of resistance genes</font> were
-        determined using the <a href="http://arpcard.mcmaster.ca/?q=CARD/tools/RGI" target="_blank">Resistance Gene
+                href="https://card.mcmaster.ca/" target="_blank">Comprehensive Antibiotic Resistance Database
+            (CARD)</a> (see <a href="https://academic.oup.com/nar/article-lookup/doi/10.1093/nar/gkw1004" target="_blank">Jia et al.,
+            2017</a>). <font class="circularVirulence_RGI" target="_blank">Homologs of resistance genes</font> were
+        determined using the <a href="https://card.mcmaster.ca/download" target="_blank">Resistance Gene
             Identifier</a>. <font class="circularVirulence_PAG">Pathogen-associated genes</font> were determined using
         an approach as outlined by <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0008094"
                                       target="_blank">Ho Sui et al., 2009</a>, with a more recent list of genomes. In
@@ -166,10 +166,13 @@
         version?
     </div>
     &nbsp;<br/>
-    <p class="bodyText">In an effort to standarize identifiers and reduce duplication, NCBI has been re-annotating it's
-        bacterial genomes. Part of this process involves running a new gene caller and updating identifiers. The
-        pre-computed genomes current in IslandViewer were run before this process was undertaken, and we do have plans
-        to recompute all the IslandViewer results with these updated genomes in a future update.</p>
+    <p class="bodyText">In an effort to standardize identifiers and reduce duplication, NCBI has been re-annotating its
+        bacterial genomes with RefSeq release 70. We have newly computed all GI and AMR predictions on the RefSeq files
+        retrieved on Feb 09, 2017. Moreover, old protein accessions of curated virulence factors have been mapped to
+        their new non-redundant protein accessions to ensure a proper annotation transfer for users using the latest
+        genome files. However, users submitting older or newer genome files, GenBank files (as opposed to RefSeq),
+        might obtain different GI predictions and virulence factors based on differences in annotation
+        and in the protein accession numbers.</p>
 
     <div align="right"><a href="#">Top</a></div>
 
@@ -215,8 +218,9 @@
     <div id='a13' class="subHeader">What is the purpose of the login?</div>
     &nbsp;<br/>
     <p class="bodyText">The login gives you access to a user management interface that lists previously submitted genomes with 
-         direct links to their results. It also enables you to generate an authentication token to use the HTTP API (see below and <a
-                href="{% url 'http_api' %}">here</a>).</p>
+        direct links to their results. Login is currently possible using Google, Twitter and Github credentials, but
+        remains entirely optional. It also enables you to generate an authentication token to use the HTTP API
+        (see below and <a href="{% url 'http_api' %}">here</a>).</p>
 
     <div align="right"><a href="#">Top</a></div>
     
