@@ -186,6 +186,10 @@ def user_job_islandpick_rerun(request, aid, **kwargs):
         pprint.pprint(kwargs)
 
     if not (analysis.is_owner(user.id) and analysis.is_complete):
+        if settings.DEBUG:
+            print "uid used is {}".format(user.id)
+            print "analysis user is {}".format(analysis.owner_id)
+            print "analysis status: {}".format(analysis.status)
         return HttpResponse(status=401)
 
     try:        
@@ -250,7 +254,9 @@ def user_job_islandpick_rerun(request, aid, **kwargs):
             print str(e)
         return HttpResponse(status = 403)
 
-    return context
+    data = json.dumps(context, indent=4, sort_keys=False)
+    
+    return HttpResponse(data, content_type="application/json")
 
 @auth_token
 @ratelimit(group='rest', key='user', rate='10/m')
