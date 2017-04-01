@@ -6,7 +6,15 @@ import json
 import uuid
 from models import UserToken, PICKER_DEFAULTS
 
-def auth_token(function=None):
+def auth_token(function=None, allow_anonymous=False):
+    """
+    Decorator allowing checking of our HTTP_X_AUTHTOKENs.
+    We have an optional argument to the decorator, allow_anonymous
+    which is a boolean on if there is no HTTP_X_AUTHTOKEN if
+    we allow the user through as an anonymous user. The view using
+    this decorator must properly handle anonymous users if this
+    argument is set to true.
+    """
     def decorator(view_func):
         def decorated(request, *args, **kwargs):
 
@@ -23,13 +31,22 @@ def auth_token(function=None):
                     if not usertoken.user.is_active:
                         return HttpResponse(status=401)
 
+                    # Set the authenticated user for the request
+                    request.user = usertoken.user
+
+                except KeyError as e:
+                    '''
+                    If we're allowing anonymous users, only let them
+                    through if they do not have an HTTP_X_AUTHTOKEN.
+                    We need to filter out people trying bad token after bad token.
+                    '''
+                    if (not allow_anonymous) and str(e) != 'HTTP_X_AUTHTOKEN':
+                        return HttpResponse(status=401)
+
                 except Exception as e:
                     if settings.DEBUG:
                         print str(e)
                     return HttpResponse(status=401)
-
-                # Set the authenticated user for the request
-                request.user = usertoken.user
 
             response = view_func(request, *args, **kwargs)
 

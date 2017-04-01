@@ -228,6 +228,23 @@ class Analysis(models.Model):
         
         return False
 
+    def is_owner_or_anonymous(self, uid, precomputed_ok=True):
+        """
+        One step further than is_owner(), if the uid is None or 1
+        and the analysis is owned by 1, the user for anonymous
+        uploads, that's a pass as well.
+        """
+        if uid == 1 or uid is None:
+            if self.owner_id == 1:
+                return True
+            else:
+                return False
+
+        '''
+        If it's not uid 1 or None, fall back to using is_owner()
+        '''
+        return self.is_owner(uid, precomputed_ok)
+
     @property
     def genome(self):
         if not hasattr(self, '_genome'):

@@ -14,9 +14,19 @@ from webui.utils import formatter
 from giparser import fetcher
 from uploadparser.submitter import send_clone
 
+'''
+Rate limits for authenticated and unauthenticated users
+'''
+minute_rate = lambda group, request: '10/m' if request.user.is_authenticated() else '2/min'
+hour_rate = lambda group, request: '120/h' if request.user.is_authenticated() else '30/hour'
+
+submission_minute_rate = lambda group, request: '2/m' if request.user.is_authenticated() else '1/m'
+submission_hour_rate = lambda group, request: '20/h' if request.user.is_authenticated() else '5/h'
+submission_day_rate = lambda group, request: '50/d' if request.user.is_authenticated() else '10/d'
+
 @auth_token
-@ratelimit(group='rest', key='user', rate='10/m')
-@ratelimit(group='rest', key='user', rate='120/h')
+@ratelimit(group='rest', key='user', rate=minute_rate)
+@ratelimit(group='rest', key='user', rate=hour_rate)
 @ratelimit_warning
 def user_jobs(request, **kwargs):
 
@@ -42,9 +52,9 @@ def user_jobs(request, **kwargs):
 
     return HttpResponse(data, content_type="application/json")
 
-@auth_token
-@ratelimit(group='rest', key='user', rate='10/m')
-@ratelimit(group='rest', key='user', rate='120/h')
+@auth_token(allow_anonymous=True)
+@ratelimit(group='rest', key='user_or_ip', rate=minute_rate)
+@ratelimit(group='rest', key='user_or_ip', rate=hour_rate)
 @ratelimit_warning
 def user_job(request, aid, **kwargs):
     user = request.user
@@ -56,7 +66,7 @@ def user_job(request, aid, **kwargs):
     CHOICES = dict(STATUS_CHOICES)
     context = {}
 
-    if not analysis.is_owner(user.id):
+    if not analysis.is_owner_or_anonymous(user.id):
         return HttpResponse(status=401)
     
     context['token'] = analysis.token
@@ -95,9 +105,9 @@ def user_job(request, aid, **kwargs):
     
     return HttpResponse(data, content_type="application/json")
 
-@auth_token
-@ratelimit(group='rest', key='user', rate='10/m')
-@ratelimit(group='rest', key='user', rate='120/h')
+@auth_token(allow_anonymous=True)
+@ratelimit(group='rest', key='user_or_ip', rate=minute_rate)
+@ratelimit(group='rest', key='user_or_ip', rate=hour_rate)
 @ratelimit_warning
 @scrub_picker
 def user_job_islandpick(request, aid, **kwargs):
@@ -111,7 +121,7 @@ def user_job_islandpick(request, aid, **kwargs):
     if not analysis:
         return HttpResponse(status = 403)
 
-    if not analysis.is_owner(user.id):
+    if not analysis.is_owner_or_anonymous(user.id):
         return HttpResponse(status=401)
 
     try:
@@ -126,19 +136,23 @@ def user_job_islandpick(request, aid, **kwargs):
 
 @parameter_parser
 @csrf_exempt
-@auth_token
-@ratelimit(group='rest', key='user', rate='10/m')
-@ratelimit(group='rest', key='user', rate='120/h')
+@auth_token(allow_anonymous=True)
+@ratelimit(group='rest', key='user_or_ip', rate=minute_rate)
+@ratelimit(group='rest', key='user_or_ip', rate=hour_rate)
 @ratelimit_warning
 @scrub_picker(remove_keys=['genomes'])
 def user_job_picker(request, aid, **kwargs):
+    """
+    Run genome picker with new parameters to select new
+    candidate genomes.
+    """
     user = request.user
     analysis = Analysis.fetch_by_aid_or_token(aid)
 
     if not analysis:
         return HttpResponse(status = 403)
 
-    if not analysis.is_owner(user.id):
+    if not analysis.is_owner_or_anonymous(user.id):
         return HttpResponse(status=401)
 
     # Were we given parameters?
@@ -169,11 +183,15 @@ def user_job_picker(request, aid, **kwargs):
 
 @parameter_parser(allow_methods='POST')
 @csrf_exempt
-@auth_token
-@ratelimit(group='rest', key='user', rate='10/m')
-@ratelimit(group='rest', key='user', rate='120/h')
+@auth_token(allow_anonymous=True)
+@ratelimit(group='rest_submit', key='user_or_ip', rate=submission_minute_rate)
+@ratelimit(group='rest_submit', key='user_or_ip', rate=submission_hour_rate)
+@ratelimit(group='rest_submit', key='user_or_ip', rate=submission_day_rate)
 @ratelimit_warning
 def user_job_islandpick_rerun(request, aid, **kwargs):
+    """
+    Submit an Islandpick job with new parameters.
+    """
     context = {}
     user = request.user
     analysis = Analysis.fetch_by_aid_or_token(aid)
@@ -185,7 +203,7 @@ def user_job_islandpick_rerun(request, aid, **kwargs):
         import pprint
         pprint.pprint(kwargs)
 
-    if not (analysis.is_owner(user.id) and analysis.is_complete):
+    if not (analysis.is_owner_or_anonymous(user.id) and analysis.is_complete):
         if settings.DEBUG:
             print "uid used is {}".format(user.id)
             print "analysis user is {}".format(analysis.owner_id)
@@ -202,7 +220,7 @@ def user_job_islandpick_rerun(request, aid, **kwargs):
             print "looking for {}".format(accnum)
             genome = Analysis.lookup_genome(accnum)
             
-            if genome.is_system_owned or (genome.is_owner(user.id) and genome.isvalid):
+            if genome.is_system_owned or (genome.is_owner_or_anonymous(user.id) and genome.isvalid):
                 accnums.append(accnum)
             else:
                 if settings.DEBUG:
@@ -215,7 +233,7 @@ def user_job_islandpick_rerun(request, aid, **kwargs):
         match_aid = Analysis.find_islandpick(analysis.ext_id, accnums, min_gi_size)
         if match_aid:
             new_analysis = Analysis.objects.get(pk=match_aid[0])
-            if new_analysis.is_owner(user.id):
+            if new_analysis.is_owner_or_anonymous(user.id):
                 context['status'] = 'success'
                 new_aid, token = match_aid
                 if token:
@@ -258,11 +276,14 @@ def user_job_islandpick_rerun(request, aid, **kwargs):
     
     return HttpResponse(data, content_type="application/json")
 
-@auth_token
-@ratelimit(group='rest', key='user', rate='10/m')
-@ratelimit(group='rest', key='user', rate='120/h')
+@auth_token(allow_anonymous=True)
+@ratelimit(group='rest', key='user_or_ip', rate=minute_rate)
+@ratelimit(group='rest', key='user_or_ip', rate=hour_rate)
 @ratelimit_warning
 def user_job_download(request, aid, format, **kwargs):
+    """
+    Download the results of a completed job.
+    """
     user = request.user
     args = []
     analysis = Analysis.fetch_by_aid_or_token(aid)
@@ -270,7 +291,7 @@ def user_job_download(request, aid, format, **kwargs):
     if not analysis:
         return HttpResponse(status = 403)
     
-    if not analysis.is_owner(user.id):
+    if not analysis.is_owner_or_anonymous(user.id):
         return HttpResponse(status=401)
 
     if not analysis.is_complete:
@@ -298,11 +319,14 @@ def user_job_download(request, aid, format, **kwargs):
     
     return response
 
-@auth_token
-@ratelimit(group='rest', key='user', rate='10/m')
-@ratelimit(group='rest', key='user', rate='120/h')
+@auth_token(allow_anonymous=True)
+@ratelimit(group='rest', key='user_or_ip', rate=minute_rate)
+@ratelimit(group='rest', key='user_or_ip', rate=hour_rate)
 @ratelimit_warning
 def ref_genomes(request, **kwargs):
+    """
+    Fetch a list of the available reference genomes for Islandpick jobs.
+    """
 
     genomes = list(NameCache.objects.filter(isvalid=1).annotate(ref_accnum=F('cid')).values('ref_accnum', 'name').all())
 
@@ -311,14 +335,18 @@ def ref_genomes(request, **kwargs):
     return HttpResponse(data, content_type="application/json")
 
 @csrf_exempt
-@auth_token
-@ratelimit(group='rest_submit', key='user', rate='10/h')
-@ratelimit(group='rest_submit', key='user', rate='50/d')
+@auth_token(allow_anonymous=True)
+@ratelimit(group='rest_submit', key='user_or_ip', rate=submission_minute_rate)
+@ratelimit(group='rest_submit', key='user_or_ip', rate=submission_hour_rate)
+@ratelimit(group='rest_submit', key='user_or_ip', rate=submission_day_rate)
 @ratelimit_warning
 def user_job_submit(request, **kwargs):
+    """
+    Upload a genome as a new job.
+    """
     user = request.user
 
     if request.method != 'POST':
         return HttpResponse(status=403)
 
-    return _uploadcustomajax(request, userid=user.id)
+    return _uploadcustomajax(request)#, userid=user.id)
