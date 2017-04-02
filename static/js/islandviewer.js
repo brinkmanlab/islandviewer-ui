@@ -5,6 +5,7 @@ function Islandviewer(aid, ext_id, genomesize, genomename, trackdata) {
     this.genomename = genomename;
     this.trackdata = trackdata;
     console.log("Called constructor " + this.ext_id + ' ' + genomename);
+    this.gene_dialog = $("#gene_dialog");
 
     this.startBP = 0;
     this.endBP = genomesize;
@@ -13,8 +14,12 @@ function Islandviewer(aid, ext_id, genomesize, genomename, trackdata) {
 	this.comparisoncontainer = null;
 }
 
+Islandviewer.prototype.changeGeneDialog = function(selector){
+    this.gene_dialog = selector;
+};
+
 Islandviewer.prototype.addComparison  = function(comparisonfunction){
-	this.comparisoncontainer = comparisonfunction;
+    this.comparisoncontainer = comparisonfunction;
 
 };
 
@@ -292,22 +297,22 @@ Islandviewer.prototype.update_finished = function(startBP, endBP, params) {
 		    }
 		}
 		html += "</table>";
-		$('#gene_dialog').html(html);
+		self.gene_dialog.html(html);
 		var title = $('<span>').html(self.genomename).text();
 
-                $('#gene_dialog').dialog('option', 'title', 'Genes (' + title + ')');
+                self.gene_dialog.dialog('option', 'title', 'Genes (' + title + ')');
 		// Highlight the row(s) in the table if we've been asked to
 		if('undefined' !== typeof params && 'undefined' !== typeof params['highlight_sel']) {
 		    highlight_sel = params['highlight_sel'];
-		    $('#gene_dialog').scrollTop($('#gene_dialog').scrollTop() + $(highlight_sel).position().top
-						- $('#gene_dialog').height()/2 + $(highlight_sel).height()/2);
+		    self.gene_dialog.scrollTop(self.gene_dialog.scrollTop() + $(highlight_sel).position().top
+						- self.gene_dialog.height()/2 + $(highlight_sel).height()/2);
 		    $(highlight_sel).highlight();
 		}
 
 		// Slightly hackish, if there are two plots, border outline this circular plot
 		if('undefined' !== typeof window.secondislandviewerObj) {
 		    $('.circularcontainer').removeClass('outline_plot');
-		    if($('#gene_dialog').dialog( "isOpen" )) {
+		    if(self.gene_dialog.dialog( "isOpen" )) {
 			$('.plot_' + self.ext_id.replace('.','')).addClass('outline_plot');
 		    }
 		}
@@ -323,7 +328,7 @@ Islandviewer.prototype.showHoverGenes = function(d, do_half_range, params) {
 
   var half_range = (typeof do_half_range !== 'undefined' && do_half_range)  ? (d.end - d.start)/2 : 0;
 
-  $('#gene_dialog').dialog("open");
+  this.gene_dialog.dialog("open");
 
   this.update_finished(Math.max(0,(d.start-half_range)), Math.min(this.genomesize, (d.end+half_range)), params);
 }
@@ -355,7 +360,7 @@ Islandviewer.prototype.reload = function(features) {
 	this.focus(features['s'], features['e']);
 
 	if('undefined' !== typeof features['d'] && ! features['d'] ) {
-	    $('#gene_dialog').dialog( 'close' );
+	    this.gene_dialog.dialog( 'close' );
 	}
     }
 
@@ -461,7 +466,7 @@ Islandviewer.prototype.showIslandpickGenomes = function(aid) {
 	    url: url,
 	    type: "get",
 	    success: function(data) {
-    	        $('#gene_dialog').dialog("open");
+    	        self.gene_dialog.dialog("open");
 		var html = '';
 		if((typeof data['default_analysis'] !== 'undefined') && !JSON.parse(data['default_analysis'])) {
 			html += '<blockquote style=\"border-left: none;\"><span class="errortext">The genomes used to run IslandPick in this analysis were not the default selections by our algorithm.</span></blockquote>'
@@ -486,8 +491,8 @@ Islandviewer.prototype.showIslandpickGenomes = function(aid) {
 		}
 		html += "<a class=\"genespopup\" href=\"../../islandpick/select/" + aid + "/\" >[ Change comparison genomes ]</a></blockquote><br />&nbsp;<br />";
 
-		$('#gene_dialog').html(html);
-                $('#gene_dialog').dialog('option', 'title', 'Comparison Genomes');
+		self.gene_dialog.html(html);
+                self.gene_dialog.dialog('option', 'title', 'Comparison Genomes');
 	     }
      });
 }

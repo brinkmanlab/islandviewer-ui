@@ -196,6 +196,15 @@ $('#gene_dialog').dialog( { position: { my: "left top", at: "right top", of: "{{
 	}
 	    } );
 
+$('#second_gene_dialog').dialog( { position: { my: "left top", at: "right top", of: "#gene_dialog" },
+	                    height: 550, width: 450,
+			    title: "Genes",
+	                    autoOpen: false,
+          	            close: function() {
+	    $('.circularcontainer').removeClass('outline_plot');
+	}
+	    } );
+
 function updateStrand(cb, strand) {
   var track = '';
 
@@ -603,6 +612,8 @@ function load_second(aidParam, reloadParams) {
 		cahce: false,});
 
     window.secondislandviewerObj = new Islandviewer(aid, second_extid, second_genomesize, second_genomename, seconddata);
+    window.secondislandviewerObj.changeGeneDialog($('#second_gene_dialog'));
+    $('#second_gene_dialog').dialog( { position: { my: "left top", at: "right top", of: "#rightplotcontainer" } } );
 	//Comment out more code for linear visualization
 	//container.backbone.parseAndRenderBackbone("getMauve/?firstgenomeextid="+islandviewerObj.ext_id+"&secondgenomeextid="+window.secondislandviewerObj.ext_id,container);
 	//$("#linearchartcomparisons").toggle();
