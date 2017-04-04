@@ -22,6 +22,7 @@
         <li><a href="javascript:scrolltoelem('a1');">Which genomes are available through IslandViewer and how can I run
             IslandViewer on other genomes?</a></li>
         <li><a href="javascript:scrolltoelem('a2');">Why does my input file fail to upload or run?</a></li>
+        <li><a href="javascript:scrolltoelem('a15');">Which prediction method is preferred?</a></li>
         <li><a href="javascript:scrolltoelem('a3');">Why is an expected genomic island missed from IslandViewer
             predictions?</a></li>
         <li><a href="javascript:scrolltoelem('a5');">How do I change IslandPick analysis settings to compare against
@@ -40,7 +41,7 @@
         <li><a href="javascript:scrolltoelem('a12');">Where can I find more information about GI prediction using
             computational methods?</a></li>
         <li><a href="javascript:scrolltoelem('a13');">What is the purpose of the login?</a></li>
-        <li><a href="javascript:scrolltoelem('a14');">How do I use the HTTP API?</a></li>
+        <li><a href="javascript:scrolltoelem('a14');">How do I use the HTTP API for batch submission?</a></li>
     </ul>
 
     <p class="bodyText">If you are still having problems or concerns, please <a href="{% url 'contactus' %}">contact
@@ -79,6 +80,30 @@
         we would be happy to help identify the problem.</p>
 
     <div align="right"><a href="#">Top</a></div>
+
+    <div id='a15' class="subHeader">Which prediction method is preferred?</div>
+    &nbsp;<br/>
+    <p class="bodyText">IslandViewer integrates predictions from four methods for pre-computed genomes: IslandPath-DIMOB,
+        SIGI-HMM, IslandPick and Islander. For user custom genomes, GI predictions are available from three methods
+        (IslandPath-DIMOB, SIGI-HMM, and IslandPick) for complete genomes (one replicon) and from two methods (IslandPath-DIMOB,
+        and SIGI-HMM) for draft genomes. Due to important differences in the methods (more details <a href="{% url 'about' %}">here</a>),
+        the various software may provide different GI predictions. All methods have a high precision (>85%) and hence make few
+        but some false positive predictions and we encourage users to carefully check the results. Genomic islands predicted by several or all software can
+        be more confidently identified as genomic islands.
+
+        Owing to the precise finding of direct repeats flanking the acquired region, the boundaries of genomic island predictions
+        by Islander are highly accurate and should be favored compared to gene-based nucleotide bias approaches such as IslandPath-DIMOB
+        or SIGI-HMM. As a downside, Islander only predicts a small subset of canonical genomic islands inserted in tRNAs and tmRNAs and
+        has a very low recall. The comparative genomic approach, IslandPick also determines rather precise genomic island boundaries from
+        sequence alignment with reference genomes. However, these boundaries depend highly on the selected reference genomes and for example in
+        cases of old large complex genomic islands with further gene acquisition or loss, boundaries might not be entirely accurately predicted.
+        IslandPath-DIMOB and SIGI-HMM generally provide sometime fragmented predictions of regions that have likely been
+        acquired by horizontal gene transfer and the determination of GI boundaries are imprecise. However, both methods provide
+        a much higher recall, and are thus especially useful to identify more widely regions acquired by horizontal gene transfer.
+
+        For a nice example, please have a look at the genomic island predictions between 4.4 Mb and 4.53 Mb in
+        <a href="http://www.pathogenomics.sfu.ca/islandviewer4/accession/NC_004631.1/" target="_blank">this reference genome</a>.
+    </p>
 
     <div id='a3' class="subHeader">Why is an expected genomic island missed from IslandViewer predictions?</div>
     &nbsp;<br/>
@@ -220,13 +245,14 @@
     <p class="bodyText">The login gives you access to a user management interface that lists previously submitted genomes with 
         direct links to their results. Login is currently possible using Google, Twitter and Github credentials, but
         remains entirely optional. It also enables you to generate an authentication token to use the HTTP API
-        (see below and <a href="{% url 'http_api' %}">here</a>).</p>
+        (see below and <a href="{% url 'http_api' %}">here</a>) as an authenticated user, hence enabling to retrieve
+        information about past genome submission status and results.</p>
 
     <div align="right"><a href="#">Top</a></div>
     
-    <div id='a14' class="subHeader">How to use the HTTP API?</div>
+    <div id='a14' class="subHeader">How to use the HTTP API for batch submission?</div>
     &nbsp;<br/>
-    <p class="bodyText">IslandViewer 4 now integrates a HTTP API (REST API) that enable users to submit larger number of
+    <p class="bodyText">IslandViewer 4 now enables the integrates a HTTP API (REST API) that enable users to submit a larger number of
         genomes and retrieve predictions automatically using various programming languages. Please check out our specific <a
                 href="{% url 'http_api' %}">HTTP API</a> page.</p>
 
