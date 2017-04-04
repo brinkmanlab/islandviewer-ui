@@ -39,18 +39,19 @@
     </script>
     <span class="pageName">Genome Upload</span>
     <span class="bodyText">
-    <p> Users can now log in the new <span class="green">user management interface</span> (see
+    <p>Users can now log in the new <span class="green">user management interface</span> (see
         <span class="green">LOGIN </span> menu) using Github, Google or Twitter credentials facilitating access to
-        results and enabling to use the HTTP API to submit genomes and retrieve results programmatically using curl, python or perl.
-    </p>
-<p>Genomic island predictions can be calculated for your genome using IslandPick, IslandPath-DIMOB, and SIGI-HMM. <a
+        results.</p>
+    <p>To analyze larger batches of genomes, an <span class="green">HTTP API</span> is available to submit genomes and retrieve results programmatically using curl,
+        python or perl. More information is available <a href="{%  url 'http_api' %}">here</a></p>
+    <p>Genomic island predictions can be calculated for your genome using IslandPick, IslandPath-DIMOB, and SIGI-HMM. <a
         href="{% url 'about' %}">More Information</a>. <a href="{% url 'faq' %}">See our FAQs</a></p>
-<p class="bodyText">Examples of genome files you should submit:
+    <p class="bodyText">We only accept user genomes that are formatted in EMBL or GENBANK format. Examples of genome files you should submit:
 			<a href="http://www.pseudomonas.com/downloads/pseudomonas/pgd_r_15_3/Pseudomonas_aeruginosa_PAO1_107/Pseudomonas_aeruginosa_PAO1_107.gbk"
                target="_blank">GENBANK</a>,
 			<a href="http://www.pseudomonas.com/downloads/pseudomonas/pgd_r_15_3/Pseudomonas_aeruginosa_PAO1_107/Pseudomonas_aeruginosa_PAO1_107.embl"
                target="_blank">EMBL</a>.
-</p>
+    </p>
 
 <div id="error_message" class="errortext" style="display: none;"></div>
 <form action="" method="POST" enctype="multipart/form-data" name="genome_upload" id="genome_upload">
