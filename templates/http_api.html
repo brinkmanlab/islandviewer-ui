@@ -32,19 +32,23 @@
     <p class="bodyText">
         The HTTP API can be used as an anonymous user or an authenticated user. To use the API as an anonymous user, simply use
         an empty authentication token. To use the API as an authenticated user, please log in first (currently available
-        authentication possibilities are Github, Google, or Twitter) to find your API unique authentication token.
+        authentication possibilities are Github, Google, or Twitter) and then click on the JOBS menu to find your unique HTTP API authentication token.
         Users can submit genomes and retrieve results using various programming language such as cURL, python or perl (see below for examples).
-        After a successful genome submission, the interface returns a unique "job_token" that can be used to retrieve all information
-        about the status of the submission as well as prediction results. Using the API as an anonymous users requires to carefully
-        store the job_token to be able to access the GI results when they become available. Please note that using the API as an
-        authenticated user, further enables to retrieve all information, including the required job_token, about all genomes
-        previously submitted by the same user.
+        After a successful genome submission, the interface returns a unique job token that can be used to retrieve all information
+        about the status of the submission as well as prediction results. Please note that using the API as an anonymous users requires to carefully
+        store the job token to be able to access the GI results when they become available. Using the API as an
+        authenticated user further enables to retrieve all information, including the required job token, about all genomes
+        previously submitted by the same user. Genome submissions and requests using the API are limited with minute, hourly, and daily rates 
+        for both authenticated and anonymous users during a first evaluation period of this new tool.</p>
+    <p class="bodyText">
         To visualize results of a genome submitted using the HTTP API in IslandViewer interactive web interface, please modify the following
-        url with the correct job_token: http://www.pathogenomics.sfu.ca/islandviewer4/results/job_token.
-    </p>
+        url with the correct job token: http://www.pathogenomics.sfu.ca/islandviewer/results/job_token.</p>
+    <p class="bodyText">
+        Please note that API authentication tokens are only valid for a certain time. You can find the expiry date and request a new authentication token if 
+        necessary in the menu JOBS - HTTP API Token.</p>
     <p class="subHeader">Curl examples</p>
     <p class="bodyText">We provide here examples of the syntax to use the various HTTP API functionalities of
-        IslandViewer 4 using cURL, a command line tool for getting or sending files using URL syntax. Please place your authentication token where indicated and replace the job token by the appropriate value.
+        IslandViewer 4 using cURL, a command line tool for getting or sending files using URL syntax. Please place your authentication token where indicated and replace the job token by the appropriate value.</p>
         </br>
     <p class="bodyText">- Submission of custom genomes (draft or complete) to IslandViewer 4</p>
     <pre>
