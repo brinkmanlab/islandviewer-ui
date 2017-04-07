@@ -17,12 +17,12 @@ from uploadparser.submitter import send_clone
 '''
 Rate limits for authenticated and unauthenticated users
 '''
-minute_rate = lambda group, request: '10/m' if request.user.is_authenticated() else '2/min'
-hour_rate = lambda group, request: '120/h' if request.user.is_authenticated() else '30/hour'
+minute_rate = lambda group, request: '10/m' if request.user.is_authenticated() else '10/min'
+hour_rate = lambda group, request: '120/h' if request.user.is_authenticated() else '120/hour'
 
-submission_minute_rate = lambda group, request: '2/m' if request.user.is_authenticated() else '1/m'
-submission_hour_rate = lambda group, request: '20/h' if request.user.is_authenticated() else '5/h'
-submission_day_rate = lambda group, request: '50/d' if request.user.is_authenticated() else '10/d'
+submission_minute_rate = lambda group, request: '2/m' if request.user.is_authenticated() else '2/m'
+submission_hour_rate = lambda group, request: '30/h' if request.user.is_authenticated() else '30/h'
+submission_day_rate = lambda group, request: '200/d' if request.user.is_authenticated() else '200/d'
 
 @auth_token
 @ratelimit(group='rest', key='user', rate=minute_rate)
