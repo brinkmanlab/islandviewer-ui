@@ -14,8 +14,8 @@ if env.TEST_ENV:
     STATIC_URL = '/islandviewer4_dev/static/'
     PIPELINE = 'islandviewer4_dev'
 else:
-    STATIC_URL = '/islandviewer4/static/'
-    PIPELINE = 'islandviewer4'
+    STATIC_URL = '/islandviewer/static/'
+    PIPELINE = 'islandviewer'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
