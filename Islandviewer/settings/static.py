@@ -12,10 +12,10 @@ STATIC_ROOT = ''
 # Example: "http://example.com/static/", "http://static.example.com/"
 if env.TEST_ENV:
     STATIC_URL = '/islandviewer4_dev/static/'
-    PIPELINE = 'islandviewer4_dev'
+    PIPELINE = 'islandviewerv4_dev'
 else:
     STATIC_URL = '/islandviewer/static/'
-    PIPELINE = 'islandviewer'
+    PIPELINE = 'islandviewerv4'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
