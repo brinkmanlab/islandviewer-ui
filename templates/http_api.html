@@ -51,7 +51,7 @@
         Please note that API authentication tokens are only valid for a certain time. You can find the expiry date and request a new authentication token if 
         necessary in the menu <a href="{% url "iv_social:user_rest_token" %}">JOBS - HTTP API Token.</a></p>
     </br>
-    <p class="subHeader">Curl examples</p>
+    <p class="subHeader">cURL examples</p>
     <p class="bodyText">We provide here examples of the syntax to use the various HTTP API functionalities of
         IslandViewer 4 using cURL, a command line tool for getting or sending files using URL syntax. Please place your authentication token where indicated and replace the job token by the appropriate value.</p>
     <p class="bodyText">- Submission of custom genomes (draft or complete) to IslandViewer 4</p>
@@ -75,11 +75,11 @@ curl http://www.pathogenomics.sfu.ca/islandviewer/rest/genomes/ -H 'x-authtoken:
     <p class="bodyText">- Download the Genbank including genomic island predictions, and the reordered concatenated
         contigs for draft genomes</p>
     <pre>
-curl http://www.pathogenomics.sfu.ca/islandviewer/rest/job/job_token/download/genbank/ -H 'x-authtoken:your_authentication_token
+curl http://www.pathogenomics.sfu.ca/islandviewer/rest/job/job_token/download/genbank/ -H 'x-authtoken:your_authentication_token'
 </pre>
     <p class="bodyText">- Download the table summarizing genomic island predictions</p>
     <pre>
-curl http://www.pathogenomics.sfu.ca/islandviewer/rest/job/job_token/download/tab/ -H 'x-authtoken:your_authentication_token
+curl http://www.pathogenomics.sfu.ca/islandviewer/rest/job/job_token/download/tab/ -H 'x-authtoken:your_authentication_token'
 </pre>
     <p class="bodyText">- Query possible genomes to use in IslandPick comparative genomics predictions comparison using
         standard or custom cutoffs for distance, and resubmit an IslandPick analysis. Please note that, as the number of reference genomes grows,
