@@ -17,10 +17,10 @@
     <p class="subHeader">Available functions</p>
     <p class="bodyText">The API currently enables to:</p>
     <ul class="bodyText">
+        <li>Query the availability of reference and precomputed genomes</li>
         <li>Submit custom genomes (draft or complete) to IslandViewer 4</li>
         <li>Retrieve information about already submitted genomes - only for authenticated users</li>
         <li>Query the status of submitted genomes</li>
-        <li>Query the availability of reference and precomputed genomes</li>
         <li>Download the Genbank including genomic island predictions, and the reordered concatenated contigs for draft
             genomes</li>
         <li>Download the table summarizing genomic island predictions</li>
@@ -54,10 +54,17 @@
     <p class="subHeader">cURL examples</p>
     <p class="bodyText">We provide here examples of the syntax to use the various HTTP API functionalities of
         IslandViewer 4 using cURL, a command line tool for getting or sending files using URL syntax. Please place your authentication token where indicated and replace the job token by the appropriate value.</p>
+    <p class="bodyText">- Query the availability of reference and precomputed genomes</p>
+    <pre>
+curl http://www.pathogenomics.sfu.ca/islandviewer/rest/genomes/ -H 'x-authtoken:your_authentication_token'
+</pre>
     <p class="bodyText">- Submission of custom genomes (draft or complete) to IslandViewer 4</p>
+    <p class="bodyText">For <strong>complete</strong> genomes:</p>
     <pre>
 curl -X POST -H 'x-authtoken:your_authentication_token' -Fgenome_file=@tiny.gbk -Fgenome_name="my genome" -Femail_addr="me@email.addr.com" -Fformat_type="GENBANK" http://www.pathogenomics.sfu.ca/islandviewer/rest/submit/
-</br>
+</pre>
+    <p class="bodyText"> For <strong>draft</strong> genomes, please provide the accession number of the desired reference genome for contig reordering with the option -Fref_accnum. To obtain a list of available reference genomes, please see above.</p>
+    <pre>
 curl -X POST -H 'x-authtoken:your_authentication_token' -Fref_accnum="NC_022792.1" -Fgenome_file=@tiny.gbk -Fgenome_name="my test" -Femail_addr="me@email.addr.com" -Fformat_type="GENBANK" http://www.pathogenomics.sfu.ca/islandviewer/rest/submit/
 </pre>
     <p class="bodyText">- Retrieve information about already submitted genomes - only for authenticated users </p>
@@ -67,10 +74,6 @@ curl http://www.pathogenomics.sfu.ca/islandviewer/rest/jobs/ -H 'X-authtoken:you
     <p class="bodyText">- Query the status of already submitted genomes</p>
     <pre>
 curl http://www.pathogenomics.sfu.ca/islandviewer/rest/job/job_token/ -H 'X-authtoken:your_authentication_token'
-</pre>
-    <p class="bodyText">- Query the availability of reference and precomputed genomes</p>
-    <pre>
-curl http://www.pathogenomics.sfu.ca/islandviewer/rest/genomes/ -H 'x-authtoken:your_authentication_token'
 </pre>
     <p class="bodyText">- Download the Genbank including genomic island predictions, and the reordered concatenated
         contigs for draft genomes</p>
