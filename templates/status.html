@@ -100,10 +100,12 @@
                     "aTargets": [2],
                     "mData": null,
                     "mRender": function (data, type, full) {
-                        var url = '{%url 'results' '9999' %}'.replace(9999, full.aid);
+                        var url;
                         if ('undefined' !== typeof full.token) {
-                            url += '?token=' + full.token;
-                        }
+                            url = '{%url 'results' '9999' %}'.replace(9999, full.token);
+                        } else {
+                            url = '{%url 'resultsbyaccnum' '9999.9' %}'.replace(9999.9, full.ext_id);
+                        } 
                         return '<a href="' + url + '">' + full.ext_id + '</a>';
                     },
                 },
