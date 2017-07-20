@@ -88,9 +88,9 @@
         and SIGI-HMM) for draft genomes. Due to important differences in the methods (more details <a href="{% url 'about' %}">here</a>),
         the various software may provide different GI predictions. All methods have a high precision (>85%) and hence make few
         but some false positive predictions and we encourage users to carefully check the results. Genomic islands predicted by several or all software can
-        be more confidently identified as genomic islands.
+        be more confidently identified as genomic islands.</p>
 
-        Owing to the precise finding of direct repeats flanking the acquired region, the boundaries of genomic island predictions
+     <p class="bodyText">Owing to the precise finding of direct repeats flanking the acquired region, the boundaries of genomic island predictions
         by Islander are highly accurate and should be favored compared to gene-based nucleotide bias approaches such as IslandPath-DIMOB
         or SIGI-HMM. As a downside, Islander only predicts a small subset of canonical genomic islands inserted in tRNAs and tmRNAs and
         has a very low recall. The comparative genomic approach, IslandPick also determines rather precise genomic island boundaries from
@@ -98,11 +98,10 @@
         cases of old large complex genomic islands with further gene acquisition or loss, boundaries might not be entirely accurately predicted.
         IslandPath-DIMOB and SIGI-HMM generally provide sometime fragmented predictions of regions that have likely been
         acquired by horizontal gene transfer and the determination of GI boundaries are imprecise. However, both methods provide
-        a much higher recall, and are thus especially useful to identify more widely regions acquired by horizontal gene transfer.
+        a much higher recall, and are thus especially useful to identify more widely regions acquired by horizontal gene transfer.</p>
 
-        For a nice example, please have a look at the genomic island predictions between 4.4 Mb and 4.53 Mb in
-        <a href="{% url "demo" %}">this reference genome</a>.
-    </p>
+     <p class="bodyText">For a nice example, please have a look at the genomic island predictions between 4.4 Mb and 4.53 Mb in
+        <a href="{% url "demo" %}">this reference genome</a>.</p>
 
     <div id='a3' class="subHeader">Why is an expected genomic island missed from IslandViewer predictions?</div>
     &nbsp;<br/>
@@ -142,21 +141,21 @@
         circular representation.
         Please note that potential plasmids, that are obviously not in the chromosome of the reference strain, will not be placed
         and will also tend to be found at the pseudochromosome. Moreover, if your genome likely has several replicons, please see
-        the specific section below.
+        the specific section below.</p>
 
-        Due to the pitfalls of short read sequencing and the unknown quality of contig reordering against a reference,
+    <p class="bodyText"> Due to the pitfalls of short read sequencing and the unknown quality of contig reordering against a reference,
         IslandViewer's GI prediction algorithms could falsely predict GIs, and could miss real GIs. A proper assessment
         of the accuracy of GI prediction in incomplete genomes is being performed, and until such assessment is complete,
         all GI predictions in incomplete genomes through IslandViewer should be carefully evaluated for validity.</p>
 
     <div align="right"><a href="#">Top</a></div>
 
-    <div id='a16' class="subHeader">"What if my microorganism has several replicons?</div>
+    <div id='a16' class="subHeader">What if my microorganism has several replicons?</div>
 
     <p class="bodyText"> Individual replicons are available as separate entries in the pre-computed genome. Each replicon
-        can be used as a reference for contig reordering of custom draft genome submission.
+        can be used as a reference for contig reordering of custom draft genome submission.</p>
 
-        Users wishing to analyse a draft genome of a microorganisms with multiple replicons can submit all contigs using
+    <p class="bodyText">Users wishing to analyse a draft genome of a microorganisms with multiple replicons can submit all contigs using
         each chromosome of the reference strain for reordering. In this case, GI prediction would also be performed every time
         on all the contigs that are not aligned to the given reference chromosome and are most likely part of another replicon,
         leading to redundant predictions. Users should therefore only considered GI predictions in reordered contigs that are
