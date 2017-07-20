@@ -29,6 +29,7 @@
             different genomes?</a></li>
         <li><a href="javascript:scrolltoelem('a4');">What are the issues with running an incomplete genome through
             IslandViewer?</a></li>
+        <li><a href="javascript:scrolltoelem('a16');">What if my microorganism has several replicons?</a></li>
         <li><a href="javascript:scrolltoelem('a6');">What is the accuracy of IslandViewer GI predictions?</a></li>
         <li><a href="javascript:scrolltoelem('a7');">What are the sources of external annotations in the scatter plot?
             How can I determine which resource to cite if I use any of these annotations?</a></li>
@@ -54,11 +55,10 @@
     &nbsp;<br/>
     <p class="bodyText">All complete bacterial and archaeal genomes available for download on NCBI are pre-computed
         through IslandViewer. The genomes are updated from NCBI approximately semiannually. If you would like to run your
-        own custom genome, use the &quot;Genome Upload&quot; page to upload your own GenBank or EMBL file. See <a
-                href="http://www.ncbi.nlm.nih.gov/genbank/">here</a> for documentation about GenBank and access to
+        own custom genome, use the <a href="{% url 'uploadform' %}">Genome Upload</a> page to upload your own GenBank or
+        EMBL file. See <a href="http://www.ncbi.nlm.nih.gov/genbank/">here</a> for documentation about GenBank and access to
         sample records, or see <a href="http://www.bioperl.org/wiki/EMBL_sequence_format" target="_blank">here</a> for a
-        description of the EMBL file format. <b>See also our hints on the <a href="{% url 'uploadform' %}">Genome
-            Upload</a> page</b>. Unfinished genomes at the contig stage are now currently accepted by IslandViewer.
+        description of the EMBL file format. Unfinished genomes at the contig stage are now currently accepted by IslandViewer.
         Contigs must be annotated for analysis and will be ordered against a user-specified reference genome using the
         Mauve contig mover (<a href="http://bioinformatics.oxfordjournals.org/content/25/16/2071.full" target="_blank">Rissman
             et al., 2009</a>) before running through the GI prediction pipeline.</p>
@@ -74,10 +74,9 @@
                 target="_blank">GenBank</a></u>, <u><a
                 href="http://www.pseudomonas.com/downloads/pseudomonas/pgd_r_15_3/Pseudomonas_aeruginosa_PAO1_107/Pseudomonas_aeruginosa_PAO1_107.embl"
                 target="_blank">EMBL</a></u>. In some cases, SIGI-HMM will fail to run due to issues beyond our control
-        (SIGI-HMM software was written by others), but we have modified the software so you should now be able to still
-        view results for IslandPath-DIMOB and IslandPick in such cases. If you don't appear to have any such problems
-        and you notice your jobs are taking longer than a few hours to complete, please don't hesitate to contact us and
-        we would be happy to help identify the problem.</p>
+        (SIGI-HMM software was written by others), but will be able to view results for IslandPath-DIMOB and IslandPick in such cases.
+        If you don't appear to have any such problems and you notice your jobs are taking longer than a few hours to complete,
+        please don't hesitate to contact us and we would be happy to help identify the problem.</p>
 
     <div align="right"><a href="#">Top</a></div>
 
@@ -125,7 +124,7 @@
         like to select different genomes to compare against, click on &quot;Change&quot; on the right hand side above
         the listed genomes used in the original IslandPick analysis. This will take you to the page where you can select
         the genomes you would like to include in the analysis and you can also customize the different selection
-        parameters. A rough measure of phyletic distance, calculated using CVTree, is available beside each species.
+        parameters. A measure of phyletic distance, calculated using MASH, is available beside each species.
         Once you click &quot;Run IslandPick&quot;, you will be directed to the page where results will be available once
         the analysis is complete. You may enter your email address here to be notified when the results are accessible,
         or bookmark the page and check back later. An IslandPick analysis can take a few hours to run depending on the
@@ -135,10 +134,33 @@
 
     <div id='a4' class="subHeader">What are the issues with running an incomplete genome through IslandViewer?</div>
     &nbsp;<br/>
-    <p class="bodyText">Incomplete genomes through IslandViewer's GI prediction algorithms could falsely predict GIs,
-        and could miss real GIs. A proper assessment of the accuracy of GI prediction in incomplete genomes is being
-        performed, and until such assessment is complete, all GI predictions in incomplete genomes through IslandViewer
-        should be carefully evaluated for validity.</p>
+    <p class="bodyText">Incomplete genomes are first reordered against a user-selected reference genomes. The quality of
+        contig reordering will depend on the sequence similarity between the two organisms and the quality of the draft genomes.
+        Contigs unique to the custom genome or contigs that could be placed in several position according to the reference genome,
+        such as identical transposases that could not be solved by short read assembly software, will remain unaligned and placed
+        at the end of the pseudochromosome. Contigs that could not be ordered are shown in gray in the outermost circle of the
+        circular representation.
+        Please note that potential plasmids, that are obviously not in the chromosome of the reference strain, will not be placed
+        and will also tend to be found at the pseudochromosome. Moreover, if your genome likely has several replicons, please see
+        the specific section below.
+
+        Due to the pitfalls of short read sequencing and the unknown quality of contig reordering against a reference,
+        IslandViewer's GI prediction algorithms could falsely predict GIs, and could miss real GIs. A proper assessment
+        of the accuracy of GI prediction in incomplete genomes is being performed, and until such assessment is complete,
+        all GI predictions in incomplete genomes through IslandViewer should be carefully evaluated for validity.</p>
+
+    <div align="right"><a href="#">Top</a></div>
+
+    <div id='a16' class="subHeader">"What if my microorganism has several replicons?</div>
+
+    <p class="bodyText"> Individual replicons are available as separate entries in the pre-computed genome. Each replicon
+        can be used as a reference for contig reordering of custom draft genome submission.
+
+        Users wishing to analyse a draft genome of a microorganisms with multiple replicons can submit all contigs using
+        each chromosome of the reference strain for reordering. In this case, GI prediction would also be performed every time
+        on all the contigs that are not aligned to the given reference chromosome and are most likely part of another replicon,
+        leading to redundant predictions. Users should therefore only considered GI predictions in reordered contigs that are
+        shown in green on the outermost circle of the circular genome representation.</p>
 
     <div align="right"><a href="#">Top</a></div>
 
