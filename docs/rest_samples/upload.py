@@ -3,7 +3,7 @@ from requests_toolbelt.multipart.encoder import MultipartEncoder
 
  
 server = "http://localhost:8000"
-ext = "/islandviewer/rest/job/submit/"
+ext = "/rest/job/submit/"
 
 genome_file="mygenome.gbk"
 

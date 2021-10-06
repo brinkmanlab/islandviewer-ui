@@ -173,12 +173,8 @@ def circularplotjs(request, aid):
         context['genomename'] = genome.name
         context['ext_id'] = analysis.ext_id
     elif(analysis.atype == Analysis.MICROBEDB):
-#        (context['genomesize'], gpv_id) = Replicon.objects.using('microbedb').filter(rep_accnum=analysis.ext_id).values_list("rep_size", "gpv_id")[0]
-#        context['genomename'] = Genomeproject.objects.using('microbedb').get(pk=gpv_id).org_name
         (context['genomename'], context['genomesize']) = NameCache.objects.filter(cid=analysis.ext_id).values_list('name', 'rep_size')[0]
-#        context['genomename'] = NameCache.objects.get(cid=analysis.ext_id).name
         context['ext_id'] = analysis.ext_id
-#        context['genomesize'] = '6000000'
 
     # Fill in the GIs
     context['gis'] = GenomicIsland.objects.filter(aid_id=aid).order_by('start').all()
@@ -237,41 +233,14 @@ def circularplotjs(request, aid):
     # Fetch the virulence factors
     params = [analysis.ext_id]
     cursor.execute("SELECT @row:=@row+1 AS No, Genes.id, Genes.name, Genes.start, virulence.source, virulence.external_id FROM Genes, virulence_mapped AS virulence, (SELECT @row := 0) r WHERE Genes.ext_id=%s AND Genes.id = virulence.gene_id", params)
-#    pprint.pprint(cursor.fetchall())
-#    vir_factors = Genes.objects.raw("SELECT Genes.id, Genes.name, Genes.start, virulence.source, virulence.external_id FROM Genes, virulence WHERE ext_id=%s AND Genes.name = virulence.protein_accnum", params)
     context['vir_factors'] = json.dumps([{'id': vf[1], 'bp': vf[3], 'type': VIRULENCE_FACTOR_CATEGORIES[vf[4]], 'name': vf[4], 'ext_id': vf[5], 'gene': vf[2]} for vf in cursor.fetchall()])
-#    vf_obj = []
-#    vf_count = 0
-#    for vf in vir_factors:
-#        vf_obj.append({'id': vf_count, 'bp': vf.start, 'type': VIRULENCE_FACTOR_CATEGORIES[vf.source], 'name': vf.source, 'ext_id': vf.external_id, 'gene': vf.name})
-#        vf_count += 1
-#    context['vir_factors'] = json.dumps(vf_obj)
-#    vf_obj = None
 
     params = [analysis.ext_id]
 #    island_genes = Genes.objects.filter(ext_id=analysis.ext_id).order_by('start').all() 
     
     cursor.execute('SELECT Genes.id, Genes.start, Genes.end, Genes.strand, Genes.name, Genes.gene, Genes.locus FROM Genes WHERE Genes.ext_id = %s ORDER BY Genes.start', params)
-    #genes_obj = [] 
-#    genes_obj = [{'id': gene[0], 'start': gene[1], 'end': gene[2], 'strand': gene[3], 'accnum': gene[4], 'name': (gene[5] if gene[5] else gene[6] if gene[6] else 'Unknown') } for gene in cursor.fetchall()]
     context['genes'] = json.dumps([{'id': gene[0], 'start': gene[1], 'end': gene[2], 'strand': gene[3], 'accnum': gene[4], 'name': (gene[5] if gene[5] else gene[6] if gene[6] else 'Unknown') } for gene in cursor.fetchall()])
-#    for gene in island_genes:
-#        genes_obj.append({'id': gene.id, 'start': gene.start, 'end': gene.end, 'strand': gene.strand, 'accnum': gene.name, 'name': (gene.gene if gene.gene else gene.locus if gene.locus else 'Unknown')})
-    #context['genes'] = json.dumps(genes_obj)
-    #genes_obj = None
-#    context['genes'] = island_genes
- #   vir_dict = dict(Virulence.objects.using('microbedb').filter(protein_accnum__in=
- #                                                                  list(island_genes.values_list('name', flat=True))).values_list('protein_accnum', 'source'))
     
-#    context['vir_factors'] = []
-#    for gene in island_genes:
-#        if vir_dict.has_key(gene.name):
-#            context['vir_factors'].append((gene.start,vir_dict[gene.name],gene.name,))
-
-#    pprint.pprint(context['vir_factors']) 
-    
-#    return render(request, "iv4/circularplot.js", context)
-
     return render(request, "circularplot.js", context, content_type='text/javascript')
     
 
@@ -290,7 +259,6 @@ def tablejson(request, aid):
     context['cid'] = analysis.ext_id
     
     # Fill in the GIs
-#    context['gis'] = GenomicIsland.objects.filter(aid_id=aid).all()
     params = [aid]
     sql = """
     SELECT DISTINCT gi.gi, gi.aid_id, gi.start, gi.end, gi.prediction_method, GROUP_CONCAT( DISTINCT v.type ) AS annotations
@@ -312,16 +280,13 @@ def tablejson(request, aid):
     """
 
     context['gis'] = GenomicIsland.objects.raw(sql, params)
-#    context['gis'] = GenomicIsland.objects.raw("SELECT DISTINCT gi.gi, gi.aid_id, gi.start, gi.end, gi.prediction_method,  GROUP_CONCAT( DISTINCT v.type ) AS annotations FROM GenomicIsland AS gi JOIN IslandGenes AS ig ON ig.gi = gi.gi JOIN Genes AS g ON ig.gene_id = g.id LEFT JOIN virulence_mapped AS v ON g.name = v.protein_accnum WHERE gi.aid_id = %s AND (gi.prediction_method = 'Islandpick' or gi.prediction_method = 'Sigi' or gi.prediction_method = 'Dimob') GROUP BY gi.gi", params)
     
     context['gislength'] = sum(1 for result in context['gis'])
     
     return render(request, "table.json", context, content_type='application/json')
     
-#    return HttpResponse(js_str, content_type=('application/json'))
 
 def search_genes(request, ext_id):
-#    if request.is_ajax():
     if True:
         t = request.GET.get('term', '')
         q = Q(ext_id = ext_id)
@@ -360,7 +325,7 @@ def uploadform(request):
         
     except Exception as e:
         if settings.DEBUG:
-            print "Error getting SiteStatus: {}".format(str(e))
+            print "Error getting SiteStatus (a): {}".format(str(e))
     
     if request.method == 'GET':
         form = UploadGenomeForm()
@@ -481,7 +446,6 @@ def _uploadcustomajax(request, **kwargs):
                                 print "Found token: " + ret['data']['token']
                             context['token'] = ret['data']['token']
 
-#                        return HttpResponseRedirect(reverse('webui.views.results', kwargs={'aid': aid}))
                     else:
                         context['error'] = "Error parsing results from the server"
                         if settings.DEBUG:
@@ -561,7 +525,6 @@ def runstatusjson(request):
         if not sEcho.isdigit():
             return HttpResponse(status=400)
 
- #       print "Setting secho to: " + sEcho
         context['sEcho'] = int(sEcho)
 
     startAt = 0
@@ -593,7 +556,6 @@ def runstatusjson(request):
 
     context['records'] = len(analysis)
 
-    #    context['ranks'] = ranks[startAt:endAt]
     context['analysis'] = analysis[startAt:endAt]
     
     return render(request, 'status.json', context)
@@ -766,7 +728,6 @@ def graphanalysisjs(request, aid):
 
     # Fetch the pipeline's structure
     pipeline_reader = pipeline.Parser()
-#    pipeline_data = pipeline_reader.read('islandviewer')
     pipeline_data = pipeline_reader.read(settings.PIPELINE)
 
     context['json_str'] = grapher.makeGraph(aid, pipeline_data);
@@ -784,7 +745,6 @@ def fetchislands(request):
         gi = request.GET.get('gi')
         if not gi.isdigit():
             return HttpResponse(status=400)
-#        aidrec = GenomicIsland.objects.get(pk=gi)
         girec = get_object_or_404(GenomicIsland, pk=gi)
         aid = girec.aid_id
         context['gi'] = str(gi)
@@ -825,7 +785,6 @@ def genesjson(request, gi_id):
     context['aid'] = analysis.aid
     context['method'] = girec.prediction_method
     
-#    context['genes'] = Genes.objects.filter(pk__in = IslandGenes.objects.filter(gi=gi_id).values_list('gene', flat=True)).order_by('start').all()
     params = [gi_id]
     context['genes'] = Genes.objects.raw("select Genes.* FROM Genes, IslandGenes WHERE IslandGenes.gi = %s AND Genes.id = IslandGenes.gene_id ORDER BY Genes.start", params)
 
@@ -862,22 +821,6 @@ def genesbybpjson(request):
 
     return render(request, "genesbybp.json", context, content_type='application/json')
 
-#    query = "SELECT DISTINCT g.id, g.start, g.end, g.name, g.gene, g.product, g.locus, ig.gi AS gi, gi.prediction_method AS method, v.source AS virulence_source, v.external_id as virulence_id FROM Genes AS g LEFT JOIN IslandGenes AS ig ON g.id = ig.gene_id LEFT JOIN GenomicIsland AS gi ON ig.gi = gi.gi AND gi.aid_id = %s LEFT JOIN virulence_mapped AS v ON g.name = v.protein_accnum WHERE ext_id = %s AND g.start >=%s AND g.end <=%s"
-#    context['genes'] = GenomicIsland.sqltodict(query, params)
-#    genes = Genes.objects.raw("SELECT DISTINCT g.id, g.start, g.end, g.name, g.gene, g.product, g.locus, ig.gi AS gi, gi.prediction_method AS method, v.source AS virulence_source, v.external_id as virulence_id FROM Genes AS g LEFT JOIN IslandGenes AS ig ON g.id = ig.gene_id LEFT JOIN GenomicIsland AS gi ON ig.gi = gi.gi AND gi.aid_id = %s LEFT JOIN virulence_mapped AS v ON g.name = v.protein_accnum WHERE ext_id = %s AND g.start >=%s AND g.end <=%s GROUP BY g.id", params)
-
-#    genes = dict(genes)
-#    pprint.pprint(genes)
-
-#    context['genes'] = []
-#    for gene in genes:
-#        pprint.pprint(gene)
-#        context['genes'].append(dict(gene))
-
-#    data = json.dumps(context, indent=4, sort_keys=True)
-    
-#    return HttpResponse(data, content_type="application/json")
-
 
 def islandpick_select_genomes(request, aid):
     context = {}
@@ -891,7 +834,7 @@ def islandpick_select_genomes(request, aid):
         
     except Exception as e:
         if settings.DEBUG:
-            print "Error getting SiteStatus: {}".format(str(e))
+            print "Error getting SiteStatus (b): {}".format(str(e))
     
     try:
         analysis = Analysis.objects.get(pk=aid)
@@ -993,11 +936,6 @@ def islandpick_genomes(aid, picked=None, reselect=False, **kwargs):
             custom_names = CustomGenome.objects.filter(cid__in=cids).values('cid', 'name')
             custom_names = {x['cid']:x['name'] for x in custom_names}
 
-#            cluster_list = ext_ids
-#            cluster_list.insert(0, analysis.ext_id)
-#            print len(cluster_list)
-#            context['tree'] = Distance.distance_matrix(cluster_list)
-                                    
         except Exception as e:
             if settings.DEBUG:
                 print str(e)
@@ -1145,7 +1083,6 @@ def downloadCoordinates(request):
         methods = ['integrated']
 
     params = [aid]   
-#    islandset = Genes.objects.raw("SELECT G.id, GI.start AS island_start, GI.end AS island_end, GI.prediction_method, G.ext_id, G.start AS gene_start, G.end AS gene_end, G.strand, G.name, G.gene, G.product, G.locus FROM Genes AS G, IslandGenes AS IG, GenomicIsland AS GI WHERE GI.aid_id = %s AND GI.gi = IG.gi AND G.id = IG.gene_id ORDER BY GI.start, GI.prediction_method", params)
     islandset = Genes.objects.raw("SELECT G.id, GI.gi AS gi, GI.start AS island_start, GI.end AS island_end, GI.prediction_method, G.ext_id, G.start AS gene_start, G.end AS gene_end, G.strand, G.name, G.gene, G.product, G.locus, GROUP_CONCAT( DISTINCT V.source ) AS virulence FROM Genes AS G JOIN IslandGenes AS IG ON G.id = IG.gene_id JOIN GenomicIsland AS GI ON GI.gi = IG.gi LEFT JOIN virulence_mapped AS V ON G.name = V.protein_accnum WHERE GI.aid_id = %s GROUP BY IG.id ORDER BY GI.start, GI.prediction_method", params)
     if settings.DEBUG:
         pprint.pprint(islandset)
@@ -1233,9 +1170,7 @@ def downloadSequences(request):
     params = [aid] 
     if(format == 'genbank'):
         islandset = GenomicIsland.objects.filter(aid_id=aid).order_by('start').all()
-        #islandset = Genes.objects.raw("SELECT IG.id, GI.start AS island_start, GI.end AS island_end, GI.prediction_method FROM IslandGenes AS IG, GenomicIsland AS GI WHERE GI.aid_id = %s AND GI.gi = IG.gi ORDER BY GI.start, GI.prediction_method", params)
     else:
-        #islandset = Genes.objects.raw("SELECT G.id, GI.start AS island_start, GI.end AS island_end, GI.prediction_method, G.ext_id, G.start AS gene_start, G.end AS gene_end, G.strand, G.name, G.gene, G.product, G.locus FROM Genes AS G, IslandGenes AS IG, GenomicIsland AS GI WHERE GI.aid_id = %s AND GI.gi = IG.gi AND G.id = IG.gene_id ORDER BY GI.start, GI.prediction_method", params)
         islandset = Genes.objects.raw("SELECT G.id, GI.gi AS gi, GI.start AS island_start, GI.end AS island_end, GI.prediction_method, G.ext_id, G.start AS gene_start, G.end AS gene_end, G.strand, G.name, G.gene, G.product, G.locus, GROUP_CONCAT( DISTINCT V.source ) AS virulence FROM Genes AS G JOIN IslandGenes AS IG ON G.id = IG.gene_id JOIN GenomicIsland AS GI ON GI.gi = IG.gi LEFT JOIN virulence_mapped AS V ON G.name = V.protein_accnum WHERE GI.aid_id = %s GROUP BY IG.id ORDER BY GI.start, GI.prediction_method", params)
         
     response = downloadformats[format](islandset, p, methods, filename + "." + extension)
@@ -1257,7 +1192,6 @@ def fetchislandsfasta(request):
         gi = request.GET.get('gi')
         if not gi.isdigit():
             return HttpResponse(status=400)
-#        aidrec = GenomicIsland.objects.get(pk=gi)
         girec = get_object_or_404(GenomicIsland, pk=gi)
         aid = girec.aid_id
         gi = str(gi)

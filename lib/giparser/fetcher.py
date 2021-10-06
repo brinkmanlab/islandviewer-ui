@@ -268,10 +268,12 @@ class GenbankParser():
         try:
             filename = customgenome.filename
             filename = filename.replace(u'{{custom_genomes}}', settings.CUSTOM_GENOMES)
+            filename = filename.replace(u'{{tmp_genomes}}', settings.GENOME_UPLOAD_PATH)
+            
         except Exception as e:
             if settings.DEBUG:
                 print "Exception raised with filename {}: {}".format(filename, e)
-        
+
         # Check we actually have a genbank type
         if ".gbk" in customgenome.formats.split():
             self.fname = filename + ".gbk"

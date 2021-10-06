@@ -22,7 +22,9 @@
         <li><a href="javascript:scrolltoelem('a1');">Which genomes are available through IslandViewer and how can I run
             IslandViewer on other genomes?</a></li>
         <li><a href="javascript:scrolltoelem('a2');">Why does my input file fail to upload or run?</a></li>
+        <li><a href="javascript:scrolltoelem('a17');">How should I be annotating my genomes prior to submitting to IslandViewer?</a></li>
         <li><a href="javascript:scrolltoelem('a15');">Which prediction method is preferred?</a></li>
+        <li><a href="javascript:scrolltoelem('a18');">Why can't I download the GenBank file for my analysis (Server 500 Error)?</a></li>
         <li><a href="javascript:scrolltoelem('a3');">Why is an expected genomic island missed from IslandViewer
             predictions?</a></li>
         <li><a href="javascript:scrolltoelem('a5');">How do I change IslandPick analysis settings to compare against
@@ -70,13 +72,23 @@
     <p class="bodyText">The most common problem is incorrect format of input files. Please ensure your input file
         follows GenBank or EMBL formats with all necessary fields, including all nucleotide and coding sequences (CDSs).
         See examples for more details: <u><a
-                href="http://www.pseudomonas.com/downloads/pseudomonas/pgd_r_15_3/Pseudomonas_aeruginosa_PAO1_107/Pseudomonas_aeruginosa_PAO1_107.gbk"
+                href="http://www.pseudomonas.com/downloads/pseudomonas/pgd_r_18_1/Pseudomonas_aeruginosa_PAO1_107/Pseudomonas_aeruginosa_PAO1_107.gbk"
                 target="_blank">GenBank</a></u>, <u><a
-                href="http://www.pseudomonas.com/downloads/pseudomonas/pgd_r_15_3/Pseudomonas_aeruginosa_PAO1_107/Pseudomonas_aeruginosa_PAO1_107.embl"
+                href="http://www.pseudomonas.com/downloads/pseudomonas/pgd_r_18_1/Pseudomonas_aeruginosa_PAO1_107/Pseudomonas_aeruginosa_PAO1_107.embl"
                 target="_blank">EMBL</a></u>. In some cases, SIGI-HMM will fail to run due to issues beyond our control
         (SIGI-HMM software was written by others), but will be able to view results for IslandPath-DIMOB and IslandPick in such cases.
         If you don't appear to have any such problems and you notice your jobs are taking longer than a few hours to complete,
         please don't hesitate to contact us and we would be happy to help identify the problem.</p>
+
+    <div align="right"><a href="#">Top</a></div>
+
+    <div id='a17' class="subHeader">How should I be annotating my genomes prior to submitting to IslandViewer?</div>
+    &nbsp;<br/>
+    <p class="bodyText">While we do not endorse a specific annotation tool at this time, an important point we urge all users to keep in mind is to be
+        consistent in your gene annotations. The integrated GI prediction software are dependant on the gene annotations. Therefore, you should be
+        sure to use the same annotation software and version for all of the genomes in your analysis for the most consistent results. Further, when
+        annotating your files, ensure that the annotations are in order and that your file is formatted in adherence with the standards for GenBank and
+        EMBL files.</p>
 
     <div align="right"><a href="#">Top</a></div>
 
@@ -102,6 +114,15 @@
 
      <p class="bodyText">For a nice example, please have a look at the genomic island predictions between 4.4 Mb and 4.53 Mb in
         <a href="{% url "demo" %}">this reference genome</a>.</p>
+
+    <div align="right"><a href="#">Top</a></div>
+
+    <div id='a18' class="subHeader">Why can't I download the GenBank file for my analysis (Server 500 Error)?</div>
+    &nbsp;<br/>
+    <p class="bodyText">If your analysis completed, but you cannot download the GenBank file with genomic island annotations (links to Server 500 
+        error message on web interface), this may be due to the formatting of you input file. Longer comments in your file have been found to lead 
+        to this issue. For the time being, we recommend removing comments from your files and re-running them. If you continue to experience 
+        problems after doing so, please contact us.</p>
 
     <div align="right"><a href="#">Top</a></div>
 

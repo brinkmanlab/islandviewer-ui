@@ -1,0 +1,19 @@
+# README
+# author: Gemma Hoad
+# date:   2021-09-24
+
+So we can add these files to github, certain settings files have
+had their full hostnames removed, leaving just a part in the file. 
+
+These hostnames must be edited in order for the app to work. 
+
+All hostnames used in the working app are in the form of:
+vmname.sfu.cloud.suffix
+
+4 parts to the hostname, with three dots in between.
+_Not_ numeric.
+
+Files with these place holders:
+islandviewer-ui/Islandviewer/settings/uploader.py (ISLANDVIEWER_HOST field)
+islandviewer-ui/Islandviewer/settings/databases.py (HOST field)
+

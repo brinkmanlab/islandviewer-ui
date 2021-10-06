@@ -2,5 +2,5 @@ import env
 
 
 #DEBUG = env.DEV_ENV or env.TEST_ENV
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG

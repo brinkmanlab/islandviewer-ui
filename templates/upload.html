@@ -39,7 +39,8 @@
     </script>
     <span class="pageName">Genome Upload</span>
     <span class="bodyText">
-    <p>Users can now log in the new <span class="green">user management interface</span> (see
+<!--p><span class="red">There was an unscheduled downtime at SFU on Fri July 9th affecting multiple resources, including this service. Our apologies for any inconvenience caused. Don’t hesitate to contact us at <a href="mailto:islandpick-mail@sfu.ca">islandpick-mail@sfu.ca</a> if you have any questions.</span></p-->
+<p>Users can now log in the new <span class="green">user management interface</span> (see
         <span class="green">LOGIN </span> menu) using Github, Google or Twitter credentials facilitating access to
         results.</p>
     <p>To analyze larger batches of genomes, an <span class="green">HTTP API</span> is available to submit genomes and retrieve results programmatically using curl,
@@ -52,6 +53,7 @@
 			<a href="http://www.pseudomonas.com/downloads/pseudomonas/pgd_r_15_3/Pseudomonas_aeruginosa_PAO1_107/Pseudomonas_aeruginosa_PAO1_107.embl"
                target="_blank">EMBL</a>.
     </p>
+
 
 <div id="error_message" class="errortext" style="display: none;"></div>
 <form action="" method="POST" enctype="multipart/form-data" name="genome_upload" id="genome_upload">
@@ -76,9 +78,11 @@
 </span>
 </div>
 {{ form.cid }}{{ form.ref_accnum }}
-<p><div id="submitted" style="display: none;"><img src="{% static 'img/spinning_wheel.gif' %}"/></div>
+ <p><div id="submitted" style="display: none;"><img src="{% static 'img/spinning_wheel.gif' %}"/></div>
 <input name="Upload" type="submit" id="Upload" value="Upload" form="genome_upload"/>
-		    (this may take several minutes) </p>
+			    (this may take several minutes) 
+</p> 
+<!--  <p><span class="red" >Update running, please come back later to submit your genome. We apologize for any inconvenience this may cause. If you have an urgent need to use IslandViewer, please contact us at <a href="mailto:islandpick-mail@sfu.ca">islandpick-mail@sfu.ca</a>.</span></p> -->
 </form>
 
 
@@ -372,7 +376,10 @@ function submitGenome() {
 			Please refer to the official <a href="http://www.ncbi.nlm.nih.gov/Sitemap/samplerecord.html"
                                             target="_blank">GenBank</a> documentation for more details.
 		      </p>
-		      <p>
+                      <p>
+                        Please also remove any lengthy comments from your files at this times These can create problems with downstream generation of the sequence files with genomic islands available for donwload.
+		      </p>
+                      <p>
 			If you are still having problems, see our <a href="{% url 'faq' %}">FAQs</a>.
 		      </p>
 		    </span>

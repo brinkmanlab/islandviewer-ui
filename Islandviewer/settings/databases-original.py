@@ -7,13 +7,13 @@ if 'TRAVIS' in os.environ:
             'ENGINE':   'django.db.backends.mysql',
             'NAME':     'travisci',
             'USER':     'travis',
-            'HOST':     'iv1-db',
+            'HOST':     '127.0.0.1',
          },
         'microbedb': {
             'ENGINE':   'django.db.backends.mysql',
             'NAME':     'travisci',
             'USER':     'travis',
-            'HOST':     'iv1-db',
+            'HOST':     '127.0.0.1',
         }
     }
 elif 'test' in sys.argv or 'test_coverage' in sys.argv:
@@ -24,7 +24,7 @@ elif 'test' in sys.argv or 'test_coverage' in sys.argv:
             'NAME': secrets.IV_DATABASE,
             'USER': secrets.DATABASE_USER,
             'PASSWORD': secrets.DATABASE_PASSWORD,
-            'HOST': 'iv1-db',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+            'HOST': secrets.DATABASE_HOST,                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
             'PORT': secrets.DATABASE_PORT,                      # Set to empty string for default.
          },
         'microbedb': {
@@ -32,7 +32,7 @@ elif 'test' in sys.argv or 'test_coverage' in sys.argv:
             'NAME': secrets.IV_DATABASE,
             'USER': secrets.DATABASE_USER,
             'PASSWORD': secrets.DATABASE_PASSWORD,
-            'HOST': 'iv1-db',
+            'HOST': secrets.DATABASE_HOST,
             'PORT': secrets.DATABASE_PORT,
         }
     }
@@ -44,7 +44,7 @@ else:
             'NAME': secrets.IV_DATABASE,
             'USER': secrets.DATABASE_USER,
             'PASSWORD': secrets.DATABASE_PASSWORD,
-            'HOST': 'iv1-db',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+            'HOST': secrets.DATABASE_HOST,                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
             'PORT': secrets.DATABASE_PORT,                      # Set to empty string for default.
          },
         'microbedb': {
@@ -52,7 +52,7 @@ else:
             'NAME': 'microbedbv2',
             'USER': secrets.DATABASE_USER,
             'PASSWORD': secrets.DATABASE_PASSWORD,
-            'HOST': 'iv1-db',
+            'HOST': secrets.DATABASE_HOST,
             'PORT': secrets.DATABASE_PORT,
         }
     }

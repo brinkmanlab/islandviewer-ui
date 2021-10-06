@@ -2,7 +2,7 @@
     "aid": 12, 
     "emails": "me@sfu.ca", 
     "genome_name": "matts test", 
-    "results": "http://testserver/islandviewer/results/12/?token=jpcEHLVjP61IMy6TEeg4O1", 
+    "results": "http://testserver/results/12/?token=jpcEHLVjP61IMy6TEeg4O1", 
     "status": "Complete", 
     "taskcount": {
         "Dimob": 2, 

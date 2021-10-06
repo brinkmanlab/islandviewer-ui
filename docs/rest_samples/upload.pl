@@ -12,7 +12,7 @@ my ($file, $result, $message);
 $file = "tiny.gbk";
  
 my $ua = LWP::UserAgent->new;
-my $req = $ua->request(POST 'http://localhost:8000/islandviewer/rest/job/submit/',
+my $req = $ua->request(POST 'http://localhost:8000/rest/job/submit/',
           (Content_Type => 'form-data',
 	   'x-authtoken' => 'e75bea25-313f-05f2-2887-259746586857' ),
           Content => [
