@@ -400,7 +400,7 @@ def _uploadcustomajax(request, **kwargs):
     if settings.DEBUG:
         pprint.pprint(request.POST)
     
-    if request.method == 'POST':
+    if request.method == 'POST' and request.POST:
         form = UploadGenomeForm(request.POST, request.FILES)
         if form.is_valid():
             if settings.DEBUG:
