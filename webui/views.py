@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect, StreamingHttpResponse
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError, StreamingHttpResponse
 from django.shortcuts import render, get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.conf import settings
@@ -756,7 +756,12 @@ def fetchislands(request):
     if not analysis.valid_token(request.GET.get('token')):
         return HttpResponse(status=403)
 
-    p = fetcher.GenbankParser(aid)
+    try:
+        p = fetcher.GenbankParser(aid)
+    except ValueError as e:
+        response = HttpResponseServerError(reason='Unable to parse Genbank')
+        response.content = '\n'.join(e.message.split('\n', 2)[0, 2])
+        return response
     recs = p.fetchRecords()
     
     islands = {}
@@ -1135,7 +1140,12 @@ def downloadSequences(request):
         if not aid.isdigit():
             return HttpResponse(status=400)
         analysis = Analysis.objects.get(pk=aid)
-        p = fetcher.GenbankParser(aid)
+        try:
+            p = fetcher.GenbankParser(aid)
+        except ValueError as e:
+            response = HttpResponseServerError(reason='Unable to parse Genbank')
+            response.content = '\n'.join(e.message.split('\n', 2)[0, 2])
+            return response
 
         # Check for a security token 
         if not analysis.valid_token(request.GET.get('token')):
@@ -1211,8 +1221,13 @@ def fetchislandsfasta(request):
         seqtype = request.GET.get('seq')
         if seqtype not in ('protein', 'nuc', 'island'):
             return HttpResponse(status=400)
-    
-    p = fetcher.GenbankParser(aid)
+
+    try:
+        p = fetcher.GenbankParser(aid)
+    except ValueError as e:
+        response = HttpResponseServerError(reason='Unable to parse Genbank')
+        response.content = '\n'.join(e.message.split('\n', 2)[0, 2])
+        return response
 
     if seqtype == 'island':
         if gi:

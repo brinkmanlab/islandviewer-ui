@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseServerError
 from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
@@ -308,7 +308,12 @@ def user_job_download(request, aid, format, **kwargs):
 
     args.append(islandset)
     if format == 'genbank' or format == 'fasta':
-        p = fetcher.GenbankParser(analysis.aid)
+        try:
+            p = fetcher.GenbankParser(analysis.aid)
+        except ValueError as e:
+            response = HttpResponseServerError(reason='Unable to parse Genbank')
+            response.content = '\n'.join(e.message.split('\n', 2)[0, 2])
+            return response
         args.append(p)
 
     args.append(['integrated'] + formatter.allowedmethods)
