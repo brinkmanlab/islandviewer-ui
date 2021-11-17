@@ -312,7 +312,7 @@ def user_job_download(request, aid, format, **kwargs):
             p = fetcher.GenbankParser(analysis.aid)
         except ValueError as e:
             response = HttpResponseServerError(reason='Unable to parse Genbank')
-            response.content = '\n'.join(e.message.split('\n', 2)[0, 2])
+            response.content = e.message
             return response
         args.append(p)
 
