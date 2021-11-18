@@ -882,6 +882,8 @@ def islandpick_genomes_json(request, aid, **kwargs):
                 picked_genomes.append(name)
 
         results = islandpick_genomes(aid, picked=picked_genomes, **kwargs)
+        if isinstance(results, HttpResponse):
+            return results
         
     except Exception as e:
         if settings.DEBUG:
