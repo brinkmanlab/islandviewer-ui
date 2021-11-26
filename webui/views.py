@@ -760,7 +760,7 @@ def fetchislands(request):
         p = fetcher.GenbankParser(aid)
     except ValueError as e:
         response = HttpResponseServerError(reason='Unable to parse Genbank')
-        response.content = e.message
+        response.content = "<h1>Unable to parse Genbank</h1><pre>" + e.message + "</pre>"
         return response
     recs = p.fetchRecords()
     
@@ -1146,7 +1146,7 @@ def downloadSequences(request):
             p = fetcher.GenbankParser(aid)
         except ValueError as e:
             response = HttpResponseServerError(reason='Unable to parse Genbank')
-            response.content = e.message
+            response.content = "<h1>Unable to parse Genbank</h1><pre>" + e.message + "</pre>"
             return response
 
         # Check for a security token 
@@ -1228,7 +1228,7 @@ def fetchislandsfasta(request):
         p = fetcher.GenbankParser(aid)
     except ValueError as e:
         response = HttpResponseServerError(reason='Unable to parse Genbank')
-        response.content = e.message
+        response.content = "<h1>Unable to parse Genbank</h1><pre>" + e.message + "</pre>"
         return response
 
     if seqtype == 'island':
