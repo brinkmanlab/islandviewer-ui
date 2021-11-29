@@ -22,7 +22,7 @@ import os
 import pprint
 from collections import OrderedDict
 from webui.models import VIRULENCE_FACTORS, VIRULENCE_FACTOR_CATEGORIES
-from django.db import connection
+from django.db import OperationalError, connection
 from scripts import mauvewrap
 import glob
 from django.core import serializers
@@ -287,7 +287,7 @@ def tablejson(request, aid):
     
 
 def search_genes(request, ext_id):
-    if True:
+    try:
         t = request.GET.get('term', '')
         q = Q(ext_id = ext_id)
         if request.GET.get('second_ext_id'):
@@ -305,10 +305,8 @@ def search_genes(request, ext_id):
             gene_json['extid'] = gene.ext_id
             results.append(gene_json)
         data = json.dumps(results)
-    else:
-        if settings.DEBUG:
-            print "failed?" 
-        data = 'fail'
+    except OperationalError:
+        return HttpResponseServerError('Invalid request')
     mimetype = 'application/json'
     return HttpResponse(data, mimetype)
 
