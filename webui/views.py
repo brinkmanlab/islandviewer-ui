@@ -1094,9 +1094,14 @@ def downloadCoordinates(request):
     islandset = Genes.objects.raw("SELECT G.id, GI.gi AS gi, GI.start AS island_start, GI.end AS island_end, GI.prediction_method, G.ext_id, G.start AS gene_start, G.end AS gene_end, G.strand, G.name, G.gene, G.product, G.locus, GROUP_CONCAT( DISTINCT V.source ) AS virulence FROM Genes AS G JOIN IslandGenes AS IG ON G.id = IG.gene_id JOIN GenomicIsland AS GI ON GI.gi = IG.gi LEFT JOIN virulence_mapped AS V ON G.name = V.protein_accnum WHERE GI.aid_id = %s GROUP BY IG.id ORDER BY GI.start, GI.prediction_method", params)
     if settings.DEBUG:
         pprint.pprint(islandset)
-    
-    response = downloadformats[format](islandset,methods, filename + "." + extension)
-    
+
+    try:
+        response = downloadformats[format](islandset,methods, filename + "." + extension)
+    except ValueError as e:
+        response = HttpResponseServerError(reason='Unable to parse Genbank')
+        response.content = "<h1>Unable to write " + format + "</h1><pre>" + e.message + "</pre>"
+        return response
+
     return response
 
 def downloadAnnotations(request):
@@ -1132,7 +1137,12 @@ def downloadAnnotations(request):
     params = [analysis.ext_id]
     annotations = Genes.objects.raw("SELECT G.id, G.name, G.start, G.end, V.external_id, V.source FROM Genes AS G JOIN virulence_mapped AS V ON G.name = V.protein_accnum WHERE G.ext_id = %s ORDER BY V.source", params)
 
-    response = annotationformats[format](annotations, filename + '_annotations' + '.' + extension)
+    try:
+        response = annotationformats[format](annotations, filename + '_annotations' + '.' + extension)
+    except ValueError as e:
+        response = HttpResponseServerError(reason='Unable to parse Genbank')
+        response.content = "<h1>Unable to write " + format + "</h1><pre>" + e.message + "</pre>"
+        return response
 
     return response
 
@@ -1185,8 +1195,13 @@ def downloadSequences(request):
         islandset = GenomicIsland.objects.filter(aid_id=aid).order_by('start').all()
     else:
         islandset = Genes.objects.raw("SELECT G.id, GI.gi AS gi, GI.start AS island_start, GI.end AS island_end, GI.prediction_method, G.ext_id, G.start AS gene_start, G.end AS gene_end, G.strand, G.name, G.gene, G.product, G.locus, GROUP_CONCAT( DISTINCT V.source ) AS virulence FROM Genes AS G JOIN IslandGenes AS IG ON G.id = IG.gene_id JOIN GenomicIsland AS GI ON GI.gi = IG.gi LEFT JOIN virulence_mapped AS V ON G.name = V.protein_accnum WHERE GI.aid_id = %s GROUP BY IG.id ORDER BY GI.start, GI.prediction_method", params)
-        
-    response = downloadformats[format](islandset, p, methods, filename + "." + extension)
+
+    try:
+        response = downloadformats[format](islandset, p, methods, filename + "." + extension)
+    except ValueError as e:
+        response = HttpResponseServerError(reason='Unable to parse Genbank')
+        response.content = "<h1>Unable to write " + format + "</h1><pre>" + e.message + "</pre>"
+        return response
 
     return response
 
