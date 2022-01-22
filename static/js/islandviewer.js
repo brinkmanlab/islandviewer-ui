@@ -489,7 +489,7 @@ Islandviewer.prototype.showIslandpickGenomes = function(aid) {
 	                }
 			html += '</ul><blockquote style=\"border-left: none;\">'
 		}
-		html += "<a class=\"genespopup\" href=\"../../islandpick/select/" + aid + "/\" >[ Change comparison genomes ]</a></blockquote><br />&nbsp;<br />";
+		html += "<a class=\"genespopup\" href=\"#\" style=\"text-decoration: line-through;\" >[ Change comparison genomes ]</a></blockquote><br /><div>The change comparison genomes feature of IslandPick is currently not available. This feature is under maintenance and will be available again soon. We apologize for the inconvenience.</div>&nbsp;<br />";
 
 		self.gene_dialog.html(html);
                 self.gene_dialog.dialog('option', 'title', 'Comparison Genomes');
