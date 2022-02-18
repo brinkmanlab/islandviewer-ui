@@ -12,7 +12,7 @@ def formatResults(resultset, format, methods):
     else:
         raise Exception("Unknown format")
     
-def formatCSV(resultset, methods, filename, delimiter=False):
+def formatCSV(resultset, seqobj, methods, filename, delimiter=False):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="' + filename + '"'
     
@@ -112,13 +112,13 @@ def formatFasta(resultset, seqobj, methods, filename):
    
     return response
 
-def formatTab(resultset, methods, filename):
-    return formatCSV(resultset, methods, filename, '\t')
+def formatTab(resultset, seqobj, methods, filename):
+    return formatCSV(resultset, seqobj, methods, filename, '\t')
 
 def formatAnnotationTab(annotations, filename):
     return formatAnnotationCSV(annotations, filename, '\t')
 
-def formatExcel(resultset, methods, filename):
+def formatExcel(resultset, seqobj, methods, filename):
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="' + filename + '"'
     wb = xlwt.Workbook(encoding='utf-8')

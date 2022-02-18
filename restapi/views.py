@@ -307,6 +307,7 @@ def user_job_download(request, aid, format, **kwargs):
         islandset = GenomicIsland.island_gene_set(analysis.aid)
 
     args.append(islandset)
+    p = None
     if format == 'genbank' or format == 'fasta':
         try:
             p = fetcher.GenbankParser(analysis.aid)
@@ -314,7 +315,8 @@ def user_job_download(request, aid, format, **kwargs):
             response = HttpResponseServerError(reason='Unable to parse Genbank')
             response.content = e.message
             return response
-        args.append(p)
+
+    args.append(p)
 
     args.append(['integrated'] + formatter.allowedmethods)
     filename = analysis.generate_filename + '.' + formatter.downloadextensions[format]
