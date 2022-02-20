@@ -1096,7 +1096,7 @@ def downloadCoordinates(request):
         pprint.pprint(islandset)
 
     try:
-        response = downloadformats[format](islandset,methods, filename + "." + extension)
+        response = downloadformats[format](islandset, None,methods, filename + "." + extension)
     except ValueError as e:
         response = HttpResponseServerError(reason='Unable to parse Genbank')
         response.content = "<h1>Unable to write " + format + "</h1><pre>" + e.message + "</pre>"
