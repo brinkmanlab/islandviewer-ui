@@ -81,10 +81,12 @@ def results(request, aid):
         context['genomename'] = genome.name
         if genome.contigs > 1:
             ref_accnum = analysis.find_reference_genome()
-            ref_genome = Analysis.lookup_genome(ref_accnum)
-                
-            context['ref_genome'] = ref_genome.name
-        
+            try:
+                ref_genome = Analysis.lookup_genome(ref_accnum)
+                context['ref_genome'] = ref_genome.name
+            except Analysis.DoesNotExist:
+                context['ref_genome'] = ref_accnum
+
         CHOICES = dict(STATUS_CHOICES)
         context['status'] = CHOICES[analysis.status]
         
