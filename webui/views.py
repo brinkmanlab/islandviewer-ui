@@ -376,6 +376,8 @@ def uploadform(request):
                         if 'data' in ret and 'code' in ret['data']:
                             context['error'] += "<pre>Error code: " + ret['data']['code'] + "</pre>\n"
                         print "Error str: {0}".format(ret['msg'])
+    else:
+        return HttpResponseServerError('Unsupported method ' + request.method)
                     
     return render(request,
                   'upload.html',
