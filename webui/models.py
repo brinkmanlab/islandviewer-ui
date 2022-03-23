@@ -336,7 +336,7 @@ class Analysis(models.Model):
         
         try:
             float(accnum)
-        except ValueError:
+        except (ValueError, TypeError):
             # It's not a custom genome...
             genome = NameCache.objects.get(cid=accnum)
             return genome
