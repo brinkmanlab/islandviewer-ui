@@ -34,7 +34,7 @@
     <p class="bodyText">
         The HTTP API can be used as an anonymous user or an authenticated user. To use the API as an anonymous user, simply use
         an empty authentication token. To use the API as an authenticated user, please <span class="green">log in</span> first (currently available
-        authentication possibilities are Github, Google, or Twitter) and then click on the <a href="{% url "iv_social:user_rest_token" %}">JOBS</a> menu 
+        authentication possibilities are Github or Google) and then click on the <a href="{% url "iv_social:user_rest_token" %}">JOBS</a> menu 
         to find your unique HTTP API authentication token. Users can submit genomes and retrieve results using various programming language such 
         as cURL, python or perl (see below for examples). After a successful genome submission, the interface returns a unique job token that 
         can be used to retrieve all information about the status of the submission as well as prediction results. Please note that using the API as 
