@@ -24,8 +24,8 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'secretcharacterstringfromgoogle'
 
 ##--- TWITTER
 # Brinkman Lab organisation account secrets for Twitter:
-SOCIAL_AUTH_TWITTER_KEY = 'randomcharacterstringfromtwitter'
-SOCIAL_AUTH_TWITTER_SECRET = 'secretcharacterstringfromtwitter'
+# SOCIAL_AUTH_TWITTER_KEY = 'randomcharacterstringfromtwitter'
+# SOCIAL_AUTH_TWITTER_SECRET = 'secretcharacterstringfromtwitter'
 
 
 ##--- GITHUB
