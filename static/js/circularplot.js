@@ -1199,34 +1199,32 @@ circularTrack.prototype.savePlot = function(scaling, filename, stylesheetfile, f
 
     // First lets get the stylesheet
     var sheetlength = stylesheetfile.length;
-    var style = document.createElementNS("http://www.w3.org/1999/xhtml", "style");
-	style.textContent += "<![CDATA[\n";
-    for (var i=0;i<document.styleSheets.length; i++) {
-	str = document.styleSheets[i].href;
-	if(null == str) continue;
+	var style = document.createElementNS("http://www.w3.org/2000/svg", "style");
 
-	if (str.substr(str.length-sheetlength)==stylesheetfile){
-            var rules;
-            if(document.styleSheets[i].cssRules) {
-                rules = document.styleSheets[i].cssRules;
-            } else if (document.styleSheets[i].rules) {
-                rules = document.styleSheets[i].rules;
-            }
-            if(rules) {
-                for (var j=0; j<rules.length;j++){
-                    style.textContent += (rules[j].cssText + "\n");
-                }
-            }
-            break;
-    	}
-    }
-    style.textContent += "]]>";
+	// Collect CSS rules from the matching stylesheet
+	var cssText = "";
+	for (var i = 0; i < document.styleSheets.length; i++) {
+	    var str = document.styleSheets[i].href;
+	    if (!str) continue;
+
+	    if (str.substr(str.length - sheetlength) === stylesheetfile) {
+	        var rules = document.styleSheets[i].cssRules || document.styleSheets[i].rules;
+	        if (rules) {
+	            for (var j = 0; j < rules.length; j++) {
+	                cssText += rules[j].cssText + "\n";
+	            }
+	        }
+	        break;
+	    }
+	}
+    style.textContent = cssText;
 
     // Now we clone the SVG element, resize and scale it up
     var container = this.layout.container.slice(1);
     var containertag = document.getElementById(container);
     var clonedSVG = containertag.cloneNode(true);
     var svg = clonedSVG.getElementsByTagName("svg")[0];
+	svg.insertBefore(style, svg.firstChild);
 
     // Remove drag-resize shadow element
     var tags = svg.getElementsByClassName("dragbar-shadow")
@@ -1257,7 +1255,9 @@ circularTrack.prototype.savePlot = function(scaling, filename, stylesheetfile, f
     svg.removeAttribute('height');
     svg.setAttribute('width', this.layout.w*scaling +  this.layout.TranslateX*scaling);
     svg.setAttribute('height', this.layout.h*scaling +  this.layout.TranslateY*scaling);
-
+	svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+	svg.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+	
     // Update first g tag with the scaling
     g = svg.getElementsByTagName("g")[0];
     transform = g.getAttribute("transform");
@@ -1270,13 +1270,12 @@ circularTrack.prototype.savePlot = function(scaling, filename, stylesheetfile, f
 
     // Fetch the actual SVG tag and convert it to a canvas
     // element
-    var content = clonedSVG.innerHTML.trim();
-
+    var content = new XMLSerializer().serializeToString(svg);
     if(format == 'svg') {
-	var a = document.createElement('a');
-	a.href = "data:application/octet-stream;base64;attachment," + btoa(content);
-	a.download = filename + ".svg";
-	a.click();
+		var a = document.createElement('a');
+		a.href = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(content);
+		a.download = filename + ".svg";
+		a.click();
 
     } else if(format == 'png') {
 	var canvas = document.createElement('canvas');
