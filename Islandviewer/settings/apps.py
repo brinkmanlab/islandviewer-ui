@@ -1,4 +1,4 @@
-import env
+from . import env
 
 INSTALLED_APPS = (
     'django.contrib.auth',

@@ -50,7 +50,7 @@ def runMauve(gbk1,gbk2,outputfile=None,outputbackbonefile=None, async=False):
                     else:
                         if status != 'R':
                             completeFlag = True
-                            print "Error has occured to submitted job (cluster)"
+                            print("Error has occured to submitted job (cluster)")
             if not completeFlag:
                 time.sleep(60)
 
@@ -75,11 +75,11 @@ def testRunMauve():
     runMauve("/vagrant/islandviewer-ui/scripts/testFiles/AE009952.gbk","/vagrant/islandviewer-ui/scripts/testFiles/BX936398.gbk")
 
 def testRetrieveBackboneFiles():
-    print(retrieveBackboneFile("/vagrant/islandviewer-ui/scripts/testFiles/AE009952.gbk","/vagrant/islandviewer-ui/scripts/testFiles/BX936398.gbk"))
+    print((retrieveBackboneFile("/vagrant/islandviewer-ui/scripts/testFiles/AE009952.gbk","/vagrant/islandviewer-ui/scripts/testFiles/BX936398.gbk")))
 
 def testList():
     #testRunMauve()
     #testRetrieveBackboneFiles()
-    print getMauveResults("/vagrant/islandviewer-ui/scripts/testFiles/AE009952.gbk","/vagrant/islandviewer-ui/scripts/testFiles/BX936398.gbk")
+    print(getMauveResults("/vagrant/islandviewer-ui/scripts/testFiles/AE009952.gbk","/vagrant/islandviewer-ui/scripts/testFiles/BX936398.gbk"))
 
 #testList()

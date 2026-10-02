@@ -12,7 +12,7 @@ Test custom genome models
 def setUpModule():
     for fixture in test_fixtures_set:
         full_fixture = 'webui/tests/test-data/' + fixture
-        print "Loading fixture {}".format(full_fixture)
+        print("Loading fixture {}".format(full_fixture))
         call_command('loaddata', full_fixture, verbosity=1)
     
 

@@ -16,7 +16,7 @@ WRITE_REFS = False
 def setUpModule():
     for fixture in analysis_fixtures + microbedb_fixtures:
         full_fixture = 'webui/tests/test-data/' + fixture
-        print "Loading fixture {}".format(full_fixture)
+        print("Loading fixture {}".format(full_fixture))
         call_command('loaddata', full_fixture, verbosity=1)
 
 class RestAPITest(TestCase):
@@ -25,7 +25,7 @@ class RestAPITest(TestCase):
         return usertoken.token
 
     def testREST(self):
-        print "Testing REST endpoints"
+        print("Testing REST endpoints")
         token = self.fetch_usertoken(1)
 
         url = reverse('restapi:user_jobs')
@@ -47,7 +47,7 @@ class RestAPITest(TestCase):
         self.jsonFetch(url, "ref_genomes", token, WRITE_REFS)
 
     def testToken(self):
-        print "Testing REST authentication"
+        print("Testing REST authentication")
         c = Client()
 
         url = reverse('restapi:user_jobs')
@@ -95,7 +95,7 @@ class RestAPITest(TestCase):
         self.assertEqual(response.status_code, 400, "Download format doesn't exist")
 
     def jsonFetch(self, url, slug, token, write_ref=False):
-        print "\tREST API: {}".format(url)
+        print("\tREST API: {}".format(url))
         
         c = Client()
         json_filename = os.path.join( REF_FILE_PATH, "rest_{}.json".format(slug))
@@ -112,10 +112,15 @@ class RestAPITest(TestCase):
         if write_ref:
             self.writeRef(json_filename, response_json)
         else:
+	    if refs != response_json:
+    		print("---EXPECTED---")
+    		print((json.dumps(refs, indent=2, sort_keys=True)))
+    		print("---ACTUAL---")
+    		print((json.dumps(response_json, indent=2, sort_keys=True)))
             self.assertEqual(refs, response_json, "URL: {}, test: {}".format(url, slug))
 
     def textFetch(self, url, slug, token, write_ref=False):
-        print "\tREST API: {}".format(url)
+        print("\tREST API: {}".format(url))
         c = Client()
         text_filename = os.path.join( REF_FILE_PATH, "rest_{}.txt".format(slug))
 
@@ -134,11 +139,11 @@ class RestAPITest(TestCase):
             self.assertEqual(refs, response_content, "URL: {}, test: {}".format(url, slug))        
         
     def writeRef(self, filename, ref):
-        print "\tWriting reference file {}".format(filename)
+        print("\tWriting reference file {}".format(filename))
         with open(filename, 'w') as outfile:
             json.dump(ref, outfile, sort_keys=True, indent=4)
 
     def writeText(self, filename, ref):
-        print "\tWriting reference file {}".format(filename)
+        print("\tWriting reference file {}".format(filename))
         with open(filename, 'w') as outfile:
             outfile.write(ref)

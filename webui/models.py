@@ -1,4 +1,4 @@
-from __future__ import unicode_literals
+
 
 from django.db import models
 from django.conf import settings
@@ -7,8 +7,13 @@ from datetime import datetime, timedelta
 import pprint
 #from Bio.Phylo.TreeConstruction import _DistanceMatrix, DistanceTreeConstructor
 from Bio import Phylo
-import StringIO
+import io
 import json, os
+
+from django.utils import timezone
+
+def default_token_expiry():
+    return timezone.now() + timedelta(days=30)
 
 STATUS = {'PENDING':1,'RUNNING':2,'ERROR':3,'COMPLETE':4}
 STATUS_CHOICES = [
@@ -157,11 +162,11 @@ class Analysis(models.Model):
             anything else fall through and try to look up as a token
             '''
             if settings.DEBUG:                
-                print "Analysis does not exist, int type"
+                print("Analysis does not exist, int type")
             return None
         except Exception as e:
             if settings.DEBUG:
-                print e
+                print(e)
             pass
         
         try:
@@ -173,7 +178,7 @@ class Analysis(models.Model):
             anything else fall through and try to look up as a token
             '''
             if settings.DEBUG:                
-                print "Analysis does not exist, token type"
+                print("Analysis does not exist, token type")
             pass
         except Exception as e:
             '''
@@ -181,7 +186,7 @@ class Analysis(models.Model):
             let's try to log something if we're debugging
             '''
             if settings.DEBUG:
-                print e
+                print(e)
             pass
 
         return None
@@ -263,8 +268,8 @@ class Analysis(models.Model):
     
         min_gi_size = int(min_gi_size)
         if settings.DEBUG:
-            print "Testing for existing islandpick using, ext_id {}, using: ".format(ext_id)
-            print "Looking for min_gi_size: {} and genomes {}".format(min_gi_size, genomes)
+            print("Testing for existing islandpick using, ext_id {}, using: ".format(ext_id))
+            print("Looking for min_gi_size: {} and genomes {}".format(min_gi_size, genomes))
             
         analysis = Analysis.objects.filter(ext_id = ext_id)
         
@@ -278,29 +283,29 @@ class Analysis(models.Model):
             # We found an Islandpick in that analysis
             if a_parameters_json:
                 if settings.DEBUG:
-                    print "Checking Islandpick in analysis {}".format(a.aid)
+                    print("Checking Islandpick in analysis {}".format(a.aid))
                 a_parameters = json.loads(a_parameters_json)
                 
                 if settings.DEBUG:
-                    print "Found parameters:"
+                    print("Found parameters:")
                     pprint.pprint(a_parameters)
                 
                 # First check we have the right fields...
                 if 'comparison_genomes' not in a_parameters or 'MIN_GI_SIZE' not in a_parameters:
                     if settings.DEBUG:
-                        print "Either comparison_genomes or min_gi_size aren't in the db for analysis {}, skipping".format(a.aid)
+                        print("Either comparison_genomes or min_gi_size aren't in the db for analysis {}, skipping".format(a.aid))
                     continue
 
                 # Next check the comparison genomes
                 if sorted(a_parameters['comparison_genomes'].split(' ')) != sorted(genomes):
                     if settings.DEBUG:
-                        print "comparison_genomes for analysis {} don't match, skipping".format(a.aid)
+                        print("comparison_genomes for analysis {} don't match, skipping".format(a.aid))
                     continue
                 
                 # Finally, does the min_gi_size match?
                 if int(a_parameters['MIN_GI_SIZE']) != min_gi_size:
                     if settings.DEBUG:
-                        print "min_gi_size for analysis {} doesn't match, skipping".format(a.aid)
+                        print("min_gi_size for analysis {} doesn't match, skipping".format(a.aid))
                     continue
                 
                 # We made it this far, we must have a match, return this aid
@@ -323,7 +328,7 @@ class Analysis(models.Model):
             a_parameters = json.loads(a_parameters_json)
             
             if settings.DEBUG:
-                print "Found parameters:"
+                print("Found parameters:")
                 pprint.pprint(a_parameters)
             
             if 'ref_accnum' in a_parameters:
@@ -372,7 +377,7 @@ class GIAnalysisTask(models.Model):
             
         try:
             if settings.DEBUG:
-                print "Checking method {} in analysis {}".format(method,aid)
+                print("Checking method {} in analysis {}".format(method,aid))
 
             task = GIAnalysisTask.objects.filter(aid=aid, prediction_method=method)
             a_parameters_json = task.parameters
@@ -380,12 +385,12 @@ class GIAnalysisTask(models.Model):
             a_parameters = json.loads(a_parameters_json)
 
             if settings.DEBUG:
-                print "Found parameters:"
+                print("Found parameters:")
                 pprint.pprint(a_parameters)
 
         except Exception as e:
             if settings.DEBUG:
-                print e
+                print(e)
                 
             raise e
         
@@ -500,7 +505,7 @@ class Distance(models.Model):
     
     @classmethod
     def distance_matrix(cls, cluster_list):
-        print cluster_list
+        print(cluster_list)
         dists = Distance.objects.filter(rep_accnum1__in=cluster_list, rep_accnum2__in=cluster_list)
         
         distance_pairs = {g.rep_accnum1 + '_' + g.rep_accnum2: g.distance for g in dists.all()}
@@ -526,7 +531,7 @@ class Distance(models.Model):
         tree = constructor.nj(matrix_obj)
         tree.ladderize()
         #Phylo.draw_ascii(tree)
-        output = StringIO.StringIO()
+        output = io.StringIO()
         Phylo.write(tree, output, 'newick')
         tree_str = output.getvalue()
         #print tree_str
@@ -608,7 +613,7 @@ class VirulenceCuratedReps(models.Model):
 class UserToken(models.Model):
     user = models.ForeignKey(User, unique=True)
     token = models.CharField(max_length=36)
-    expires = models.DateTimeField(default=datetime.now()+timedelta(days=30), null=True)
+    expires = models.DateTimeField(default=default_token_expiry, null=True)
     
     class Meta:
         db_table = 'UserToken'
@@ -711,7 +716,7 @@ class Replicon(models.Model):
             
         except Exception as e:
             if settings.DEBUG:
-                print str(e)
+                print(str(e))
                 
             return None
 

@@ -72,7 +72,7 @@ def user_jobs_json(request):
         """A big assumption! That it's a custom genome.
            Fetching genome names (done multiple places) should be
            abstracted out at some point."""
-        print "analysis {}, status {}".format(a.aid, CHOICES[a.status])
+        print("analysis {}, status {}".format(a.aid, CHOICES[a.status]))
 
         genome = CustomGenome.objects.get(pk=a.ext_id)
 

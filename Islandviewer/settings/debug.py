@@ -1,4 +1,4 @@
-import env
+from . import env
 
 
 #DEBUG = env.DEV_ENV or env.TEST_ENV

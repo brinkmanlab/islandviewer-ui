@@ -1,5 +1,5 @@
 import os
-import paths
+from . import paths
 
 TEMPLATES = [
     {

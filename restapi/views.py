@@ -91,14 +91,14 @@ def user_job(request, aid, **kwargs):
             context['taskcount'][method.prediction_method] = GenomicIsland.objects.filter(aid=analysis, prediction_method=method.prediction_method).count()
         except Exception as e:
             if settings.DEBUG:
-                print str(e)
+                print(str(e))
             pass
     
     try:
         context['emails'] = ','.join(Notification.objects.filter(analysis=analysis).values_list('email', flat=True))
     except Exception as e:
         if settings.DEBUG:
-            print e
+            print(e)
         pass    
     
     data = json.dumps(context, indent=4, sort_keys=False)
@@ -129,7 +129,7 @@ def user_job_islandpick(request, aid, **kwargs):
         
     except Exception as e:
         if settings.DEBUG:
-            print str(e)
+            print(str(e))
         return HttpResponse(status = 403)
 
     return results
@@ -163,7 +163,7 @@ def user_job_picker(request, aid, **kwargs):
             kwargs[p] = float(request.GET.get(p))
         except Exception as e:
             if settings.DEBUG:
-                print "Sent a bad value for {}, ignoring: {}".format(p, str(e))
+                print("Sent a bad value for {}, ignoring: {}".format(p, str(e)))
             pass
 
     try:
@@ -176,7 +176,7 @@ def user_job_picker(request, aid, **kwargs):
         
     except Exception as e:
         if settings.DEBUG:
-            print str(e)
+            print(str(e))
         return HttpResponse(status = 403)
 
     return results
@@ -205,9 +205,9 @@ def user_job_islandpick_rerun(request, aid, **kwargs):
 
     if not (analysis.is_owner_or_anonymous(user.id) and analysis.is_complete):
         if settings.DEBUG:
-            print "uid used is {}".format(user.id)
-            print "analysis user is {}".format(analysis.owner_id)
-            print "analysis status: {}".format(analysis.status)
+            print("uid used is {}".format(user.id))
+            print("analysis user is {}".format(analysis.owner_id))
+            print("analysis status: {}".format(analysis.status))
         return HttpResponse(status=401)
 
     try:        
@@ -217,14 +217,14 @@ def user_job_islandpick_rerun(request, aid, **kwargs):
             return HttpResponse(status=403)
 
         for accnum in kwargs['genomes']:
-            print "looking for {}".format(accnum)
+            print("looking for {}".format(accnum))
             genome = Analysis.lookup_genome(accnum)
             
             if genome.is_system_owned or (genome.is_owner_or_anonymous(user.id) and genome.isvalid):
                 accnums.append(accnum)
             else:
                 if settings.DEBUG:
-                    print "Error, " + accnum + " not in genomes set"
+                    print("Error, " + accnum + " not in genomes set")
                     raise Exception("Error, requested genome isn't valid or allowed")
 
         clone_kwargs = { 'args': { 'modules': { 'Islandpick': { 'args': { 'comparison_genomes':  ' '.join(accnums), 'MIN_GI_SIZE': min_gi_size } } } } }
@@ -251,7 +251,7 @@ def user_job_islandpick_rerun(request, aid, **kwargs):
             
             if 'code' in clone_ret and clone_ret['code'] == 200:
                 if settings.DEBUG:
-                    print "Job submitted, new aid: " + clone_ret['data']
+                    print("Job submitted, new aid: " + clone_ret['data'])
                     
                 context['status'] = 'success'
                 aid = int(clone_ret['data'])
@@ -262,14 +262,14 @@ def user_job_islandpick_rerun(request, aid, **kwargs):
                         context['token'] = new_analysis.token
                 except Exception as e:
                     if settings.DEBUG:
-                        print "Can't find new analysis {}, that's bad bad bad".format(aid)
-                        print str(e)
+                        print("Can't find new analysis {}, that's bad bad bad".format(aid))
+                        print(str(e))
                     pass               
         
     except Exception as e:
         if settings.DEBUG:
-            print "Error in post"
-            print str(e)
+            print("Error in post")
+            print(str(e))
         return HttpResponse(status = 403)
 
     data = json.dumps(context, indent=4, sort_keys=False)

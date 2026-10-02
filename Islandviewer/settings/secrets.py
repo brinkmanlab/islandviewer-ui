@@ -1,4 +1,4 @@
-import env
+from . import env
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'my_secret_key'

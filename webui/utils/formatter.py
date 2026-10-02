@@ -129,7 +129,7 @@ def formatExcel(resultset, seqobj, methods, filename):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
     
-    for col_num in xrange(len(excel_columns)):
+    for col_num in range(len(excel_columns)):
         ws.write(row_num, col_num, excel_columns[col_num][0], font_style)
         # set column width
         ws.col(col_num).width = excel_columns[col_num][1]
@@ -159,7 +159,7 @@ def formatExcel(resultset, seqobj, methods, filename):
                    island.product,
                    makeAnnotationGroupingStr(island.virulence)
                    ]
-            for col_num in xrange(len(row)):
+            for col_num in range(len(row)):
                 ws.write(row_num, col_num, row[col_num], font_style)
 
     results_list = list(resultset)
@@ -182,7 +182,7 @@ def formatExcel(resultset, seqobj, methods, filename):
                    island.product,
                    island.virulence
                    ]
-            for col_num in xrange(len(row)):
+            for col_num in range(len(row)):
                 ws.write(row_num, col_num, row[col_num], font_style)
             
     wb.save(response)
@@ -199,7 +199,7 @@ def formatAnnotationExcel(annotations, filename):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
     
-    for col_num in xrange(len(excel_annotation_columns)):
+    for col_num in range(len(excel_annotation_columns)):
         ws.write(row_num, col_num, excel_annotation_columns[col_num][0], font_style)
         # set column width
         ws.col(col_num).width = excel_annotation_columns[col_num][1]
@@ -214,7 +214,7 @@ def formatAnnotationExcel(annotations, filename):
             annotation.source
         ]
         row.append(makeAnnotationStr(annotation.external_id, annotation.source))
-        for col_num in xrange(len(row)):
+        for col_num in range(len(row)):
             ws.write(row_num, col_num, row[col_num], font_style)
 
             
@@ -276,25 +276,25 @@ def makeAnnotationGroupingStr(annotationstr):
     return ','.join(annotation_pieces)
     
 excel_columns = [
-    (u'Island start', 3000),
-    (u'Island end', 3000),
-    (u'Length', 2000),
-    (u'Method', 8000),
-    (u'Gene name', 6000),
-    (u'Gene ID', 3000),
-    (u'Locus', 4000),
-    (u'Gene start', 3000),
-    (u'Gene end', 3000),
-    (u'Strand', 2000),
-    (u'Product', 10000),
-    (u'External Annotations', 10000)
+    ('Island start', 3000),
+    ('Island end', 3000),
+    ('Length', 2000),
+    ('Method', 8000),
+    ('Gene name', 6000),
+    ('Gene ID', 3000),
+    ('Locus', 4000),
+    ('Gene start', 3000),
+    ('Gene end', 3000),
+    ('Strand', 2000),
+    ('Product', 10000),
+    ('External Annotations', 10000)
                  
 ]    
 
 excel_annotation_columns = [
-    (u'Name', 4000),
-    (u'Type', 3000),
-    (u'Source', 15000)
+    ('Name', 4000),
+    ('Type', 3000),
+    ('Source', 15000)
 ]
 
 allowedmethods = ['sigi', 'islandpick', 'dimob', 'islander']

@@ -5,7 +5,7 @@ class DisableMigrations(object):
         return True
 
     def __getitem__(self, item):
-        return "notmigrations"
+        return None
 
 TEST_RUNNER = 'webui.tests.utils.UnManagedModelTestRunner'
 

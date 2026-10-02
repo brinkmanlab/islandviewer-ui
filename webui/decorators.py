@@ -4,7 +4,7 @@ from datetime import datetime
 import pytz
 import json
 import uuid
-from models import UserToken, PICKER_DEFAULTS
+from .models import UserToken, PICKER_DEFAULTS
 
 def auth_token(function=None, allow_anonymous=False):
     """
@@ -45,7 +45,7 @@ def auth_token(function=None, allow_anonymous=False):
 
                 except Exception as e:
                     if settings.DEBUG:
-                        print str(e)
+                        print(str(e))
                     return HttpResponse(status=401)
 
             response = view_func(request, *args, **kwargs)
@@ -74,7 +74,7 @@ def staff_required(function=None):
 
                 except Exception as e:
                     if settings.DEBUG:
-                        print str(e)
+                        print(str(e))
                     return HttpResponse(status=401)
 
             response = view_func(request, *args, **kwargs)

@@ -11,7 +11,7 @@ class Command(BaseCommand):
                         )
 
     def handle(self, *args, **options):
-        print "IV users"
+        print("IV users")
 
         command = options['command'].lower()
 
@@ -27,7 +27,7 @@ class Command(BaseCommand):
         user.is_active = not user.is_active
         user.save()
 
-        print "User is now {}".format('active' if user.is_active else 'inactive')
+        print("User is now {}".format('active' if user.is_active else 'inactive'))
 
         self.print_user_header()
         self.print_user(user)
@@ -37,7 +37,7 @@ class Command(BaseCommand):
         user.is_staff = not user.is_staff
         user.save()
 
-        print "User is now {}".format('staff' if user.is_staff else 'not staff')
+        print("User is now {}".format('staff' if user.is_staff else 'not staff'))
 
         self.print_user_header()
         self.print_user(user)
@@ -49,7 +49,7 @@ class Command(BaseCommand):
             self.print_user(user)
 
     def print_user_header(self):
-        print "{:<3} {:<24} {:<15} {:<15} {:<15} {:<30} {:<21} {:<21} {:<8} {:<9}".format('uid',
+        print("{:<3} {:<24} {:<15} {:<15} {:<15} {:<30} {:<21} {:<21} {:<8} {:<9}".format('uid',
                                                                                     'username',
                                                                                     'provider',
                                                                                     'first',
@@ -58,10 +58,10 @@ class Command(BaseCommand):
                                                                                     'last_login',
                                                                                     'date_joined',
                                                                                     'is staff',
-                                                                                    'is active')
+                                                                                    'is active'))
 
     def print_user(self, user):
-            print "{:<3} {:<24} {:<15} {:<15} {:<15} {:<30} {:<21} {:<21} {:<8} {:<9}".format(user.id, 
+            print("{:<3} {:<24} {:<15} {:<15} {:<15} {:<30} {:<21} {:<21} {:<8} {:<9}".format(user.id, 
                                                                                          user.username,
                                                                                          user.social_auth.get().provider,  
                                                                                          user.first_name,
@@ -70,5 +70,5 @@ class Command(BaseCommand):
                                                                                          formats.date_format(user.last_login, "SHORT_DATETIME_FORMAT"),
                                                                                          formats.date_format(user.date_joined, "SHORT_DATETIME_FORMAT"),
                                                                                          user.is_staff,
-                                                                                         user.is_active)
+                                                                                         user.is_active))
 #            print user.social_auth.get().provider

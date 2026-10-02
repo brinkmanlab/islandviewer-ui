@@ -103,7 +103,7 @@ def results(request, aid):
                 context['emails'] = ','.join(Notification.objects.filter(analysis=analysis).values_list('email', flat=True))
             except Exception as e:
                 if settings.DEBUG:
-                    print e
+                    print(e)
             pass    
 
 
@@ -122,7 +122,7 @@ def resultsbyaccnum(request, accnum):
         
     except Exception as e:
         if settings.DEBUG:
-            print e
+            print(e)
         return HttpResponse(status = 403)
 
 def resultsbyrootaccnum(request, accnum):
@@ -133,7 +133,7 @@ def resultsbyrootaccnum(request, accnum):
 
     except Exception as e:
         if settings.DEBUG:
-            print e
+            print(e)
         return HttpResponse(status = 403)
 
 def resultsbyname(request, name):
@@ -145,7 +145,7 @@ def resultsbyname(request, name):
         
     except Exception as e:
         if settings.DEBUG:
-            print e
+            print(e)
         return HttpResponse(status = 403)
        
 @last_modified(Analysis.last_modified)
@@ -331,7 +331,7 @@ def uploadform(request):
         
     except Exception as e:
         if settings.DEBUG:
-            print "Error getting SiteStatus (a): {}".format(str(e))
+            print("Error getting SiteStatus (a): {}".format(str(e)))
     
     if request.method == 'GET':
         form = UploadGenomeForm()
@@ -349,26 +349,26 @@ def uploadform(request):
             except (ValueError, Exception) as e:
                 context['error'] = "Unknown error"
                 if settings.DEBUG:
-                    print "Unknown error {0}".format(e)
+                    print("Unknown error {0}".format(e))
                     for arg in e.args:
                         context['error'] += "<pre>" + "{0}".format(arg) + "</pre>\n"
             else:
                 if settings.DEBUG:
-                    print "Successful upload, redirect here to analysis"
+                    print("Successful upload, redirect here to analysis")
                 # Will be in aid?
                 if ret['code'] == 200:
                     m = re.search("\[(\d+)\]", ret['msg'])
                     if m:
                         aid = m.group(1)
                         if settings.DEBUG:
-                            print "Found aid: {0}".format(aid)
+                            print("Found aid: {0}".format(aid))
                             
                         return HttpResponseRedirect(reverse('webui.views.results', kwargs={'aid': aid}))
                     else:
                         context['error'] = "Error parsing results from the server"
                         if settings.DEBUG:
                             context['error'] += "<pre>" + ret['msg'] + "</pre>\n"
-                            print "Error str: {0}".format(ret['msg'])
+                            print("Error str: {0}".format(ret['msg']))
                 else:
                     if 'user_error_msg' in ret:
                         context['error'] = ret['user_error_msg']
@@ -381,7 +381,7 @@ def uploadform(request):
                         context['error'] += "<pre>" + ret['msg'] + "</pre>\n"
                         if 'data' in ret and 'code' in ret['data']:
                             context['error'] += "<pre>Error code: " + ret['data']['code'] + "</pre>\n"
-                        print "Error str: {0}".format(ret['msg'])
+                        print("Error str: {0}".format(ret['msg']))
     else:
         return HttpResponseServerError('Unsupported method ' + request.method)
                     
@@ -413,7 +413,7 @@ def _uploadcustomajax(request, **kwargs):
             form = UploadGenomeForm(request.POST, request.FILES)
             if form.is_valid():
                 if settings.DEBUG:
-                    print "valid"
+                    print("valid")
                 x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
                 if x_forwarded_for:
                     ip = x_forwarded_for.split(',')[-1].strip()
@@ -431,7 +431,7 @@ def _uploadcustomajax(request, **kwargs):
                 except (ValueError, Exception) as e:
                     context['error'] = "Unknown error"
                     if settings.DEBUG:
-                        print "Unknown error {0}".format(e)
+                        print("Unknown error {0}".format(e))
                         for arg in e.args:
                             context['error'] += "<pre>" + "{0}".format(arg) + "</pre>\n"
 
@@ -439,27 +439,27 @@ def _uploadcustomajax(request, **kwargs):
                 else:
                     # We received a result from the backend
                     if settings.DEBUG:
-                        print "Successful upload, redirect here to analysis"
+                        print("Successful upload, redirect here to analysis")
                     # Will be in aid?
                     if ret['code'] == 200:
                         m = re.search("\[(\d+)\]", ret['msg'])
                         if m:
                             aid = m.group(1)
                             if settings.DEBUG:
-                                print "Found aid: {0}".format(aid)
+                                print("Found aid: {0}".format(aid))
 
                             context['status'] = 200
                             context['aid'] = aid
                             if 'data' in ret and 'token' in ret['data']:
                                 if settings.DEBUG:
-                                    print "Found token: " + ret['data']['token']
+                                    print("Found token: " + ret['data']['token'])
                                 context['token'] = ret['data']['token']
 
                         else:
                             context['error'] = "Error parsing results from the server"
                             if settings.DEBUG:
                                 context['error'] += "<pre>" + ret['msg'] + "</pre>\n"
-                                print "Error str: {0}".format(ret['msg'])
+                                print("Error str: {0}".format(ret['msg']))
 
                             context['status'] = 500
 
@@ -478,7 +478,7 @@ def _uploadcustomajax(request, **kwargs):
                             context['error'] += "<pre>" + ret['msg'] + "</pre>\n"
                             if 'data' in ret and 'code' in ret['data']:
                                 context['error'] += "<pre>Error code: " + ret['data']['code'] + "</pre>\n"
-                            print "Error str: {0}".format(ret['msg'])
+                            print("Error str: {0}".format(ret['msg']))
 
                         # It might not be an error, see if there's a cid and code
                         if 'data' in ret:
@@ -491,10 +491,10 @@ def _uploadcustomajax(request, **kwargs):
             else:
                 # If we've gotten here, someone is doing something naughty, screw'em
                 if settings.DEBUG:
-                    print form.errors, 'here1'
-                    print form.non_field_errors(), 'here2'
+                    print(form.errors, 'here1')
+                    print(form.non_field_errors(), 'here2')
                     field_errors = [(field.label, field.errors) for field in form]
-                    print field_errors, 'here3'
+                    print(field_errors, 'here3')
 
         else:
             return HttpResponse(status=400)
@@ -595,14 +595,14 @@ def runstatusdetailsjson(request, aid):
             context['taskcount'][method.prediction_method] = GenomicIsland.objects.filter(aid=analysis, prediction_method=method.prediction_method).count()
         except Exception as e:
             if settings.DEBUG:
-                print str(e)
+                print(str(e))
             pass
     
     try:
         context['emails'] = ','.join(Notification.objects.filter(analysis=analysis).values_list('email', flat=True))
     except Exception as e:
         if settings.DEBUG:
-            print e
+            print(e)
         pass    
     
     data = json.dumps(context, indent=4, sort_keys=False)
@@ -619,7 +619,7 @@ def add_notify(request, aid):
             analysis = Analysis.objects.get(pk=aid)
         except Exception as e:
             if settings.DEBUG:
-                print e
+                print(e)
                 
             return HttpResponse(status=400)
 
@@ -645,11 +645,11 @@ def add_notify(request, aid):
             
             except Exception as e:
                 if settings.DEBUG:
-                    print e
+                    print(e)
                 return HttpResponse(status=500)
         else:
             if settings.DEBUG:
-                print "No email"
+                print("No email")
             return HttpResponse(status=500)
 
 
@@ -675,7 +675,7 @@ def restartmodule(request, aid):
 
     if 'code' in clone_ret and clone_ret['code'] == 200:
         if settings.DEBUG:
-            print "Job submitted, new aid: " + clone_ret['data']
+            print("Job submitted, new aid: " + clone_ret['data'])
         
         context['status'] = 'success'
         context['aid'] = clone_ret['data']                
@@ -706,7 +706,7 @@ def logsmodule(request, aid):
         filename = os.path.join(settings.ANALYSIS_PATH, aid, module, 'analysis.log')
     
     if settings.DEBUG:
-        print filename
+        print(filename)
         context['filename'] = filename
 
     if not os.path.isfile(filename):
@@ -778,14 +778,14 @@ def fetchislands(request):
     islands = {}
     dna = {}
     if 'gi' in context:
-        islands.update(recs[long(gi)])
+        islands.update(recs[int(gi)])
     else:
         if settings.DEBUG:
-            print type(recs)
+            print(type(recs))
         for islandid in recs:
             islands.update(recs[islandid])
             
-    context['islands'] = sorted(islands.iteritems(), key= lambda (k,v): int(v['start']))
+    context['islands'] = sorted(list(islands.items()), key=lambda kv: int(kv[1]['start']))
     context['fastaseq'] = dna
 
     return render(request, "islands_by_gi.html", context)
@@ -850,7 +850,7 @@ def islandpick_select_genomes(request, aid):
         
     except Exception as e:
         if settings.DEBUG:
-            print "Error getting SiteStatus (b): {}".format(str(e))
+            print("Error getting SiteStatus (b): {}".format(str(e)))
     
     try:
         analysis = Analysis.objects.get(pk=aid)
@@ -883,7 +883,7 @@ def islandpick_genomes_json(request, aid, **kwargs):
             kwargs[p] = float(request.GET.get(p))
         except Exception as e:
             if settings.DEBUG:
-                print "Sent a bad value for {}, ignoring: {}".format(p, str(e))
+                print("Sent a bad value for {}, ignoring: {}".format(p, str(e)))
             pass
 
     try:
@@ -898,7 +898,7 @@ def islandpick_genomes_json(request, aid, **kwargs):
         
     except Exception as e:
         if settings.DEBUG:
-            print str(e)
+            print(str(e))
         return HttpResponse(status = 403)
 
     data = json.dumps(results, indent=4, sort_keys=False)
@@ -914,7 +914,7 @@ def islandpick_genomes(aid, picked=None, reselect=False, **kwargs):
         context['default_analysis'] = (True if analysis.default_analysis == 1 else False)
     except Analysis.DoesNotExist:
         if settings.DEBUG:
-            print "Can't fetch analysis"
+            print("Can't fetch analysis")
         return HttpResponse(status = 403)
 
     selected = {}
@@ -931,7 +931,7 @@ def islandpick_genomes(aid, picked=None, reselect=False, **kwargs):
 
     except Exception as e:
         if settings.DEBUG:
-            print e
+            print(e)
         raise Exception("Can't find analysis task")
 
     if 'comparison_genomes' in parameters:
@@ -956,7 +956,7 @@ def islandpick_genomes(aid, picked=None, reselect=False, **kwargs):
 
         except Exception as e:
             if settings.DEBUG:
-                print str(e)
+                print(str(e))
             pass
 
         genome_list = OrderedDict()
@@ -977,13 +977,13 @@ def islandpick_genomes(aid, picked=None, reselect=False, **kwargs):
         if reselect:
             try:
                 if settings.DEBUG:
-                    print "Sending to picker: {}".format(analysis.ext_id)
+                    print("Sending to picker: {}".format(analysis.ext_id))
                     pprint.pprint(kwargs)
                 # If we're re-selecting the candidates, make the call to the backend
                 picker = send_picker(analysis.ext_id, **kwargs)
 
                 if settings.DEBUG:
-                    print "From picker"
+                    print("From picker")
                     pprint.pprint(picker)
 
                 if 'code' in picker and picker['code'] == 200:
@@ -994,7 +994,7 @@ def islandpick_genomes(aid, picked=None, reselect=False, **kwargs):
                 context['picker'] = picker
             except Exception as e:
                 if settings.DEBUG:
-                    print "Exception: " + str(e)
+                    print("Exception: " + str(e))
                 context['picker'] = {'code': 500}
 
 
@@ -1015,7 +1015,7 @@ def islandpick_genomes(aid, picked=None, reselect=False, **kwargs):
                 #print name, request.POST[name]
                 if name not in (x[0] for x in genomes):
                     if settings.DEBUG:
-                        print "Error, " + name + " not in genomes set"
+                        print("Error, " + name + " not in genomes set")
                     raise Exception("Error, requested genome isn't in the allowed set")
                 accnums.append(name)
 
@@ -1039,7 +1039,7 @@ def islandpick_genomes(aid, picked=None, reselect=False, **kwargs):
             
                 if 'code' in clone_ret and clone_ret['code'] == 200:
                     if settings.DEBUG:
-                        print "Job submitted, new aid: " + clone_ret['data']
+                        print("Job submitted, new aid: " + clone_ret['data'])
                     
                     context['status'] = 'success'
                     aid = clone_ret['data']
@@ -1053,8 +1053,8 @@ def islandpick_genomes(aid, picked=None, reselect=False, **kwargs):
         
         except Exception as e:
             if settings.DEBUG:
-                print "Error in post"
-                print str(e)
+                print("Error in post")
+                print(str(e))
             return HttpResponse(status = 403)
 
         if settings.DEBUG:

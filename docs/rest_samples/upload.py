@@ -24,5 +24,5 @@ if not r.ok:
   sys.exit()
  
 decoded = r.json()
-print repr(decoded)
+print(repr(decoded))
  

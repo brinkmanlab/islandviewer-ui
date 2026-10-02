@@ -1,11 +1,11 @@
 from django.conf.urls import include, url
-import settings.env
+from .settings import env
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
 
-if settings.env.DEV_ENV:
+if env.DEV_ENV:
     urlpatterns = [
         url(r'^islandviewer/', include('webui.urls')),
         url(r'^islandviewer/', include('iv_social.urls', namespace='iv_social')),

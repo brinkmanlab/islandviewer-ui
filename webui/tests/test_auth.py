@@ -13,7 +13,7 @@ Test custom genome models
 def setUpModule():
     for fixture in base_fixtures:
         full_fixture = 'webui/tests/test-data/' + fixture
-        print "Loading fixture {}".format(full_fixture)
+        print("Loading fixture {}".format(full_fixture))
         call_command('loaddata', full_fixture, verbosity=1)
     
 
@@ -25,7 +25,7 @@ class AuthTest(TestCase):
 #            username='zerocool', email='mewiththebest@dieliketherest.com', password='top_secret')
 
     def testStatusAuthentication(self):
-        print "Test status authentication on views"
+        print("Test status authentication on views")
 
         request = self.factory.get('/tark/status/')
 

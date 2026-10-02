@@ -150,28 +150,28 @@ class GenbankParser():
         islands = {}
         
         if gi:
-            islands.update(self.islands[long(gi)])
+            islands.update(self.islands[int(gi)])
         else:
             for islandid in self.islands:
                 islands.update(self.islands[islandid])
 
-        sortedislands = sorted(islands.iteritems(), key= lambda (k,v): int(v['start']))
+        sortedislands = sorted(list(islands.items()), key=lambda kv: int(kv[1]['start']))
 
         fasta = ''
         for coord,values in sortedislands:
             header = ''
             if(values['protein_id']):
-                header = '|'.join(filter(None, [header, 'ref|' + str(values['protein_id'])]))
+                header = '|'.join([_f for _f in [header, 'ref|' + str(values['protein_id'])] if _f])
                 #header += 'ref|' + str(values['protein_id']) + '|'
             if(values['locus']):
-                header = '|'.join(filter(None, [header, 'locus|' + str(values['locus'])]))
+                header = '|'.join([_f for _f in [header, 'locus|' + str(values['locus'])] if _f])
                 #header += 'locus|' + str(values['locus']) + '|'
             if show_methods:
 #                pprint.pprint(values['method'])
                 methods_found = self.generateMethods(values['start'], values['end'], methods)
                 if methods_found:
                     methodsStr = 'prediction_method|' + ",".join(methods_found)
-                    header = '|'.join(filter(None, [header, methodsStr]))
+                    header = '|'.join([_f for _f in [header, methodsStr] if _f])
                     #header += 'prediction_method|' + ",".join(methods_found)
                 else:
                     continue
@@ -181,7 +181,7 @@ class GenbankParser():
                 if annotations:
                     unique_annotations = set(a[0] for a in annotations)
                     annotations = 'annotations|' + ",".join(unique_annotations)
-                    header = '|'.join(filter(None, [header, annotations]))
+                    header = '|'.join([_f for _f in [header, annotations] if _f])
                     #header += '|annotations|' + ",".join(unique_annotations)
                 header += " {0} ({1})".format(values['product'], coord)
 
@@ -199,7 +199,7 @@ class GenbankParser():
         islands = {}
         
         fasta = ">{0}\n".format(rangestr)
-        dna = str(self.dna[long(gi)])
+        dna = str(self.dna[int(gi)])
         fasta += "\n".join(textwrap.wrap(dna))
         fasta += "\n"
         
@@ -267,12 +267,12 @@ class GenbankParser():
         
         try:
             filename = customgenome.filename
-            filename = filename.replace(u'{{custom_genomes}}', settings.CUSTOM_GENOMES)
-            filename = filename.replace(u'{{tmp_genomes}}', settings.GENOME_UPLOAD_PATH)
+            filename = filename.replace('{{custom_genomes}}', settings.CUSTOM_GENOMES)
+            filename = filename.replace('{{tmp_genomes}}', settings.GENOME_UPLOAD_PATH)
             
         except Exception as e:
             if settings.DEBUG:
-                print "Exception raised with filename {}: {}".format(filename, e)
+                print("Exception raised with filename {}: {}".format(filename, e))
 
         # Check we actually have a genbank type
         if ".gbk" in customgenome.formats.split():

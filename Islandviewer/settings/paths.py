@@ -1,6 +1,6 @@
 import os
 import sys
-import env
+from . import env
 
 PROJECT_PATH  = os.path.dirname(os.path.dirname(__file__))
 BASE_DIR = os.path.dirname(PROJECT_PATH)

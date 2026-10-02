@@ -37,7 +37,7 @@ class GenomeParser():
             if settings.DEBUG:
                 debug_error = ''
                 for arg in e.args:
-                    print "{0}\n".format(arg)
+                    print("{0}\n".format(arg))
                     debug_error += arg
                 raise Exception("Unknown error: " + debug_error)
 
@@ -72,12 +72,12 @@ class GenomeParser():
             message = {'action': 'submit', 'cid': form_data['cid']}
             if 'email_addr' in form_data:
                 if settings.DEBUG:
-                    print "Received email for notificaion: " + form_data['email_addr']
+                    print("Received email for notificaion: " + form_data['email_addr'])
                 message['email'] = form_data['email_addr']
             
             if 'ref_accnum' in form_data and form_data['ref_accnum'] != 'False':
                 if settings.DEBUG:
-                    print "Received ref_accnum: " + form_data['ref_accnum']
+                    print("Received ref_accnum: " + form_data['ref_accnum'])
                     
                 message['ref_accnum'] = form_data['ref_accnum']
             
@@ -85,7 +85,7 @@ class GenomeParser():
             # be an fna file
             elif 'genome_file' in form_data and form_data['genome_file']:
                 if settings.DEBUG:
-                    print "We received a genome_file in the form data"
+                    print("We received a genome_file in the form data")
                     
                 encoded_genome = base64.urlsafe_b64encode( form_data['genome_file'].read() )
                 
@@ -102,7 +102,7 @@ class GenomeParser():
                 if settings.DEBUG:
                     debug_error = ''
                     for arg in e.args:
-                        print "{0}\n".format(arg)
+                        print("{0}\n".format(arg))
                         debug_error += arg
                     raise Exception("Unknown error: " + debug_error)
 
@@ -118,7 +118,7 @@ class GenomeParser():
             kwargs = dict()
             if 'ref_accnum' in form_data and form_data['ref_accnum'] != 'False':
                 if settings.DEBUG:
-                    print "Received ref_accnum: " + form_data['ref_accnum']
+                    print("Received ref_accnum: " + form_data['ref_accnum'])
 
                 kwargs['ref_accnum'] = form_data['ref_accnum']
 

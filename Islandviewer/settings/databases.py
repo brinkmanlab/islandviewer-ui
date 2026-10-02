@@ -17,7 +17,7 @@ if 'TRAVIS' in os.environ:
         }
     }
 elif 'test' in sys.argv or 'test_coverage' in sys.argv:
-    import secrets
+    from . import secrets
     DATABASES = {
        'default': {
             'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
@@ -37,7 +37,7 @@ elif 'test' in sys.argv or 'test_coverage' in sys.argv:
         }
     }
 else:
-    import secrets
+    from . import secrets
     DATABASES = {
        'default': {
             'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.

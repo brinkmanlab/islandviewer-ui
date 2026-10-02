@@ -57,7 +57,7 @@ def icon_name(name):
 
 @register.filter
 def social_backends(backends):
-    backends = [(name, backend) for name, backend in backends.items()
+    backends = [(name, backend) for name, backend in list(backends.items())
                     if name not in ['username', 'email']]
     backends.sort(key=lambda b: b[0])
     return backends
@@ -65,7 +65,7 @@ def social_backends(backends):
 
 @register.filter
 def legacy_backends(backends):
-    backends = [(name, backend) for name, backend in backends.items()
+    backends = [(name, backend) for name, backend in list(backends.items())
                     if name in ['username', 'email']]
     backends.sort(key=lambda b: b[0])
     return backends
@@ -73,7 +73,7 @@ def legacy_backends(backends):
 
 @register.filter
 def oauth_backends(backends):
-    backends = [(name, backend) for name, backend in backends.items()
+    backends = [(name, backend) for name, backend in list(backends.items())
                     if issubclass(backend, OAuthAuth)]
     backends.sort(key=lambda b: b[0])
     return backends
