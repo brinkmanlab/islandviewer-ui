@@ -1,4 +1,5 @@
-import env, os, sys
+import os, sys
+from . import env
 
 if 'TRAVIS' in os.environ:
     SECRET_KEY = "SecretKeyForUseOnTravis"
