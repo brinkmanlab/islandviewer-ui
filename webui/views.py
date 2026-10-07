@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError, StreamingHttpResponse, UnreadablePostError
-from django.shortcuts import render, get_object_or_404, render_to_response
+from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
 from django.conf import settings
 from django import forms
