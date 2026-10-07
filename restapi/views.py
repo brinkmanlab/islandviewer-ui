@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseServerError
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.db.models import F
@@ -17,12 +17,12 @@ from uploadparser.submitter import send_clone
 '''
 Rate limits for authenticated and unauthenticated users
 '''
-minute_rate = lambda group, request: '10/m' if request.user.is_authenticated() else '10/min'
-hour_rate = lambda group, request: '120/h' if request.user.is_authenticated() else '120/hour'
+minute_rate = lambda group, request: '10/m' if request.user.is_authenticated else '10/min'
+hour_rate = lambda group, request: '120/h' if request.user.is_authenticated else '120/hour'
 
-submission_minute_rate = lambda group, request: '2/m' if request.user.is_authenticated() else '2/m'
-submission_hour_rate = lambda group, request: '30/h' if request.user.is_authenticated() else '30/h'
-submission_day_rate = lambda group, request: '200/d' if request.user.is_authenticated() else '200/d'
+submission_minute_rate = lambda group, request: '2/m' if request.user.is_authenticated else '2/m'
+submission_hour_rate = lambda group, request: '30/h' if request.user.is_authenticated else '30/h'
+submission_day_rate = lambda group, request: '200/d' if request.user.is_authenticated else '200/d'
 
 @auth_token
 @ratelimit(group='rest', key='user', rate=minute_rate)

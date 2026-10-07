@@ -1,7 +1,7 @@
 from django.conf.urls import url
 
 from . import views
-
+app_name = 'iv_social'
 urlpatterns = [
 #    url(r'^$', views.index, name='index'),
     url(r'^rest/jobs/$', views.user_jobs, name='user_jobs'),

@@ -17,6 +17,7 @@ def setUpModule():
     
 
 class NameCacheTest(TestCase):
+    databases = {'default', 'microbedb'}
 
     def testNameCache(self):
 

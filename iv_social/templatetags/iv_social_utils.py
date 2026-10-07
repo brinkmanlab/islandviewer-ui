@@ -83,7 +83,7 @@ def oauth_backends(backends):
 def associated(context, backend):
     user = context.get('user')
     context['association'] = None
-    if user and user.is_authenticated():
+    if user and user.is_authenticated:
         try:
             context['association'] = user.social_auth.filter(
                 provider=backend.name

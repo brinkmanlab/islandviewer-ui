@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import last_modified
 import json
 from webui.models import Analysis, GenomicIsland, GC, CustomGenome, IslandGenes, UploadGenome, Virulence, NameCache, Genes, Replicon, Genomeproject, GIAnalysisTask, Distance, Notification, SiteStatus, STATUS, STATUS_CHOICES, VIRULENCE_FACTORS, MODULES, PICKER_DEFAULTS
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from islandplot import plot
 from giparser import fetcher
 from uploadparser import uploader
@@ -422,7 +422,7 @@ def _uploadcustomajax(request, **kwargs):
                 uploadparser = uploader.GenomeParser()
 
                 try:
-                    if request.user.is_authenticated():
+                    if request.user.is_authenticated:
                         user_id = request.user.id
                     else:
                         # See if we've been passed a userid from the caller (ie. rest upload view), otherwise, None

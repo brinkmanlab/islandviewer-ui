@@ -1,6 +1,6 @@
 from django.test import TestCase, RequestFactory, Client
 from django.core.management import call_command
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 import os, json, pprint
 
 from webui.tests import analysis_fixtures, microbedb_fixtures
@@ -112,11 +112,11 @@ class RestAPITest(TestCase):
         if write_ref:
             self.writeRef(json_filename, response_json)
         else:
-	    if refs != response_json:
-    		print("---EXPECTED---")
-    		print((json.dumps(refs, indent=2, sort_keys=True)))
-    		print("---ACTUAL---")
-    		print((json.dumps(response_json, indent=2, sort_keys=True)))
+            if refs != response_json:
+                print("---EXPECTED---")
+                print((json.dumps(refs, indent=2, sort_keys=True)))
+                print("---ACTUAL---")
+                print((json.dumps(response_json, indent=2, sort_keys=True)))
             self.assertEqual(refs, response_json, "URL: {}, test: {}".format(url, slug))
 
     def textFetch(self, url, slug, token, write_ref=False):

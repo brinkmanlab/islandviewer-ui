@@ -364,7 +364,7 @@ class Analysis(models.Model):
 
 class GIAnalysisTask(models.Model):
     taskid = models.AutoField(primary_key=True)
-    aid = models.ForeignKey(Analysis, related_name='tasks')
+    aid = models.ForeignKey(Analysis, related_name='tasks', on_delete=models.CASCADE)
     prediction_method = models.CharField(max_length=15)
     status = models.IntegerField(choices=STATUS_CHOICES,
                                  default=STATUS['PENDING'])
@@ -401,7 +401,7 @@ class GIAnalysisTask(models.Model):
 
 class GenomicIsland(models.Model):
     gi = models.AutoField(primary_key=True)
-    aid = models.ForeignKey(Analysis)
+    aid = models.ForeignKey(Analysis, on_delete=models.CASCADE)
     start = models.IntegerField(default=0)
     end = models.IntegerField(default=0)
     prediction_method = models.CharField(max_length=15, db_index=True)
@@ -460,7 +460,7 @@ class Genes(models.Model):
 
 class IslandGenes(models.Model):
     gi = models.IntegerField(db_index=True)
-    gene = models.ForeignKey(Genes, db_index=True)
+    gene = models.ForeignKey(Genes, db_index=True, on_delete=models.CASCADE)
     
     class Meta:
         db_table = "IslandGenes"
@@ -558,7 +558,7 @@ class UploadGenome(models.Model):
         db_table = "UploadGenome"
 
 class Notification(models.Model):
-    analysis = models.ForeignKey(Analysis, related_name='notifications')
+    analysis = models.ForeignKey(Analysis, related_name='notifications', on_delete=models.CASCADE)
     email = models.EmailField()
     status = models.IntegerField(default=0)
     
@@ -611,7 +611,7 @@ class VirulenceCuratedReps(models.Model):
         db_table = 'virulence_curated_reps'
 
 class UserToken(models.Model):
-    user = models.ForeignKey(User, unique=True)
+    user = models.ForeignKey(User, unique=True, on_delete=models.CASCADE)
     token = models.CharField(max_length=36)
     expires = models.DateTimeField(default=default_token_expiry, null=True)
     
@@ -627,7 +627,7 @@ class Genomeproject(models.Model):
     assembly_accession = models.CharField(max_length=20)
     asm_name = models.CharField(max_length=24)
     genome_name = models.TextField()
-    version = models.ForeignKey('Version')
+    version = models.ForeignKey('Version', on_delete=models.CASCADE)
     bioproject = models.CharField(max_length=14)
     biosample = models.CharField(max_length=14)
     taxid = models.IntegerField(blank=True, null=True)
@@ -648,7 +648,7 @@ class Genomeproject_Checksum(models.Model):
     version_id = models.IntegerField(primary_key=True)
     filename = models.CharField(max_length=64)
     checksum = models.CharField(max_length=32)
-    gpv_id = models.ForeignKey(Genomeproject, db_column='gpv_id')
+    gpv_id = models.ForeignKey(Genomeproject, db_column='gpv_id', on_delete=models.CASCADE)
     class Meta:
         managed = False
         db_table = 'genomeproject_checksum'
@@ -678,7 +678,7 @@ class Genomeproject_Meta(models.Model):
 
 class Replicon(models.Model):
     rpv_id = models.IntegerField(primary_key=True)
-    gpv_id = models.ForeignKey('Genomeproject', related_name='replicons', db_column='gpv_id')
+    gpv_id = models.ForeignKey('Genomeproject', related_name='replicons', db_column='gpv_id', on_delete=models.CASCADE)
     version_id = models.IntegerField()
     rep_accnum = models.CharField(max_length=20, blank=True)
     rep_version = models.IntegerField()
