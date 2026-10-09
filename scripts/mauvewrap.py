@@ -12,7 +12,7 @@ MAUVE_OUTPUT_PATH = "/data/Modules/iv-backend/islandviewer/pairwise_mauve"
 #Parameters = path to 2 genebank files
 #Returns None
 #Creates an output file at path outputfile and backbone file at path backbonefile
-def runMauve(gbk1,gbk2,outputfile=None,outputbackbonefile=None, async=False):
+def runMauve(gbk1,gbk2,outputfile=None,outputbackbonefile=None, run_async=False):
     if outputfile is None:
         outputfile = MAUVE_OUTPUT_PATH+"/"+os.path.splitext(os.path.basename(gbk1))[0]+"-"+os.path.splitext(os.path.basename(gbk2))[0]
     if outputbackbonefile is None:
@@ -33,8 +33,8 @@ def runMauve(gbk1,gbk2,outputfile=None,outputbackbonefile=None, async=False):
     pbsFile.close()
     sp = subprocess.Popen(["qsub", jobFile], cwd=MAUVE_PATH)
 
-    # waits for job when using torque if async = False
-    if not async:
+    # waits for job when using torque if run_async = False
+    if not run_async:
         completeFlag = False
         while not completeFlag:
             qstatOutput = subprocess.Popen(["qstat", "-x"],stdout=subprocess.PIPE, cwd=MAUVE_PATH)

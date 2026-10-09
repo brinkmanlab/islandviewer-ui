@@ -1,5 +1,4 @@
 from Bio import SeqIO
-from Bio.Alphabet import IUPAC
 from webui.models import Analysis, CustomGenome, GenomicIsland, Replicon, Genomeproject, Genes
 from webui.utils.formatter import methodfullnames
 from django.conf import settings
@@ -44,7 +43,7 @@ class GenbankParser():
                 
         gbhandle = SeqIO.parse(self.fname, "genbank")
         records = next(gbhandle)
-        records.seq.alphabet = IUPAC.ambiguous_dna
+        records.annotations['molecule_type'] = 'DNA'
         # Stash it for later
         self.records = records
         recs_in_islands = Vividict()

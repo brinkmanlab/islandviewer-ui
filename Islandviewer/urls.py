@@ -1,4 +1,4 @@
-from django.conf.urls import include, url
+from django.urls import include, re_path
 from .settings import env
 
 # Uncomment the next two lines to enable the admin:
@@ -7,26 +7,26 @@ from .settings import env
 
 if env.DEV_ENV:
     urlpatterns = [
-        url(r'^islandviewer/', include('webui.urls')),
-        url(r'^islandviewer/', include('iv_social.urls', namespace='iv_social')),
-        url(r'^islandviewer/', include('social_django.urls', namespace='social')),
-        url(r'^islandviewer/', include('restapi.urls', namespace='restapi')),
+        re_path(r'^islandviewer/', include('webui.urls')),
+        re_path(r'^islandviewer/', include('iv_social.urls', namespace='iv_social')),
+        re_path(r'^islandviewer/', include('social_django.urls', namespace='social')),
+        re_path(r'^islandviewer/', include('restapi.urls', namespace='restapi')),
 
     # Examples:
-    # url(r'^$', 'Islandviewer.views.home', name='home'),
-    # url(r'^Islandviewer/', include('Islandviewer.foo.urls')),
+    # re_path(r'^$', 'Islandviewer.views.home', name='home'),
+    # re_path(r'^Islandviewer/', include('Islandviewer.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    # re_path(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
+    # re_path(r'^admin/', include(admin.site.urls)),
     ]
 else:
     urlpatterns = [
-        url(r'^', include('webui.urls')),
-        url(r'', include('iv_social.urls', namespace='iv_social')),
-        url(r'', include('social_django.urls', namespace='social')),
-        url(r'', include('restapi.urls', namespace='restapi')),
+        re_path(r'^', include('webui.urls')),
+        re_path(r'', include('iv_social.urls', namespace='iv_social')),
+        re_path(r'', include('social_django.urls', namespace='social')),
+        re_path(r'', include('restapi.urls', namespace='restapi')),
     ]
     
