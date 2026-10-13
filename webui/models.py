@@ -431,7 +431,7 @@ class GenomicIsland(models.Model):
 
     class Meta:
         db_table = "GenomicIsland"
-        index_together = ['aid', 'prediction_method']
+        indexes = [models.Index(fields=['aid', 'prediction_method'])]
 
 class GC(models.Model):
     ext_id = models.CharField(primary_key=True,max_length=24)
@@ -540,9 +540,9 @@ class Distance(models.Model):
     
     class Meta:
         db_table = "Distance"
-        index_together = [
-            ['rep_accnum1', 'rep_accnum2'],
-            ['rep_accnum2', 'rep_accnum1'],
+        indexes = [
+            models.Index(fields=['rep_accnum1', 'rep_accnum2']),
+            models.Index(fields=['rep_accnum2', 'rep_accnum1']),
         ]
 
 class UploadGenome(models.Model):
@@ -599,8 +599,8 @@ class VirulenceMapped(models.Model):
     class Meta:
         db_table = 'virulence_mapped'
         unique_together = ('external_id', 'gene_id', 'ext_id')
-        index_together = [
-            ['ext_id', 'gene_id'],
+        indexes = [
+            models.Index(fields=['ext_id', 'gene_id']),
         ]
 
 

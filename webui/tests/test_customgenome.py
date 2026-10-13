@@ -30,7 +30,7 @@ class CustomGenomeTest(TestCase):
 
         cg = CustomGenome.objects.get(pk=1)
         
-        self.assertEquals(cg.is_system_owned, False, "Custom Genome is not system owner")
+        self.assertEqual(cg.is_system_owned, False, "Custom Genome is not system owner")
 
         self.assertEqual(cg.isvalid, True, 'Custom Genome is valid')
 

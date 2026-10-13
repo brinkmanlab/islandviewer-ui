@@ -357,7 +357,7 @@ def uploadform(request):
                     print("Successful upload, redirect here to analysis")
                 # Will be in aid?
                 if ret['code'] == 200:
-                    m = re.search("\[(\d+)\]", ret['msg'])
+                    m = re.search(r"\[(\d+)\]", ret['msg'])
                     if m:
                         aid = m.group(1)
                         if settings.DEBUG:
@@ -442,7 +442,7 @@ def _uploadcustomajax(request, **kwargs):
                         print("Successful upload, redirect here to analysis")
                     # Will be in aid?
                     if ret['code'] == 200:
-                        m = re.search("\[(\d+)\]", ret['msg'])
+                        m = re.search(r"\[(\d+)\]", ret['msg'])
                         if m:
                             aid = m.group(1)
                             if settings.DEBUG:
