@@ -31,6 +31,7 @@
             different genomes?</a></li>
         <li><a href="javascript:scrolltoelem('a4');">What are the issues with running an incomplete genome through
             IslandViewer?</a></li>
+        <li><a href="javascript:scrolltoelem('a19');">Can you run plasmids and multiple chromosomes from a given organism on IslandViewer?</a></li>
         <li><a href="javascript:scrolltoelem('a16');">What if my microorganism has several replicons?</a></li>
         <li><a href="javascript:scrolltoelem('a6');">What is the accuracy of IslandViewer GI predictions?</a></li>
         <li><a href="javascript:scrolltoelem('a7');">What are the sources of external annotations in the scatter plot?
@@ -170,6 +171,20 @@
         IslandViewer's GI prediction algorithms could falsely predict GIs, and could miss real GIs. A proper assessment
         of the accuracy of GI prediction in incomplete genomes is being performed, and until such assessment is complete,
         all GI predictions in incomplete genomes through IslandViewer should be carefully evaluated for validity.</p>
+
+    <div align="right"><a href="#">Top</a></div>
+
+    <div id='a19' class="subHeader">Can you run plasmids and multiple chromosomes from a given organism on IslandViewer?</div>
+    &nbsp;<br/>
+    <p class="bodyText">Yes, multiple chromosomes can be run, but we do not advise running plasmids. IslandViewer was designed to identify 
+        genomic islands on chromosomes, so only replicons designated as “chromosome” are run for precomputed analyses. This includes 
+        organisms with multiple chromosomes such as for Vibrio cholerae. For most islands, you need enough sequence flanking the island to 
+        make an accurate prediction, and chromosomes provide this. Note that islands are predicted in the context of its immediate 
+        surroundings, so even if the sequence composition of two chromosomes in a bacterial genome are quite different, islands with unusual 
+        composition within those chromosomes will still be predicted. While you can technically run plasmids, we don’t advise it, because they 
+        are already relatively mobile elements, they aren’t commonly large enough, they don’t fit with the assumptions for these predictions of 
+        genomic islands, and both training and accuracy assessments of predictions were done with datasets of chromosomes (avoiding training 
+        and testing with the same data). See the IslandViewer papers for more information on the methodology.</p>
 
     <div align="right"><a href="#">Top</a></div>
 
