@@ -47,4 +47,5 @@ urlpatterns = [
     re_path(r'^results/graph/js/(?P<aid>\d+)/$', views.graphanalysisjs, name='graphanalysisjs'),
     re_path(r'^upload/(?P<upload_id>\d+)/$', views.uploadredirect, name='uploadredirect'),
     re_path(r'^http_api/$', views.http_api, name='http_api'),
+    re_path(r'^genomes/search/$', views.searchgenomes, name='searchgenomes'),
 ]

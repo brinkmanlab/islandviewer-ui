@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError, StreamingHttpResponse, UnreadablePostError
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError, StreamingHttpResponse, UnreadablePostError, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
 from django.conf import settings
@@ -38,13 +38,29 @@ READ_ERROR = "<h1>Unable to parse Genbank</h1>" \
 def index(request):
     return render(request, 'index.html')
 
+def searchgenomes(request):
+    q = request.GET.get('q', '').strip()
+    if len(q) < 2:
+        return JsonResponse([], safe=False)
+
+    like = q.replace('\\', '\\\\').replace('%', r'\%').replace('_', r'\_')
+    params = [STATUS['COMPLETE'], Analysis.MICROBEDB, f'%{like}%', f'{like}%']
+    rows = Analysis.objects.raw(
+        "SELECT Analysis.aid AS aid, Analysis.ext_id AS ext_id, NameCache.name AS name "
+        "FROM Analysis JOIN NameCache ON Analysis.ext_id = NameCache.cid "
+        "WHERE Analysis.status = %s AND Analysis.default_analysis = 1 "
+        "AND Analysis.owner_id = 0 AND Analysis.atype = %s "
+        "AND (NameCache.name LIKE %s OR Analysis.ext_id LIKE %s) "
+        "ORDER BY NameCache.name LIMIT 50",
+        params,
+    )
+    return JsonResponse(
+        [{'id': r.ext_id, 'text': f'{r.name} ({r.ext_id})'} for r in rows],
+        safe=False,
+    )
+
 def showgenomes(request):
-    context = {}
-    
-    params = [STATUS['COMPLETE'], Analysis.MICROBEDB]
-    context['analysis'] = Analysis.objects.raw("SELECT Analysis.aid as aid, Analysis.ext_id as ext_id, NameCache.name as name FROM Analysis, NameCache WHERE Analysis.ext_id = NameCache.cid AND Analysis.status = %s AND Analysis.default_analysis = 1 AND Analysis.owner_id = 0 AND Analysis.atype = %s ORDER BY NameCache.name", params)
-    
-    return render(request, 'selectgenome.html', context)
+    return render(request, 'selectgenome.html')
 
 def showgenomesjson(request):
     context = {}
